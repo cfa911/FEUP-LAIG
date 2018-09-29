@@ -237,14 +237,124 @@ class MySceneGraph {
                 tz = 0;
                 this.onXMLMinorError("failed to parse coordinates of initial translation; assuming zero");
             }
-
             //TODO: Save translation data
+            this.initialTranslate =[tx,ty,tz];
+            this.scene.translate(this.initialTranslate);
         }
 
         //TODO: Parse Rotations
 
+        if (thirdRotationIndex == -1)
+            this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
+        else {
+            var axis = this.reader.getString(children[thirdRotationIndex], 'axis');
+            var angle = this.reader.getString(children[thirdRotationIndex], 'axis');
+
+            if (axis == null || angle == null) {
+                axis = "x";
+                angle = 0;
+                this.onXMLMinorError("failed to parse coordinates of third rotation; assuming zero");
+            }
+            //TODO: Save rotation data
+            else if(axis == "x")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
+            }
+            else if(axis == "y")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
+            }
+            else if(axis == "z")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
+            }
+            this.scene.rotate(this.initialRotations);
+        }
+
+        if (secondRotationIndex == -1)
+            this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
+        else {
+            var axis = this.reader.getString(children[secondRotationIndex], 'axis');
+            var angle = this.reader.getString(children[secondRotationIndex], 'axis');
+
+            if (axis == null || angle == null) {
+                axis = "x";
+                angle = 0;
+                this.onXMLMinorError("failed to parse coordinates of second rotation; assuming zero");
+            }
+            else if(axis == "x")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
+            }
+            else if(axis == "y")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
+            }
+            else if(axis == "z")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
+            }
+            this.scene.rotate(this.initialRotations);
+        }
+
+        if (firstRotationIndex == -1)
+            this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
+        else {
+            var axis = this.reader.getString(children[firstRotationIndex], 'axis');
+            var angle = this.reader.getString(children[firstRotationIndex], 'axis');
+
+            if (axis == null || angle == null) {
+                axis = "x";
+                angle = 0;
+                this.onXMLMinorError("failed to parse coordinates of first rotation; assuming zero");
+            }
+            else if(axis == "x")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
+            }
+            else if(axis == "y")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
+            }
+            else if(axis == "z")
+            {
+                this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
+            }
+            this.scene.rotate(this.initialRotations);
+        }
+        
         //TODO: Parse Scaling
 
+        if (scalingIndex == -1)
+            this.onXMLMinorError("initial scaling undefined; assuming S = (1, 1, 1)");
+        else {
+            var sx = this.reader.getFloat(children[scalingIndex], 'sx');
+            var sy = this.reader.getFloat(children[scalingIndex], 'sy');
+            var sz = this.reader.getFloat(children[scalingIndex], 'sz');
+
+            if (sx == null || sy == null || sz == null) {
+                sx = 1;
+                sy = 1;
+                sz = 1;
+                this.onXMLMinorError("failed to parse coordinates of initial scaling; assuming one");
+            }
+            //TODO: Save scaling data
+            this.initialScaling =[sx,sy,sz];
+            this.scene.scale(this.initialScaling);
+        }
+
+        if (scalingIndex == -1)
+            this.onXMLMinorError("initial reference undefined; assuming L = 1");
+        else {
+            var length = this.reader.getFloat(children[scalingIndex], 'length');
+
+            if (length == null) {
+                length = 1;
+                this.onXMLMinorError("failed to parse coordinates of initial length; assuming one");
+            }
+            //TODO: Save scaling data
+            this.scene.axis();
+        }
         //TODO: Parse Reference length
 
         this.log("Parsed initials");
@@ -457,7 +567,7 @@ class MySceneGraph {
      * Callback to be executed on any minor error, showing a warning on the console.
      * @param {string} message
      */
-    onXMLMinorErro(message) {
+    onXMLMinorError(message) {
         console.warn("Warning: " + message);
     }
 

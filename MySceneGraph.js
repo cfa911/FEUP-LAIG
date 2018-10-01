@@ -248,7 +248,7 @@ class MySceneGraph {
             this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
         else {
             var axis = this.reader.getString(children[thirdRotationIndex], 'axis');
-            var angle = this.reader.getString(children[thirdRotationIndex], 'axis');
+            var angle = this.reader.getFloat(children[thirdRotationIndex], 'angle');
 
             if (axis == null || angle == null) {
                 axis = "x";
@@ -275,7 +275,7 @@ class MySceneGraph {
             this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
         else {
             var axis = this.reader.getString(children[secondRotationIndex], 'axis');
-            var angle = this.reader.getString(children[secondRotationIndex], 'axis');
+            var angle = this.reader.getFloat(children[secondRotationIndex], 'angle');
 
             if (axis == null || angle == null) {
                 axis = "x";
@@ -301,7 +301,7 @@ class MySceneGraph {
             this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
         else {
             var axis = this.reader.getString(children[firstRotationIndex], 'axis');
-            var angle = this.reader.getString(children[firstRotationIndex], 'axis');
+            var angle = this.reader.getFloat(children[firstRotationIndex], 'angle');
 
             if (axis == null || angle == null) {
                 axis = "x";
@@ -342,7 +342,7 @@ class MySceneGraph {
             this.initialScaling =[sx,sy,sz];
             this.scene.scale(this.initialScaling);
         }
-
+        /*
         if (scalingIndex == -1)
             this.onXMLMinorError("initial reference undefined; assuming L = 1");
         else {
@@ -354,7 +354,8 @@ class MySceneGraph {
             }
             //TODO: Save scaling data
             this.scene.axis();
-        }
+        }*/
+        
         //TODO: Parse Reference length
 
         this.log("Parsed initials");

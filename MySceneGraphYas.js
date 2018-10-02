@@ -20,6 +20,8 @@ var blue2 = 0;
 var green2 = 0;
 var ambientValue2 = 0;
 
+var arrayMaterials = [];
+
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -454,7 +456,60 @@ class MySceneGraph {
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
-        // TODO: Parse block
+        var children = materialsNode.children;
+        var nodeNames = [];
+
+        for (var i = 0; i < children.length; i++){
+            nodeNames.push(children[i].nodeName);
+        }
+
+        if (nodeNames == -1) {
+            this.onXMLMinorError("Materials planes missing;");
+            }
+
+        else{
+            for (var i= 0; i< nodeNames.length; i++){
+                var indexMaterials = nodeNames.indexOf("material");
+
+                var idMat = this.reader.getString(children[indexMaterials], 'id');
+                var shiMat = this.reader.getString(children[indexMaterials], 'shininess');
+                
+                var subChildren = indexMaterials.children;
+                var subNodenames = [];
+
+                for(var j=0; j<subChildren.length; j++){
+                    subNodenames.push(subChildren[j].nodeName);
+                }
+
+                var emission = subNodenames.indexOf("emission");
+                var ambient = subNodenames.indexOf("ambient");
+                var diffuse = subNodenames.indexOf("diffuse");
+                var specular = subNodenames.indexOf("specular");
+
+                var r1= this.reader.getFloat(subChildren[emission], 'r');
+                var g1= this.reader.getFloat(subChildren[emission], 'g');
+                var b1= this.reader.getFloat(subChildren[emission], 'b');
+                var a1= this.reader.getFloat(subChildren[emission], 'a');
+
+                var r2= this.reader.getFloat(subChildren[ambient], 'r');
+                var g2= this.reader.getFloat(subChildren[ambient], 'g');
+                var b2= this.reader.getFloat(subChildren[ambient], 'b');
+                var a2= this.reader.getFloat(subChildren[ambient], 'a');
+
+                var r3= this.reader.getFloat(subChildren[diffuse], 'r');
+                var g3= this.reader.getFloat(subChildren[diffuse], 'g');
+                var b3= this.reader.getFloat(subChildren[diffuse], 'b');
+                var a3= this.reader.getFloat(subChildren[diffuse], 'a');
+
+                var r4= this.reader.getFloat(subChildren[specular], 'r');
+                var g4= this.reader.getFloat(subChildren[specular], 'g');
+                var b4= this.reader.getFloat(subChildren[specular], 'b');
+                var a4= this.reader.getFloat(subChildren[specular], 'a');
+
+                arrayMaterials.push([idMat, shiMat, r1, g1, b1, a1, r2, g2, b2, a2, r3, g3, b3, a3, r4, g4, b4, a3])
+            }
+        }
+
         this.log("Parsed materials");
         return null;
     }

@@ -21,6 +21,7 @@ var green2 = 0;
 var ambientValue2 = 0;
 
 var arrayMaterials = [];
+var arrayPrimitives = [];
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -472,7 +473,7 @@ class MySceneGraph {
                 var indexMaterials = nodeNames.indexOf("material");
 
                 var idMat = this.reader.getString(children[indexMaterials], 'id');
-                var shiMat = this.reader.getString(children[indexMaterials], 'shininess');
+                var shiMat = this.reader.getFloat(children[indexMaterials], 'shininess');
                 
                 var subChildren = indexMaterials.children;
                 var subNodenames = [];
@@ -485,6 +486,10 @@ class MySceneGraph {
                 var ambient = subNodenames.indexOf("ambient");
                 var diffuse = subNodenames.indexOf("diffuse");
                 var specular = subNodenames.indexOf("specular");
+
+                if(emission == -1 || ambient == -1 || diffuse == -1 || specular == -1){
+                    this.onXMLMinorError("Material childs planes missing;");
+                }
 
                 var r1= this.reader.getFloat(subChildren[emission], 'r');
                 var g1= this.reader.getFloat(subChildren[emission], 'g');
@@ -731,7 +736,38 @@ class MySceneGraph {
      * @param {primitives block element} primitivesNode
      */
     parsePrimitives(primitivesNode) {
-        // TODO: Parse block
+
+        var children = primitivesNode.children;
+        var nodeNames = [];
+
+        for (var i = 0; i < children.length; i++){
+            nodeNames.push(children[i].nodeName);
+        }
+
+        if (nodeNames == -1) {
+            this.onXMLMinorError("Primitives planes missing;");
+            }
+
+        for (var i=0; i<nodeNames.length; i++){
+
+            var indexPermitives = nodeNames.indexOf("permitive");
+            var idPermitive = this.reader.getFloat(children[indexPermitives], 'id');
+
+            var subChildrens = indexPermitives.children;
+            var subNodeNames = [];
+
+            for (var j=0; j<subChildrens.length; j++){
+                subNodeNames.push(subChildrens[j].nodeName);
+            }
+
+            var rectangle = subNodeNames.indexOf("rectangle");
+            var triangle = subNodeNames.indexOf("triangle");
+            var cylinder = subNodeNames.indexOf("cylinder");
+            var sphere = subNodeNames.indexOf("sphere");
+            var torus = subNodeNames.indexOf("torus");
+
+
+        }
         this.log("Parsed primitives");
         return null;
     }

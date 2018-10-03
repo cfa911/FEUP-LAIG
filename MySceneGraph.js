@@ -138,6 +138,8 @@ class MySceneGraph {
                 return error;
         }
 
+        //this.log(nodes[index].nodeName);
+
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
@@ -148,7 +150,10 @@ class MySceneGraph {
             //Parse lights block
             if ((error = this.parseLights(nodes[index])) != null)
                 return error;
+
         }
+
+        this.log(nodes[index].nodeName);
 
         // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
@@ -161,6 +166,8 @@ class MySceneGraph {
             if ((error = this.parseTextures(nodes[index])) != null)
                 return error;
         }
+
+        //this.log(nodes[index].nodeName);
 
         // <materials>
         if ((index = nodeNames.indexOf("materials")) == -1)
@@ -290,6 +297,7 @@ class MySceneGraph {
             green1 = this.reader.getFloat(children[indexAmbient], 'g');
             blue1 = this.reader.getFloat(children[indexAmbient], 'b');
             ambientValue1 = this.reader.getFloat(children[indexAmbient], 'a');
+            this.log(ambientValue1);
 
         }
 
@@ -317,11 +325,16 @@ class MySceneGraph {
         var children = lightsNode.children;
         var nodeNames = [];
 
+        this.log(lightsNode.nodeName);
+        this.log(children[0].nodeName);
+
         for (var i = 0; i < children.length; i++)
             nodeNames.push(children[i].nodeName);
 
         var indexOmni = nodeNames.indexOf("omni");
         var indexSpot = nodeNames.indexOf("spot");
+
+        //this.log(indexOmni.nodeName);
 
         //about omni
         if ( indexOmni == -1) {
@@ -330,16 +343,22 @@ class MySceneGraph {
         else {
             var idOmni = this.reader.getString(children[indexOmni], 'id');
             var enabledOmni = new Boolean(this.reader.getString(children[indexOmni], 'enabled'));
+            this.log("parse id omni");
         }
 
-        var omniChildren = indexOmni.children;
+        var omniChildren = children[0]; /*indexOmni.children;*/
         var nodeNamesOmni = [];
+
+        this.log("i am here");
+        this.log(omniChildren.nodeName);
 
         for(var i =0; i < omniChildren.length; i++)
             nodeNamesOmni.push(omniChildren[i].nodeName)
 
-        var location1 = nodeNamesOmni.indexOf("location");
+        var location1 = omniChildren.children[0]; /*nodeNamesOmni.indexOf("location");*/
+        this.log(location1.nodeName);
         var ambient1 = nodeNamesOmni.indexOf("ambient");
+        this.log(ambient1.nodeName);
         var diffuse1 = nodeNamesOmni.indexOf("diffuse");
         var specular1 = nodeNamesOmni.indexOf("specular");
 

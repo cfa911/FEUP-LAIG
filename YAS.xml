@@ -29,8 +29,8 @@
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <omni id="ss" enabled="tt">
-            <location x="ff" y="ff" z="ff" w="ff" />
+        <omni id="first" enabled="true">
+            <location x="5.5" y="ff" z="ff" w="ff" />
             <ambient r="ff" g="ff" b="ff" a="ff" />
             <diffuse r="ff" g="ff" b="ff" a="ff" />
             <specular r="ff" g="ff" b="ff" a="ff" />

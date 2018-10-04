@@ -24,7 +24,8 @@ var arrayOmni =[];
 var arraySpot = [];
 var arrayMaterials = [];
 var arrayPrimitives = [];
-
+var nodeNamesOmni = [];
+var x;
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -140,7 +141,6 @@ class MySceneGraph {
                 return error;
         }
 
-        this.log("l");
 
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
@@ -282,7 +282,6 @@ class MySceneGraph {
     parseAmbient(ambientNode) {
 
         var children = ambientNode.children;
-
         var nodeNames = [];
 
         for (var i = 0; i < children.length; i++)
@@ -306,10 +305,10 @@ class MySceneGraph {
             this.onXMLMinorError("Background planes missing;");
         }
         else {
-            red2 = this.reader.getFloat(children[indexAmbient], 'r');
-            green2 = this.reader.getFloat(children[indexAmbient], 'g');
-            blue2 = this.reader.getFloat(children[indexAmbient], 'b');
-            ambientValue2 = this.reader.getFloat(children[indexAmbient], 'a');
+            red2 = this.reader.getFloat(children[indexBackground], 'r');
+            green2 = this.reader.getFloat(children[indexBackground], 'g');
+            blue2 = this.reader.getFloat(children[indexBackground], 'b');
+            ambientValue2 = this.reader.getFloat(children[indexBackground], 'a');
 
         }
         this.log("Parsed Ambient");
@@ -323,51 +322,32 @@ class MySceneGraph {
      */
     parseLights(lightsNode) {
 
-        var childs = lightsNode.children;
-        var nodeNames = [];
-
-        this.log(lightsNode.nodeName);
-        this.log(childs[0].nodeName);
-
-        for (var i = 0; i < childs.length; i++)
-            nodeNames.push(childs[i].nodeName);
-
-        var indexOmni = nodeNames.indexOf("omni");
-        var indexSpot = nodeNames.indexOf("spot");
-
+        arrayOmni = lightsNode.getElementsByTagName('omni');
+        arraySpot = lightsNode.getElementsByTagName('spot');
         //this.log(indexOmni.nodeName);
 
-        //about omni
-        if ( indexOmni == -1) {
-            this.onXMLMinorError("Omni planes missing;");
-        }
-        else {
-            var idOmni = this.reader.getString(childs[indexOmni], 'id');
-            var enabledOmni = new Boolean(this.reader.getString(childs[indexOmni], 'enabled'));
-            this.log("parse id omni");
-        }
-
-        var omniChildren = childs[indexOmni].children; /*indexOmni.children;*/
-        var nodeNamesOmni = [];
+        var nodeNames = [];
+        var omniChildren = arrayOmni[0].children;
+        //TODO: for loop for rest omni ligths
+        for (var i = 0; i < omniChildren.length; i++)
+            nodeNames.push(omniChildren[i].nodeName);
 
         this.log("i am here");
-        this.log(omniChildren.nodeName);
-
-        for(var i =0; i < omniChildren.length; i++)
-            nodeNamesOmni.push(omniChildren[i].nodeName)
-
-        var location1 = omniChildren[1]; /*nodeNamesOmni.indexOf("location");*/
-        this.log(location1.nodeName);
-        var ambient1 = nodeNamesOmni.indexOf("ambient");
+        
+        
+        
+        var location1 = nodeNames.indexOf('location');
+        this.log(location1);
+        var ambient1 = nodeNames.indexOf("ambient");
         this.log(ambient1.nodeName);
-        var diffuse1 = nodeNamesOmni.indexOf("diffuse");
-        var specular1 = nodeNamesOmni.indexOf("specular");
+        var diffuse1 = nodeNames.indexOf("diffuse");
+        var specular1 = nodeNames.indexOf("specular");
 
         if(location1 == -1 || ambient1 == -1 || diffuse1 == -1 || specular1 == -1){
             this.onXMLError("Omni childrens missing");
         }
         else{
-            var x= this.reader.getFloat(omniChildren[location1], 'x');
+            x = this.reader.getFloat(omniChildren[location1], 'x');
             var y= this.reader.getFloat(omniChildren[location1], 'y');
             var z= this.reader.getFloat(omniChildren[location1], 'z');
             var w= this.reader.getFloat(omniChildren[location1], 'w');
@@ -386,8 +366,11 @@ class MySceneGraph {
             var g3= this.reader.getFloat(omniChildren[specular1], 'g');
             var b3= this.reader.getFloat(omniChildren[specular1], 'b');
             var a3= this.reader.getFloat(omniChildren[specular1], 'a');
+
+            
         }
 
+        /*
         //about spot
         if ( indexSpot == -1) {
             this.onXMLMinorError("Spot planes missing;");
@@ -437,7 +420,7 @@ class MySceneGraph {
             var g3= this.reader.getFloat(spotChildren[specular2], 'g');
             var b3= this.reader.getFloat(spotChildren[specular2], 'b');
             var a3= this.reader.getFloat(spotChildren[specular2], 'a');
-        }
+        }*/
 
 
         this.log("Parsed lights");

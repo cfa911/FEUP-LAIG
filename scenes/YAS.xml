@@ -17,37 +17,37 @@
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
         <perspective id="perspective1" near="0.1" far="60" angle="20">
-            <from x="1" y="10" z="5" />
-            <to x="3" y="15" z="10" />
+            <from x="0" y="0" z="0" />
+            <to x="15" y="15" z="15" />
         </perspective>
         <ortho id="ortho1" near="0.2" far="60" left="6" right="9" top="10" bottom="3" />
     </views>
     <ambient>
-        <ambient r="64" g="128" b="128" a="1" />
-        <background r="1" g="1" b="1" a="0.2" />
+        <ambient r="0.2" g="0.4" b="0.8" a="1.0" />
+        <background r="51" g="215" b="255" a="0.2" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="first" enabled="true">
-            <location x="5.5" y="3" z="10" w="3" />
+            <location x="15" y="2" z="5" w="1" />
             <ambient r="64" g="64" b="64" a="0.2" />
-            <diffuse r="128" g="128" b="128" a="0.3" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="200" g="200" b="200" a="0.4" />
         </omni>
         <spot id="spot" enabled="0" angle="30" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
-            <location x="3" y="2" z="1" />
+            <location x="5" y="2" z="1" />
             <target x="4" y="4" z="6" />
             <ambient r="64" g="64" b="64" a="0.2" />
-            <diffuse r="128" g="128" b="128" a="0.3" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="200" g="200" b="200" a="0.4" />
         </spot>
     </lights>
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="1st" file="../scene/images/leaves.jpg" />
+        <texture id="1st" file="../scene/images/trunk-image.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -80,11 +80,11 @@
             <!-- rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
-            <triangle x1="ff" y1="ff" z1="ff" x2="ff" y2="ff" z2="ff" x3="ff" y3="ff" z3="ff" />
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+            <!-- <rectangle x1="ff" y1="ff" x2="ff" y2="ff" /> -->
+            <triangle x1="-0.5" y1="-0.5" z1="0" x2="0.5" y2="-0.5" z2="0" x3="-0.5" y3="0.5" z3="0" />
+            <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
             <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+            <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
         </primitive >
     </primitives >
     <components>

@@ -23,6 +23,7 @@ var ambientValue2 = 0;
 var omniMap = new Map();
 var spotMap = new Map();
 var materialsMap = new Map();
+var textureMap = new Map();
 var primitivesMap = new Map();
 /**
  * MySceneGraph class, representing the scene graph.
@@ -453,6 +454,7 @@ class MySceneGraph {
         else {
             var idTex = this.reader.getString(children[indexTexture], 'id');
             var fileTex = this.reader.getString(children[indexTexture], 'file');
+            textureMap.set(idTex,fileTex);
         }
 
         this.log("Parsed textures");
@@ -540,6 +542,33 @@ class MySceneGraph {
             var translationIndex = nodeNames.indexOf("translate");
             var rotationIndex = nodeNames.indexOf("rotate");
             var scalingIndex = nodeNames.indexOf("scale");
+
+
+
+            if (translationIndex == null && rotationIndex == null && scalingIndex == null) {
+                this.onXMLMinorError("No Transformations in block;");
+            }
+            else {
+                if (translationIndex != null){
+                var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
+                var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
+                var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
+                var t = [tx,ty,tz];
+                }
+                if (scalingIndex != null){
+                var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
+                var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
+                var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
+                var s = [sx,sy,sz];
+                }
+                if (rotationIndex != null){
+                var axis = this.reader.getString(transformationChildren[scalingIndex], 'axis');
+                var angle = this.reader.getFloat(transformationChildren[scalingIndex], 'angle');
+                var 
+                }
+
+                //materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
+            }
 
             this.log("Parsed transformations");
             return null;

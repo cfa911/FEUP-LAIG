@@ -366,7 +366,7 @@ class MySceneGraph {
                 var omniD = [r3, g3, b3, a3];
                 var omniE = [enabledOmni];
 
-                omniMap.set(idOmni,[omniA, omniB, omniC, omniD,omniE]);
+                omniMap.set(idOmni, [omniA, omniB, omniC, omniD, omniE]);
 
             }
         }
@@ -421,9 +421,9 @@ class MySceneGraph {
                 var spotC = [r1, g1, b1, a1];
                 var spotD = [r2, g2, b2, a2];
                 var spotE = [r3, g3, b3, a3];
-                var spotF = [enableSpot,angleSpot,exponentSpot];
+                var spotF = [enableSpot, angleSpot, exponentSpot];
 
-                spotMap.set(idSpot,[spotA, spotB, spotC, spotD,spotE,spotF]);
+                spotMap.set(idSpot, [spotA, spotB, spotC, spotD, spotE, spotF]);
 
             }
         }
@@ -506,7 +506,7 @@ class MySceneGraph {
                 var b4 = this.reader.getFloat(materialsChildren[specular], 'b');
                 var a4 = this.reader.getFloat(materialsChildren[specular], 'a');
 
-                materialsMap.set(idMat,[[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4],shiMat])
+                materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
             }
         }
 
@@ -519,213 +519,33 @@ class MySceneGraph {
      * @param {transformations block element} transformationsNode
      */
 
-
-    /*
-    
-       var children = sceneNode.children;
-
-       var nodeNames = [];
-
-       for (var i = 0; i < children.length; i++)
-           nodeNames.push(children[i].nodeName);
-
-       // Frustum planes
-       // (default values)
-       this.near = 0.1;
-       this.far = 500;
-       var indexFrustum = nodeNames.indexOf("frustum");
-       if (indexFrustum == -1) {
-           this.onXMLMinorError("frustum planes missing; assuming 'near = 0.1' and 'far = 500'");
-       }
-       else {
-           this.near = this.reader.getFloat(children[indexFrustum], 'near');
-           this.far = this.reader.getFloat(children[indexFrustum], 'far');
-
-           if (!(this.near != null && !isNaN(this.near))) {
-               this.near = 0.1;
-               this.onXMLMinorError("unable to parse value for near plane; assuming 'near = 0.1'");
-           }
-           else if (!(this.far != null && !isNaN(this.far))) {
-               this.far = 500;
-               this.onXMLMinorError("unable to parse value for far plane; assuming 'far = 500'");
-           }
-
-           if (this.near >= this.far)
-               return "'near' must be smaller than 'far'";
-       }
-
-       // Checks if at most one translation, three rotations, and one scaling are defined.
-       if (initialsNode.getElementsByTagName('translation').length > 1)
-           return "no more than one initial translation may be defined";
-
-       if (initialsNode.getElementsByTagName('rotation').length > 3)
-           return "no more than three initial rotations may be defined";
-
-       if (initialsNode.getElementsByTagName('scale').length > 1)
-           return "no more than one scaling may be defined";
-
-       // Initial transforms.
-       this.initialTranslate = [];
-       this.initialScaling = [];
-       this.initialRotations = [];
-
-       // Gets indices of each element.
-       var translationIndex = nodeNames.indexOf("translation");
-       var thirdRotationIndex = nodeNames.indexOf("rotation");
-       var secondRotationIndex = nodeNames.indexOf("rotation", thirdRotationIndex + 1);
-       var firstRotationIndex = nodeNames.lastIndexOf("rotation");
-       var scalingIndex = nodeNames.indexOf("scale");
-
-       // Checks if the indices are valid and in the expected order.
-       // Translation.
-       this.initialTransforms = mat4.create();
-       mat4.identity(this.initialTransforms);
-
-       if (translationIndex == -1)
-           this.onXMLMinorError("initial translation undefined; assuming T = (0, 0, 0)");
-       else {
-           var tx = this.reader.getFloat(children[translationIndex], 'x');
-           var ty = this.reader.getFloat(children[translationIndex], 'y');
-           var tz = this.reader.getFloat(children[translationIndex], 'z');
-
-           if (tx == null || ty == null || tz == null) {
-               tx = 0;
-               ty = 0;
-               tz = 0;
-               this.onXMLMinorError("failed to parse coordinates of initial translation; assuming zero");
-           }
-           //TODO: Save translation data
-           this.initialTranslate =[tx,ty,tz];
-           this.scene.translate(this.initialTranslate);
-       }
-
-       //TODO: Parse Rotations
-
-       if (thirdRotationIndex == -1)
-           this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
-       else {
-           var axis = this.reader.getString(children[thirdRotationIndex], 'axis');
-           var angle = this.reader.getFloat(children[thirdRotationIndex], 'angle');
-
-           if (axis == null || angle == null) {
-               axis = "x";
-               angle = 0;
-               this.onXMLMinorError("failed to parse coordinates of third rotation; assuming zero");
-           }
-           //TODO: Save rotation data
-           else if(axis == "x")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
-           }
-           else if(axis == "y")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
-           }
-           else if(axis == "z")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
-           }
-           this.scene.rotate(this.initialRotations);
-       }
-
-       if (secondRotationIndex == -1)
-           this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
-       else {
-           var axis = this.reader.getString(children[secondRotationIndex], 'axis');
-           var angle = this.reader.getFloat(children[secondRotationIndex], 'angle');
-
-           if (axis == null || angle == null) {
-               axis = "x";
-               angle = 0;
-               this.onXMLMinorError("failed to parse coordinates of second rotation; assuming zero");
-           }
-           else if(axis == "x")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
-           }
-           else if(axis == "y")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
-           }
-           else if(axis == "z")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
-           }
-           this.scene.rotate(this.initialRotations);
-       }
-
-       if (firstRotationIndex == -1)
-           this.onXMLMinorError("third rotation undefined; assuming R = (0, 1, 0, 0)");
-       else {
-           var axis = this.reader.getString(children[firstRotationIndex], 'axis');
-           var angle = this.reader.getFloat(children[firstRotationIndex], 'angle');
-
-           if (axis == null || angle == null) {
-               axis = "x";
-               angle = 0;
-               this.onXMLMinorError("failed to parse coordinates of first rotation; assuming zero");
-           }
-           else if(axis == "x")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,1,0,0];
-           }
-           else if(axis == "y")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,1,0];
-           }
-           else if(axis == "z")
-           {
-               this.initialRotations =[angle*DEGREE_TO_RAD,0,0,1];
-           }
-           this.scene.rotate(this.initialRotations);
-       }
-       
-       //TODO: Parse Scaling
-
-       if (scalingIndex == -1)
-           this.onXMLMinorError("initial scaling undefined; assuming S = (1, 1, 1)");
-       else {
-           var sx = this.reader.getFloat(children[scalingIndex], 'sx');
-           var sy = this.reader.getFloat(children[scalingIndex], 'sy');
-           var sz = this.reader.getFloat(children[scalingIndex], 'sz');
-
-           if (sx == null || sy == null || sz == null) {
-               sx = 1;
-               sy = 1;
-               sz = 1;
-               this.onXMLMinorError("failed to parse coordinates of initial scaling; assuming one");
-           }
-           //TODO: Save scaling data
-           this.initialScaling =[sx,sy,sz];
-           this.scene.scale(this.initialScaling);
-       }
-       /*
-       if (scalingIndex == -1)
-           this.onXMLMinorError("initial reference undefined; assuming L = 1");
-       else {
-           var length = this.reader.getFloat(children[scalingIndex], 'length');
-
-           if (length == null) {
-               length = 1;
-               this.onXMLMinorError("failed to parse coordinates of initial length; assuming one");
-           }
-           //TODO: Save scaling data
-           this.scene.axis();
-       }
-       
-       //TODO: Parse Reference length
-
-       this.log("Parsed initials");
-
-       return null;
-    */
-
     parseTransformations(transformationsNode) {
         // TODO: Parse block
-        this.log("Parsed transformations");
-        return null;
-    }
 
+        var arrayTransformation = transformationsNode.getElementsByTagName("transformation");
+        var nodeNames = [];
+        for (var j = 0; j < arrayTransformation.length; j++) {
+
+            var transformationChildren = arrayTransformation[j].children;
+            var idTransform = this.reader.getString(arrayTransformation[j], 'id');
+
+            for (var i = 0; i < transformationChildren.length; i++)
+                nodeNames.push(transformationChildren[i].nodeName);
+            
+            // Initial transforms.
+            var translates = [];
+            var scales = [];
+            var rotations = [];
+            // Gets indices of each element.
+            var translationIndex = nodeNames.indexOf("translate");
+            var rotationIndex = nodeNames.indexOf("rotate");
+            var scalingIndex = nodeNames.indexOf("scale");
+
+            this.log("Parsed transformations");
+            return null;
+            
+        }
+    }
     /**
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
@@ -749,6 +569,21 @@ class MySceneGraph {
             var sphere = nodeNames.indexOf("sphere");
             var torus = nodeNames.indexOf("torus");
 
+            if (rectangle != null) {
+
+            }
+            else if (triangle != null) {
+
+            }
+            else if (cylinder != null) {
+
+            }
+            else if (sphere != null) {
+
+            }
+            else if (torus != null) {
+
+            }
             /*
             switch(nodeNames[i]) {
                 case x:

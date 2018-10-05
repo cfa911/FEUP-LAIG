@@ -20,12 +20,10 @@ var blue2 = 0;
 var green2 = 0;
 var ambientValue2 = 0;
 
-var arrayOmni =[];
-var arraySpot = [];
-var arrayMaterials = [];
-var arrayPrimitives = [];
-var nodeNamesOmni = [];
-var x, x1, dop, r1;
+var omniMap = new Map();
+var spotMap = new Map();
+var materialsMap = new Map();
+var primitivesMap = new Map();
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -319,63 +317,70 @@ class MySceneGraph {
      */
     parseLights(lightsNode) {
 
-        arrayOmni = lightsNode.getElementsByTagName('omni');
-        arraySpot = lightsNode.getElementsByTagName('spot');
+        var omniElements = lightsNode.getElementsByTagName('omni');
+        var spotElements = lightsNode.getElementsByTagName('spot');
 
         var nodeNames = [];
-       
-        for(var j=0; j < arrayOmni.length; j++){
 
-            var omniChildren = arrayOmni[j].children;
-            var idOmni = this.reader.getString(arrayOmni[j], 'id');
-            var enabledOmni = this.reader.getString(arrayOmni[j], 'enabled');
+        for (var j = 0; j < omniElements.length; j++) {
+
+            var omniChildren = omniElements[j].children;
+            var idOmni = this.reader.getString(omniElements[j], 'id');
+            var enabledOmni = this.reader.getBoolean(omniElements[j], 'enabled');
 
             for (var i = 0; i < omniChildren.length; i++)
                 nodeNames.push(omniChildren[i].nodeName);
-        
+
             var location1 = nodeNames.indexOf('location');
             var ambient1 = nodeNames.indexOf("ambient");
             var diffuse1 = nodeNames.indexOf("diffuse");
             var specular1 = nodeNames.indexOf("specular");
 
-            if(location1 == -1 || ambient1 == -1 || diffuse1 == -1 || specular1 == -1){
-            this.onXMLError("Omni childrens missing");
+            if (location1 == -1 || ambient1 == -1 || diffuse1 == -1 || specular1 == -1) {
+                this.onXMLError("Omni childrens missing");
             }
-            else{
-                x = this.reader.getFloat(omniChildren[location1], 'x');
-                var y= this.reader.getFloat(omniChildren[location1], 'y');
-                var z= this.reader.getFloat(omniChildren[location1], 'z');
-                var w= this.reader.getFloat(omniChildren[location1], 'w');
+            else {
+                var x = this.reader.getFloat(omniChildren[location1], 'x');
+                var y = this.reader.getFloat(omniChildren[location1], 'y');
+                var z = this.reader.getFloat(omniChildren[location1], 'z');
+                var w = this.reader.getFloat(omniChildren[location1], 'w');
 
-                var r1= this.reader.getFloat(omniChildren[ambient1], 'r');
-                var g1= this.reader.getFloat(omniChildren[ambient1], 'g');
-                var b1= this.reader.getFloat(omniChildren[ambient1], 'b');
-                var a1= this.reader.getFloat(omniChildren[ambient1], 'a');
+                var r1 = this.reader.getFloat(omniChildren[ambient1], 'r');
+                var g1 = this.reader.getFloat(omniChildren[ambient1], 'g');
+                var b1 = this.reader.getFloat(omniChildren[ambient1], 'b');
+                var a1 = this.reader.getFloat(omniChildren[ambient1], 'a');
 
-                var r2= this.reader.getFloat(omniChildren[diffuse1], 'r');
-                var g2= this.reader.getFloat(omniChildren[diffuse1], 'g');
-                var b2= this.reader.getFloat(omniChildren[diffuse1], 'b');
-                var a2= this.reader.getFloat(omniChildren[diffuse1], 'a');
+                var r2 = this.reader.getFloat(omniChildren[diffuse1], 'r');
+                var g2 = this.reader.getFloat(omniChildren[diffuse1], 'g');
+                var b2 = this.reader.getFloat(omniChildren[diffuse1], 'b');
+                var a2 = this.reader.getFloat(omniChildren[diffuse1], 'a');
 
-                var r3= this.reader.getFloat(omniChildren[specular1], 'r');
-                var g3= this.reader.getFloat(omniChildren[specular1], 'g');
-                var b3= this.reader.getFloat(omniChildren[specular1], 'b');
-                var a3= this.reader.getFloat(omniChildren[specular1], 'a');
+                var r3 = this.reader.getFloat(omniChildren[specular1], 'r');
+                var g3 = this.reader.getFloat(omniChildren[specular1], 'g');
+                var b3 = this.reader.getFloat(omniChildren[specular1], 'b');
+                var a3 = this.reader.getFloat(omniChildren[specular1], 'a');
 
-            
+                var omniA = [x, y, z, w];
+                var omniB = [r1, g1, b1, a1];
+                var omniC = [r2, g2, b2, a2];
+                var omniD = [r3, g3, b3, a3];
+                var omniE = [enabledOmni];
+
+                omniMap.set(idOmni,[omniA, omniB, omniC, omniD,omniE]);
+
             }
         }
 
         nodeNames = [];
 
-        for(var j=0; j < arraySpot.length; j++){
-            var spotChildren = arraySpot[j].children;
-            var idSpot = this.reader.getString(arraySpot[j], 'id');
-            var enableSpot = this.reader.getString(arraySpot[j], 'enabled');
-            var angleSpot = this.reader.getFloat(arraySpot[j], 'angle');
-            var exponentSpot = this.reader.getFloat(arraySpot[j], 'exponent');
+        for (var j = 0; j < spotElements.length; j++) {
+            var spotChildren = spotElements[j].children;
+            var idSpot = this.reader.getString(spotElements[j], 'id');
+            var enableSpot = this.reader.getBoolean(spotElements[j], 'enabled');
+            var angleSpot = this.reader.getFloat(spotElements[j], 'angle');
+            var exponentSpot = this.reader.getFloat(spotElements[j], 'exponent');
 
-            for(var i =0; i < spotChildren.length; i++)
+            for (var i = 0; i < spotChildren.length; i++)
                 nodeNames.push(spotChildren[i].nodeName)
 
             var location2 = nodeNames.indexOf("location");
@@ -384,34 +389,44 @@ class MySceneGraph {
             var diffuse2 = nodeNames.indexOf("diffuse");
             var specular2 = nodeNames.indexOf("specular");
 
-        if(location2 == -1 || target2 == -1 || ambient2 == -1 || diffuse2 == -1 || specular2 == -1){
-            this.onXMLError("Spot childrens missing");
+            if (location2 == -1 || target2 == -1 || ambient2 == -1 || diffuse2 == -1 || specular2 == -1) {
+                this.onXMLError("Spot childrens missing");
+            }
+            else {
+                var x1 = this.reader.getFloat(spotChildren[location2], 'x');
+                var y1 = this.reader.getFloat(spotChildren[location2], 'y');
+                var z1 = this.reader.getFloat(spotChildren[location2], 'z');
+
+                var x2 = this.reader.getFloat(spotChildren[target2], 'x');
+                var y2 = this.reader.getFloat(spotChildren[target2], 'y');
+                var z2 = this.reader.getFloat(spotChildren[target2], 'z');
+
+                var r1 = this.reader.getFloat(spotChildren[ambient2], 'r');
+                var g1 = this.reader.getFloat(spotChildren[ambient2], 'g');
+                var b1 = this.reader.getFloat(spotChildren[ambient2], 'b');
+                var a1 = this.reader.getFloat(spotChildren[ambient2], 'a');
+
+                var r2 = this.reader.getFloat(spotChildren[diffuse2], 'r');
+                var g2 = this.reader.getFloat(spotChildren[diffuse2], 'g');
+                var b2 = this.reader.getFloat(spotChildren[diffuse2], 'b');
+                var a2 = this.reader.getFloat(spotChildren[diffuse2], 'a');
+
+                var r3 = this.reader.getFloat(spotChildren[specular2], 'r');
+                var g3 = this.reader.getFloat(spotChildren[specular2], 'g');
+                var b3 = this.reader.getFloat(spotChildren[specular2], 'b');
+                var a3 = this.reader.getFloat(spotChildren[specular2], 'a');
+
+                var spotA = [x1, y1, z1];
+                var spotB = [x2, y2, z2];
+                var spotC = [r1, g1, b1, a1];
+                var spotD = [r2, g2, b2, a2];
+                var spotE = [r3, g3, b3, a3];
+                var spotF = [enableSpot,angleSpot,exponentSpot];
+
+                spotMap.set(idSpot,[spotA, spotB, spotC, spotD,spotE,spotF]);
+
+            }
         }
-        else{
-            x1= this.reader.getFloat(spotChildren[location2], 'x');
-            var y1= this.reader.getFloat(spotChildren[location2], 'y');
-            var z1= this.reader.getFloat(spotChildren[location2], 'z');
-
-            var x2= this.reader.getFloat(spotChildren[target2], 'x');
-            var y2= this.reader.getFloat(spotChildren[target2], 'y');
-            var z2= this.reader.getFloat(spotChildren[target2], 'z');
-
-            var r1= this.reader.getFloat(spotChildren[ambient2], 'r');
-            var g1= this.reader.getFloat(spotChildren[ambient2], 'g');
-            var b1= this.reader.getFloat(spotChildren[ambient2], 'b');
-            var a1= this.reader.getFloat(spotChildren[ambient2], 'a');
-
-            var r2= this.reader.getFloat(spotChildren[diffuse2], 'r');
-            var g2= this.reader.getFloat(spotChildren[diffuse2], 'g');
-            var b2= this.reader.getFloat(spotChildren[diffuse2], 'b');
-            var a2= this.reader.getFloat(spotChildren[diffuse2], 'a');
-
-            var r3= this.reader.getFloat(spotChildren[specular2], 'r');
-            var g3= this.reader.getFloat(spotChildren[specular2], 'g');
-            var b3= this.reader.getFloat(spotChildren[specular2], 'b');
-            var a3= this.reader.getFloat(spotChildren[specular2], 'a');
-        }
-    }
 
         this.log("Parsed lights");
 
@@ -431,15 +446,15 @@ class MySceneGraph {
             nodeNames.push(children[i].nodeName);
 
         var indexTexture = nodeNames.indexOf("texture");
-        
-        if ( indexTexture == -1) {
+
+        if (indexTexture == -1) {
             this.onXMLMinorError("Textures planes missing;");
         }
         else {
             var idTex = this.reader.getString(children[indexTexture], 'id');
             var fileTex = this.reader.getString(children[indexTexture], 'file');
         }
-        
+
         this.log("Parsed textures");
         return null;
 
@@ -453,12 +468,12 @@ class MySceneGraph {
         var arrayMaterial = materialsNode.getElementsByTagName('material');
         var nodeNames = [];
 
-        for(var j=0; j < arrayMaterial.length; j++){
+        for (var j = 0; j < arrayMaterial.length; j++) {
 
             var materialsChildren = arrayMaterial[j].children;
             var idMat = this.reader.getString(arrayMaterial[j], 'id');
             var shiMat = this.reader.getFloat(arrayMaterial[j], 'shininess');
-        
+
             for (var i = 0; i < materialsChildren.length; i++)
                 nodeNames.push(materialsChildren[i].nodeName);
 
@@ -467,31 +482,31 @@ class MySceneGraph {
             var diffuse = nodeNames.indexOf("diffuse");
             var specular = nodeNames.indexOf("specular");
 
-            if(emission == -1 || ambient == -1 || diffuse == -1 || specular == -1){
+            if (emission == -1 || ambient == -1 || diffuse == -1 || specular == -1) {
                 this.onXMLMinorError("Material childs planes missing;");
             }
-            else{
-                r1= this.reader.getFloat(materialsChildren[emission], 'r');
-                var g1= this.reader.getFloat(materialsChildren[emission], 'g');
-                var b1= this.reader.getFloat(materialsChildren[emission], 'b');
-                var a1= this.reader.getFloat(materialsChildren[emission], 'a');
+            else {
+                var r1 = this.reader.getFloat(materialsChildren[emission], 'r');
+                var g1 = this.reader.getFloat(materialsChildren[emission], 'g');
+                var b1 = this.reader.getFloat(materialsChildren[emission], 'b');
+                var a1 = this.reader.getFloat(materialsChildren[emission], 'a');
 
-                var r2= this.reader.getFloat(materialsChildren[ambient], 'r');
-                var g2= this.reader.getFloat(materialsChildren[ambient], 'g');
-                var b2= this.reader.getFloat(materialsChildren[ambient], 'b');
-                var a2= this.reader.getFloat(materialsChildren[ambient], 'a');
+                var r2 = this.reader.getFloat(materialsChildren[ambient], 'r');
+                var g2 = this.reader.getFloat(materialsChildren[ambient], 'g');
+                var b2 = this.reader.getFloat(materialsChildren[ambient], 'b');
+                var a2 = this.reader.getFloat(materialsChildren[ambient], 'a');
 
-                var r3= this.reader.getFloat(materialsChildren[diffuse], 'r');
-                var g3= this.reader.getFloat(materialsChildren[diffuse], 'g');
-                var b3= this.reader.getFloat(materialsChildren[diffuse], 'b');
-                var a3= this.reader.getFloat(materialsChildren[diffuse], 'a');
+                var r3 = this.reader.getFloat(materialsChildren[diffuse], 'r');
+                var g3 = this.reader.getFloat(materialsChildren[diffuse], 'g');
+                var b3 = this.reader.getFloat(materialsChildren[diffuse], 'b');
+                var a3 = this.reader.getFloat(materialsChildren[diffuse], 'a');
 
-                var r4= this.reader.getFloat(materialsChildren[specular], 'r');
-                var g4= this.reader.getFloat(materialsChildren[specular], 'g');
-                var b4= this.reader.getFloat(materialsChildren[specular], 'b');
-                var a4= this.reader.getFloat(materialsChildren[specular], 'a');
+                var r4 = this.reader.getFloat(materialsChildren[specular], 'r');
+                var g4 = this.reader.getFloat(materialsChildren[specular], 'g');
+                var b4 = this.reader.getFloat(materialsChildren[specular], 'b');
+                var a4 = this.reader.getFloat(materialsChildren[specular], 'a');
 
-                arrayMaterials.push([idMat, shiMat, r1, g1, b1, a1, r2, g2, b2, a2, r3, g3, b3, a3, r4, g4, b4, a3])
+                materialsMap.set(idMat,[[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4],shiMat])
             }
         }
 
@@ -720,7 +735,7 @@ class MySceneGraph {
         var arrayPrimitive = primitivesNode.getElementsByTagName('primitive');
         var nodeNames = [];
 
-        for(var j=0; j < arrayPrimitive.length; j++){
+        for (var j = 0; j < arrayPrimitive.length; j++) {
 
             var primitiveChildren = arrayPrimitive[j].children;
             var idPrimitive = this.reader.getString(arrayPrimitive[j], 'id');
@@ -734,16 +749,17 @@ class MySceneGraph {
             var sphere = nodeNames.indexOf("sphere");
             var torus = nodeNames.indexOf("torus");
 
+            /*
             switch(nodeNames[i]) {
                 case x:
-                    code block
+                    //code block
                     break;
                 case y:
-                    code block
+                    //code block
                     break;
                 default:
-                    code block
-            }
+                    //code block
+            }*/
         }
         this.log("Parsed primitives");
         return null;

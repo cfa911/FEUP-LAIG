@@ -11,6 +11,7 @@ var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
+
 var red1 = 0;
 var blue1 = 0;
 var green1 = 0;
@@ -25,6 +26,7 @@ var spotMap = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
 var primitivesMap = new Map();
+var transformArray = [];
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -534,10 +536,7 @@ class MySceneGraph {
             for (var i = 0; i < transformationChildren.length; i++)
                 nodeNames.push(transformationChildren[i].nodeName);
             
-            // Initial transforms.
-            var translates = [];
-            var scales = [];
-            var rotations = [];
+            // transforms.
             // Gets indices of each element.
             var translationIndex = nodeNames.indexOf("translate");
             var rotationIndex = nodeNames.indexOf("rotate");
@@ -553,21 +552,22 @@ class MySceneGraph {
                 var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
                 var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
                 var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
-                var t = [tx,ty,tz];
+                transformArray.push([1,tx,ty,tz]);
                 }
                 if (scalingIndex != null){
                 var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
                 var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
                 var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
-                var s = [sx,sy,sz];
+                transformArray.push([2,sx,sy,sz]);
                 }
                 if (rotationIndex != null){
                 var axis = this.reader.getString(transformationChildren[scalingIndex], 'axis');
                 var angle = this.reader.getFloat(transformationChildren[scalingIndex], 'angle');
-                var 
+                transformArray.push([3,axis,angle]);
                 }
-
-                //materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
+                transformArray.splice(translationIndex,0,[1,tx,ty,tz]);
+                transformArray.splice(scalingIndex,0,[2,sx,sy,sz]);
+                transformArray.splice(rotationIndex,0,[3,axis,angle]);
             }
 
             this.log("Parsed transformations");

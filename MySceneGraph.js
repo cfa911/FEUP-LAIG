@@ -552,22 +552,22 @@ class MySceneGraph {
                 var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
                 var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
                 var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
-                transformArray.push([1,tx,ty,tz]);
+                transformArray.splice(translationIndex,0,["translate",tx,ty,tz]);
                 }
                 if (scalingIndex != null){
                 var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
                 var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
                 var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
-                transformArray.push([2,sx,sy,sz]);
+                transformArray.splice(scalingIndex,0,["scale",sx,sy,sz]);
                 }
                 if (rotationIndex != null){
-                var axis = this.reader.getString(transformationChildren[scalingIndex], 'axis');
-                var angle = this.reader.getFloat(transformationChildren[scalingIndex], 'angle');
-                transformArray.push([3,axis,angle]);
+                var axis = this.reader.getString(transformationChildren[rotationIndex], 'axis');
+                var angle = this.reader.getFloat(transformationChildren[rotationIndex], 'angle');
+                transformArray.splice(rotationIndex,0,["rotate",axis,angle]);
                 }
-                transformArray.splice(translationIndex,0,[1,tx,ty,tz]);
-                transformArray.splice(scalingIndex,0,[2,sx,sy,sz]);
-                transformArray.splice(rotationIndex,0,[3,axis,angle]);
+               
+                
+                
             }
 
             this.log("Parsed transformations");

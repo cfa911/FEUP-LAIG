@@ -11,22 +11,23 @@ var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
-
 var red1 = 0;
-var blue1 = 0;
 var green1 = 0;
+var blue1 = 0;
 var ambientValue1 = 0;
 var red2 = 0;
-var blue2 = 0;
 var green2 = 0;
+var blue2 = 0;
 var ambientValue2 = 0;
 
+var ambientMap = new Map();
+var perspectiveMap = new Map();
 var omniMap = new Map();
 var spotMap = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
 var primitivesMap = new Map();
-var transformArray = [];
+var transformMap = new Map();
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -237,7 +238,6 @@ class MySceneGraph {
                 this.root = "1";
                 this.axis_length = 5;
             }
-            new CGFaxis(this.scene, this.axis_length, 0.2);
         }
         this.log("Parsed scene");
         return null;
@@ -252,20 +252,68 @@ class MySceneGraph {
         var children = viewsNode.children;
 
         var nodeNames = [];
+        var names = [];
+
+        var arrayPerspective = viewsNode.getElementsByTagName('perspective');
 
         for (var i = 0; i < children.length; i++)
             nodeNames.push(children[i].nodeName);
 
         if (viewsNode == -1) {
             this.onXMLMinorError("views planes missing; assuming default = perspective1");
+            this.default = "perspective1";
         }
         else {
             this.default = this.reader.getString(viewsNode, 'default');
 
-            if (this.default == null) {
-                this.default = "perspective1";
-            }
             //define a default perspective id -> primary prespective
+        }
+        this.perspectiveIndex = nodeNames.indexOf("perspective");
+        this.orthoIndex = nodeNames.indexOf("ortho");
+        if (this.perspectiveIndex == -1 && this.orthoIndex == -1) {
+            this.onXMLMinorError("Ambient planes missing;");
+        }
+        else {
+            if (this.perspectiveIndex != -1) {
+                for (var j = 0; j < arrayPerspective.length; j++) {
+
+                    var perspectiveChildren = arrayPerspective[j].children;
+                    var idPerspective = this.reader.getString(arrayPerspective[j], 'id');
+                    var near = this.reader.getFloat(arrayPerspective[j], 'near');
+                    var far = this.reader.getFloat(arrayPerspective[j], 'far');
+                    var angle = this.reader.getFloat(arrayPerspective[j], 'angle');
+                    for (var i = 0; i < perspectiveChildren.length; i++)
+                        names.push(perspectiveChildren[i].nodeName);
+        
+                    var fromIndex = names.indexOf("from");
+                    var toIndex = names.indexOf("to");
+
+                    if (fromIndex == -1 || toIndex == -1) {
+                        this.onXMLMinorError("Perspective childs planes missing;");
+                    }
+                    else {
+                        var xf = this.reader.getFloat(perspectiveChildren[fromIndex], 'x');
+                        var yf = this.reader.getFloat(perspectiveChildren[fromIndex], 'y');
+                        var zf = this.reader.getFloat(perspectiveChildren[fromIndex], 'z');         
+        
+                        var xt = this.reader.getFloat(perspectiveChildren[toIndex], 'x');
+                        var yt = this.reader.getFloat(perspectiveChildren[toIndex], 'y');
+                        var zt = this.reader.getFloat(perspectiveChildren[toIndex], 'z');
+
+                        perspectiveMap.set(idPerspective, [[xf,yf,zf], [xt,yt,zt],[near,far,angle]]);
+                    }
+                }
+            }
+            if (this.orthoIndex != -1) {
+                this.idOrtho = this.reader.getString(children[this.orthoIndex], 'id');
+                this.near = this.reader.getFloat(children[this.orthoIndex], 'near');
+                this.far = this.reader.getFloat(children[this.orthoIndex], 'far');
+                this.left = this.reader.getFloat(children[this.orthoIndex], 'left');
+                this.right = this.reader.getFloat(children[this.orthoIndex], 'right');
+                this.top = this.reader.getFloat(children[this.orthoIndex], 'top');
+                this.bottom = this.reader.getFloat(children[this.orthoIndex], 'bottom');
+                
+            }
         }
         // parse children prespectives
         this.log("Parsed views");
@@ -283,6 +331,7 @@ class MySceneGraph {
         var children = ambientNode.children;
         var nodeNames = [];
 
+
         for (var i = 0; i < children.length; i++)
             nodeNames.push(children[i].nodeName);
 
@@ -296,7 +345,6 @@ class MySceneGraph {
             green1 = this.reader.getFloat(children[indexAmbient], 'g');
             blue1 = this.reader.getFloat(children[indexAmbient], 'b');
             ambientValue1 = this.reader.getFloat(children[indexAmbient], 'a');
-
         }
 
         if (indexBackground == -1) {
@@ -307,7 +355,6 @@ class MySceneGraph {
             green2 = this.reader.getFloat(children[indexBackground], 'g');
             blue2 = this.reader.getFloat(children[indexBackground], 'b');
             ambientValue2 = this.reader.getFloat(children[indexBackground], 'a');
-
         }
         this.log("Parsed Ambient");
 
@@ -456,7 +503,7 @@ class MySceneGraph {
         else {
             var idTex = this.reader.getString(children[indexTexture], 'id');
             var fileTex = this.reader.getString(children[indexTexture], 'file');
-            textureMap.set(idTex,fileTex);
+            textureMap.set(idTex, fileTex);
         }
 
         this.log("Parsed textures");
@@ -527,15 +574,15 @@ class MySceneGraph {
         // TODO: Parse block
 
         var arrayTransformation = transformationsNode.getElementsByTagName("transformation");
-        var nodeNames = [];
+
         for (var j = 0; j < arrayTransformation.length; j++) {
 
             var transformationChildren = arrayTransformation[j].children;
             var idTransform = this.reader.getString(arrayTransformation[j], 'id');
-
+            var nodeNames = [];
             for (var i = 0; i < transformationChildren.length; i++)
                 nodeNames.push(transformationChildren[i].nodeName);
-            
+
             // transforms.
             // Gets indices of each element.
             var translationIndex = nodeNames.indexOf("translate");
@@ -543,37 +590,35 @@ class MySceneGraph {
             var scalingIndex = nodeNames.indexOf("scale");
 
 
-
-            if (translationIndex == null && rotationIndex == null && scalingIndex == null) {
+            var transformArray = [];
+            if (translationIndex == -1 && rotationIndex == -1 && scalingIndex == -1) {
                 this.onXMLMinorError("No Transformations in block;");
             }
             else {
-                if (translationIndex != null){
-                var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
-                var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
-                var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
-                transformArray.splice(translationIndex,0,["translate",tx,ty,tz]);
+                if (translationIndex != -1) {
+                    var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
+                    var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
+                    var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
+                    transformArray.splice(translationIndex, 0, ["translate", tx, ty, tz]);
                 }
-                if (scalingIndex != null){
-                var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
-                var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
-                var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
-                transformArray.splice(scalingIndex,0,["scale",sx,sy,sz]);
+                if (scalingIndex != -1) {
+                    var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
+                    var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
+                    var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
+                    transformArray.splice(scalingIndex, 0, ["scale", sx, sy, sz]);
                 }
-                if (rotationIndex != null){
-                var axis = this.reader.getString(transformationChildren[rotationIndex], 'axis');
-                var angle = this.reader.getFloat(transformationChildren[rotationIndex], 'angle');
-                transformArray.splice(rotationIndex,0,["rotate",axis,angle]);
+                if (rotationIndex != -1) {
+                    var axis = this.reader.getString(transformationChildren[rotationIndex], 'axis');
+                    var angle = this.reader.getFloat(transformationChildren[rotationIndex], 'angle');
+                    transformArray.splice(rotationIndex, 0, ["rotate", axis, angle]);
                 }
-               
-                
-                
+                transformMap.set(idTransform, transformArray)
             }
-
-            this.log("Parsed transformations");
-            return null;
-            
         }
+        this.log("Parsed transformations");
+        return null;
+
+
     }
     /**
      * Parses the <primitives> block.
@@ -592,38 +637,52 @@ class MySceneGraph {
             for (var i = 0; i < primitiveChildren.length; i++)
                 nodeNames.push(primitiveChildren[i].nodeName);
 
-            var rectangle = nodeNames.indexOf("rectangle");
-            var triangle = nodeNames.indexOf("triangle");
-            var cylinder = nodeNames.indexOf("cylinder");
-            var sphere = nodeNames.indexOf("sphere");
-            var torus = nodeNames.indexOf("torus");
+            var rectangleIndex = nodeNames.indexOf("rectangle");
+            var triangleIndex = nodeNames.indexOf("triangle");
+            var cylinderIndex = nodeNames.indexOf("cylinder");
+            var sphereIndex = nodeNames.indexOf("sphere");
+            var torusIndex = nodeNames.indexOf("torus");
 
-            if (rectangle != null) {
-
+            if (rectangleIndex != -1) {
+                var x1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x1');
+                var y1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y1');
+                var x2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x2');
+                var y2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y2');
+                primitivesMap.set(idPrimitive, [nodeNames[rectangleIndex], x1, y1, x2, y2]);
             }
-            else if (triangle != null) {
-
+            else if (triangleIndex != -1) {
+                var x1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x1');
+                var y1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y1');
+                var z1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z1');
+                var x2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x2');
+                var y2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y2');
+                var z2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z2');
+                var x3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x3');
+                var y3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y3');
+                var z3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z3');
+                primitivesMap.set(idPrimitive, [nodeNames[triangleIndex], x1, y1, z1, x2, y2, z2, x3, y3, z3]);
             }
-            else if (cylinder != null) {
-
+            else if (cylinderIndex != -1) {
+                var base = this.reader.getFloat(primitiveChildren[cylinderIndex], 'base');
+                var top = this.reader.getFloat(primitiveChildren[cylinderIndex], 'top');
+                var height = this.reader.getFloat(primitiveChildren[cylinderIndex], 'height');
+                var slices = this.reader.getInteger(primitiveChildren[cylinderIndex], 'slices');
+                var stacks = this.reader.getInteger(primitiveChildren[cylinderIndex], 'stacks');
+                primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
             }
-            else if (sphere != null) {
-
+            else if (sphereIndex != -1) {
+                var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'base');
+                var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
+                var stacks = this.reader.getInteger(primitiveChildren[sphereIndex], 'stacks');
+                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
             }
-            else if (torus != null) {
-
+            else if (torusIndex != -1) {
+                var inner = this.reader.getFloat(primitiveChildren[sphereIndex], 'inner');
+                var outer = this.reader.getFloat(primitiveChildren[sphereIndex], 'outer');
+                var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
+                var loops = this.reader.getInteger(primitiveChildren[sphereIndex], 'loops');
+                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], inner, outer, slices, loops]);
             }
-            /*
-            switch(nodeNames[i]) {
-                case x:
-                    //code block
-                    break;
-                case y:
-                    //code block
-                    break;
-                default:
-                    //code block
-            }*/
         }
         this.log("Parsed primitives");
         return null;

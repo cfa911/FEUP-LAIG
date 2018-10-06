@@ -109,7 +109,7 @@
             <!-- rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="0" y1="0" x2="1.0" y2="1.0" />
+            <rectangle x1="-0.5" y1="-0.5" x2="1.0" y2="1.0" />
             <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
             <sphere radius="ff" slices="ii" stacks="ii" />
             <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
@@ -159,7 +159,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -209,7 +209,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -259,7 +259,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -309,7 +309,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -359,7 +359,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -409,7 +409,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -430,8 +430,8 @@
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-                <!-- <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
+                <translate x="0" y="0" z="0" />
+                <!-- <rotate axis="cc" angle="ff" />
                 <scale x="ff" y="ff" z="ff" /> -->
             </transformation>
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -458,7 +458,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -510,7 +510,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -557,7 +557,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -604,7 +604,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -651,7 +651,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -698,7 +698,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -718,8 +718,8 @@
                 <!-- usando zero ou mais das instrucoes seguintes, sem -->
                 <!-- limite nem ordem -->
                 <!-- ex: bloco transformation pode ficar sem conteudo -->
-                <!-- <translate x="ff" y="ff" z="ff" />
-                <rotate axis="cc" angle="ff" />
+                <translate x="0" y="0" z="0" />
+                <!-- <rotate axis="cc" angle="ff" />
                 <scale x="ff" y="ff" z="ff" /> -->
             </transformation>
             <!-- declaracao obrigatoria de pelo menos um material; -->
@@ -746,7 +746,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="ss" length_s="ff" length_t="ff" />
+            <texture id="1st" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->

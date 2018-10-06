@@ -21,7 +21,7 @@ var blue2 = 0;
 var ambientValue2 = 0;
 
 var ambientMap = new Map();
-var perspectiveMap = new Map();
+var viewsMap = new Map();
 var omniMap = new Map();
 var spotMap = new Map();
 var materialsMap = new Map();
@@ -300,22 +300,23 @@ class MySceneGraph {
                         var yt = this.reader.getFloat(perspectiveChildren[toIndex], 'y');
                         var zt = this.reader.getFloat(perspectiveChildren[toIndex], 'z');
 
-                        perspectiveMap.set(idPerspective, [[xf,yf,zf], [xt,yt,zt],[near,far,angle]]);
+                        viewsMap.set(idPerspective, [nodeNames[this.perspectiveIndex],[xf,yf,zf], [xt,yt,zt],[near,far,angle]]);
                     }
                 }
             }
             if (this.orthoIndex != -1) {
-                this.idOrtho = this.reader.getString(children[this.orthoIndex], 'id');
-                this.near = this.reader.getFloat(children[this.orthoIndex], 'near');
-                this.far = this.reader.getFloat(children[this.orthoIndex], 'far');
-                this.left = this.reader.getFloat(children[this.orthoIndex], 'left');
-                this.right = this.reader.getFloat(children[this.orthoIndex], 'right');
-                this.top = this.reader.getFloat(children[this.orthoIndex], 'top');
-                this.bottom = this.reader.getFloat(children[this.orthoIndex], 'bottom');
+                var idOrtho = this.reader.getString(children[this.orthoIndex], 'id');
+                var near = this.reader.getFloat(children[this.orthoIndex], 'near');
+                var far = this.reader.getFloat(children[this.orthoIndex], 'far');
+                var left = this.reader.getFloat(children[this.orthoIndex], 'left');
+                var right = this.reader.getFloat(children[this.orthoIndex], 'right');
+                var top = this.reader.getFloat(children[this.orthoIndex], 'top');
+                var bottom = this.reader.getFloat(children[this.orthoIndex], 'bottom');
+                viewsMap.set(idOrtho, [nodeNames[this.orthoIndex],[near,far,left,right,top,bottom]]);
                 
             }
         }
-        // parse children prespectives
+
         this.log("Parsed views");
 
         return null;

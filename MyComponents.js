@@ -6,13 +6,14 @@
 
 class MyComponents extends CGFobject
 {
-	constructor(scene,transformations,materials,textures,children)
+	constructor(scene, id, transformations, materials, textures, children)
 	{
 		super(scene);
+		this.id = id;
         this.transformations = transformations;
         this.materials = materials;
         this.textures = textures;
-        this.children = children;
+        this.children = children; "sera uma nova class de MyComponents"
 		this.initBuffers();
 	};
 

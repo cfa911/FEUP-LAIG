@@ -80,6 +80,9 @@
             <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="0.5" z="0" />
             <rotate axis="x" angle="-90" />
+            <translate x="0" y="0.5" z="0" />
+            <translate x="0" y="0.5" z="0" />
+
         </transformation>
         <transformation id="trans4">
             <!-- instrucoes a usar sem limite nem ordem -->

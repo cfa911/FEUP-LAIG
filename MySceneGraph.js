@@ -284,7 +284,7 @@ class MySceneGraph {
                     var angle = this.reader.getFloat(arrayPerspective[j], 'angle');
                     for (var i = 0; i < perspectiveChildren.length; i++)
                         names.push(perspectiveChildren[i].nodeName);
-        
+
                     var fromIndex = names.indexOf("from");
                     var toIndex = names.indexOf("to");
 
@@ -294,13 +294,13 @@ class MySceneGraph {
                     else {
                         var xf = this.reader.getFloat(perspectiveChildren[fromIndex], 'x');
                         var yf = this.reader.getFloat(perspectiveChildren[fromIndex], 'y');
-                        var zf = this.reader.getFloat(perspectiveChildren[fromIndex], 'z');         
-        
+                        var zf = this.reader.getFloat(perspectiveChildren[fromIndex], 'z');
+
                         var xt = this.reader.getFloat(perspectiveChildren[toIndex], 'x');
                         var yt = this.reader.getFloat(perspectiveChildren[toIndex], 'y');
                         var zt = this.reader.getFloat(perspectiveChildren[toIndex], 'z');
 
-                        viewsMap.set(idPerspective, [nodeNames[this.perspectiveIndex],[xf,yf,zf], [xt,yt,zt],[near,far,angle]]);
+                        viewsMap.set(idPerspective, [nodeNames[this.perspectiveIndex], [xf, yf, zf], [xt, yt, zt], [near, far, angle]]);
                     }
                 }
             }
@@ -312,8 +312,8 @@ class MySceneGraph {
                 var right = this.reader.getFloat(children[this.orthoIndex], 'right');
                 var top = this.reader.getFloat(children[this.orthoIndex], 'top');
                 var bottom = this.reader.getFloat(children[this.orthoIndex], 'bottom');
-                viewsMap.set(idOrtho, [nodeNames[this.orthoIndex],[near,far,left,right,top,bottom]]);
-                
+                viewsMap.set(idOrtho, [nodeNames[this.orthoIndex], [near, far, left, right, top, bottom]]);
+
             }
         }
 
@@ -581,40 +581,33 @@ class MySceneGraph {
             var transformationChildren = arrayTransformation[j].children;
             var idTransform = this.reader.getString(arrayTransformation[j], 'id');
             var nodeNames = [];
-            for (var i = 0; i < transformationChildren.length; i++)
-                nodeNames.push(transformationChildren[i].nodeName);
+            var transformArray = mat4.create();
+            for (var i = 0; i < transformationChildren.length; i++) {
+                if (transformationChildren[i].nodeName == "translate") {
+                    var tx = this.reader.getFloat(transformationChildren[i], 'x');
+                    var ty = this.reader.getFloat(transformationChildren[i], 'y');
+                    var tz = this.reader.getFloat(transformationChildren[i], 'z');
+                    mat4.translate(transformArray, transformArray, [tx, ty, tz]);
+                }
+                if (transformationChildren[i].nodeName == "scale") {
+                    var sx = this.reader.getFloat(transformationChildren[i], 'x');
+                    var sy = this.reader.getFloat(transformationChildren[i], 'y');
+                    var sz = this.reader.getFloat(transformationChildren[i], 'z');
+                    mat4.scale(transformArray, transformArray, [sx, sy, sz]);
+                }
+                if (transformationChildren[i].nodeName == "rotate") {
+                    var axis = this.reader.getString(transformationChildren[i], 'axis');
+                    var angle = this.reader.getFloat(transformationChildren[i], 'angle');
+                    if(axis == "x")
+                    mat4.rotateX(transformArray, transformArray, angle*DEGREE_TO_RAD);
+                    else if(axis == "y")
+                    mat4.rotateY(transformArray, transformArray, angle*DEGREE_TO_RAD);
+                    else if(axis == "z")
+                    mat4.rotateZ(transformArray, transformArray, angle*DEGREE_TO_RAD);
+                }
 
-            // transforms.
-            // Gets indices of each element.
-            var translationIndex = nodeNames.indexOf("translate");
-            var rotationIndex = nodeNames.indexOf("rotate");
-            var scalingIndex = nodeNames.indexOf("scale");
-
-
-            var transformArray = [];
-            if (translationIndex == -1 && rotationIndex == -1 && scalingIndex == -1) {
-                this.onXMLMinorError("No Transformations in block;");
             }
-            else {
-                if (translationIndex != -1) {
-                    var tx = this.reader.getFloat(transformationChildren[translationIndex], 'x');
-                    var ty = this.reader.getFloat(transformationChildren[translationIndex], 'y');
-                    var tz = this.reader.getFloat(transformationChildren[translationIndex], 'z');
-                    transformArray.splice(translationIndex, 0, ["translate", tx, ty, tz]);
-                }
-                if (scalingIndex != -1) {
-                    var sx = this.reader.getFloat(transformationChildren[scalingIndex], 'x');
-                    var sy = this.reader.getFloat(transformationChildren[scalingIndex], 'y');
-                    var sz = this.reader.getFloat(transformationChildren[scalingIndex], 'z');
-                    transformArray.splice(scalingIndex, 0, ["scale", sx, sy, sz]);
-                }
-                if (rotationIndex != -1) {
-                    var axis = this.reader.getString(transformationChildren[rotationIndex], 'axis');
-                    var angle = this.reader.getFloat(transformationChildren[rotationIndex], 'angle');
-                    transformArray.splice(rotationIndex, 0, ["rotate", axis, angle]);
-                }
-                transformMap.set(idTransform, transformArray)
-            }
+            transformMap.set(idTransform, transformArray)
         }
         this.log("Parsed transformations");
         return null;
@@ -694,7 +687,12 @@ class MySceneGraph {
      * @param {components block element} componentsNode
      */
     parseComponents(componentsNode) {
-        // TODO: Parse block
+
+        var arrayComponents = componentsNode.getElementsByTagName('component');
+        var nodeNames = [];
+        for (var j = 0; j < arrayComponents.length; j++) {
+
+        }
         this.log("Parsed components");
         return null;
     }

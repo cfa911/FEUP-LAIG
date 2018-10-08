@@ -23,25 +23,25 @@
         <ortho id="ortho1" near="0.2" far="60" left="6" right="9" top="10" bottom="3" />
     </views>
     <ambient>
-        <ambient r="51" g="3" b="1" a="3" />
-        <background r="51" g="215" b="255" a="3" />
+        <ambient r="0.3" g="0.3" b="0.3" a="1" />
+        <background r="0" g="0" b="0" a="1" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="first" enabled="true">
             <location x="15" y="2" z="5" w="1" />
-            <ambient r="64" g="64" b="64" a="0.2" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="200" g="200" b="200" a="0.4" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r=".7" g=".7" b="0.7" a="1" />
         </omni>
         <spot id="spot" enabled="0" angle="30" exponent="2">
             <!-- atencao, "target" e' diferente de "direction" -->
             <location x="5" y="2" z="1" />
             <target x="4" y="4" z="6" />
-            <ambient r="64" g="64" b="64" a="0.2" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="200" g="200" b="200" a="0.4" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r=".7" g=".7" b="0.7" a="1" />
         </spot>
     </lights>
     <textures>

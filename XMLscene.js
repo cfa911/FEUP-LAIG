@@ -90,7 +90,7 @@ class XMLscene extends CGFscene {
         //this.camera.far = this.graph.far;
 
         //TODO: Change reference length according to parsed graph
-        this.axis = new CGFaxis(this, this.graph.axis_length);
+        this.axis = new CGFaxis(this);
 
         // TODO: Change ambient and background details according to parsed graph
         this.gl.clearColor(red2,green2,blue2,ambientValue2); //global varibles from parser
@@ -128,6 +128,7 @@ class XMLscene extends CGFscene {
             this.axis.display();
 
             var i = 0;
+            
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
                     if (this.lightValues[key]) {
@@ -144,7 +145,7 @@ class XMLscene extends CGFscene {
             }
 
             // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            //this.graph.displayScene();
         }
         else {
             // Draw axis

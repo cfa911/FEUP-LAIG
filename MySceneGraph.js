@@ -700,6 +700,14 @@ class MySceneGraph {
                 nodeNames.push(componentsChildren[i].nodeName);
 
             var arrayTrans = nodeNames.indexOf('transformation');
+            for(var i=0; i<arrayTrans.length; i++){
+                if(arrayTrans[i] == "transformationref"){
+
+                }
+                else{
+                    
+                }
+            }
 
             var arrayMat = nodeNames.indexOf('materials');
             for(var i=0; i<arrayMat.length; i++){

@@ -22,7 +22,6 @@ var ambientValue2 = 0;
 
 var ambientMap = new Map();
 var viewsMap = new Map();
-this.lights = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
 var primitivesMap = new Map();
@@ -367,6 +366,7 @@ class MySceneGraph {
      */
     parseLights(lightsNode) {
 
+        this.lights = [];
         var omniElements = lightsNode.getElementsByTagName('omni');
         var spotElements = lightsNode.getElementsByTagName('spot');
 
@@ -416,7 +416,7 @@ class MySceneGraph {
                 this.specular = [r3, g3, b3, a3];
                 this.enabled = enabledOmni;
 
-                lights[this.idOmni] = ["omni",this.enabled,this.location, this.ambient, this.diffuse, this.specular];
+                this.lights[this.idOmni] = ["omni",this.enabled,this.location, this.ambient, this.diffuse, this.specular];
 
             }
         }
@@ -474,7 +474,7 @@ class MySceneGraph {
                 this.enabled = enableSpot;
                 this.spot = [angleSpot, exponentSpot];
 
-                lights[this.idSpot] = ["spot",this.enabled,this.location, this.ambient, this.diffuse, this.specular,this.target,this.spot];
+                this.lights[this.idSpot] = ["spot",this.enabled,this.location, this.ambient, this.diffuse, this.specular,this.target,this.spot];
 
             }
         }

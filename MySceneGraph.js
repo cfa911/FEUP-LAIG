@@ -700,8 +700,11 @@ class MySceneGraph {
                 nodeNames.push(componentsChildren[i].nodeName);
 
             var arrayTrans = nodeNames.indexOf('transformation');
-            var arrayMat = nodeNames.indexOf('materials');
 
+            var arrayMat = nodeNames.indexOf('materials');
+            for(var i=0; i<arrayMat.length; i++){
+                var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
+            }
             var texture = nodeNames.indexOf("texture");
             var idTex = this.reader.getString(componentsChildren[texture], 'id');
             var idLs = this.reader.getString(componentsChildren[texture], 'length_s');

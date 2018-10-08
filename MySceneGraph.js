@@ -416,7 +416,7 @@ class MySceneGraph {
                 this.specular = [r3, g3, b3, a3];
                 this.enabled = enabledOmni;
 
-                this.lights[this.idOmni] = ["omni",this.enabled,this.location, this.ambient, this.diffuse, this.specular];
+                this.lights[this.idOmni] = ["omni", this.enabled, this.location, this.ambient, this.diffuse, this.specular];
 
             }
         }
@@ -474,7 +474,7 @@ class MySceneGraph {
                 this.enabled = enableSpot;
                 this.spot = [angleSpot, exponentSpot];
 
-                this.lights[this.idSpot] = ["spot",this.enabled,this.location, this.ambient, this.diffuse, this.specular,this.target,this.spot];
+                this.lights[this.idSpot] = ["spot", this.enabled, this.location, this.ambient, this.diffuse, this.specular, this.target, this.spot];
 
             }
         }
@@ -598,12 +598,12 @@ class MySceneGraph {
                 if (transformationChildren[i].nodeName == "rotate") {
                     var axis = this.reader.getString(transformationChildren[i], 'axis');
                     var angle = this.reader.getFloat(transformationChildren[i], 'angle');
-                    if(axis == "x")
-                    mat4.rotateX(transformArray, transformArray, angle*DEGREE_TO_RAD);
-                    else if(axis == "y")
-                    mat4.rotateY(transformArray, transformArray, angle*DEGREE_TO_RAD);
-                    else if(axis == "z")
-                    mat4.rotateZ(transformArray, transformArray, angle*DEGREE_TO_RAD);
+                    if (axis == "x")
+                        mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                    else if (axis == "y")
+                        mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                    else if (axis == "z")
+                        mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
                 }
 
             }
@@ -690,38 +690,71 @@ class MySceneGraph {
     parseComponents(componentsNode) {
 
         var arrayComponents = componentsNode.getElementsByTagName('component');
-        var nodeNames = [];
 
         for (var j = 0; j < arrayComponents.length; j++) {
+            var nodeNames = [];
+            var component = new MyComponent();
             var componentsChildren = arrayComponents[j].children;
             var idComponent = this.reader.getString(arrayComponents[j], 'id');
 
-            for (var i = 0; i < componentsChildren.length; i++)
-                nodeNames.push(componentsChildren[i].nodeName);
+            for (var i = 0; i < componentsChildren.length; i++) {
+                if (componentsChildren[i].nodeName == "transformation") {
+                    transformationChilds = componentsChildren[i].children;
+                    for (var k = 0; k < transformationChilds.length; k++) {
+                        var transformArray = mat4.create();
+                        if (transformationChilds[k].nodeName == "transformationref") {
+                            // codigo ref
+                            var tranformId = this.reader.getString(transformationChilds[k], 'id');
+                            var matrix = transformMap.get(transformId); // da te a matrix com o mesmo id
+                            //component.tranformations = matrix;
+                        }
+                        else {
+                            for (var i = 0; i < transformationChilds[k].length; i++) {
+                                if (transformationChilds[k][i].nodeName == "translate") {
+                                    var tx = this.reader.getFloat(transformationChilds[k][i], 'x');
+                                    var ty = this.reader.getFloat(transformationChilds[k][i], 'y');
+                                    var tz = this.reader.getFloat(transformationChilds[k][i], 'z');
+                                    mat4.translate(transformArray, transformArray, [tx, ty, tz]);
+                                }
+                                if (transformationChilds[k][i].nodeName == "scale") {
+                                    var sx = this.reader.getFloat(transformationChilds[k][i], 'x');
+                                    var sy = this.reader.getFloat(transformationChilds[k][i], 'y');
+                                    var sz = this.reader.getFloat(transformationChilds[k][i], 'z');
+                                    mat4.scale(transformArray, transformArray, [sx, sy, sz]);
+                                }
+                                if (transformationChilds[k][i].nodeName == "rotate") {
+                                    var axis = this.reader.getString(transformationChilds[k][i], 'axis');
+                                    var angle = this.reader.getFloat(transformationChilds[k][i], 'angle');
+                                    if (axis == "x")
+                                        mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                                    else if (axis == "y")
+                                        mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                                    else if (axis == "z")
+                                        mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                                }
 
-            var arrayTrans = nodeNames.indexOf('transformation');
-            for(var i=0; i<arrayTrans.length; i++){
-                if(arrayTrans[i] == "transformationref"){
+                            }
 
+                            //save matrix
+                        }
+                    }
                 }
-                else{
-                    
+
+
+                var arrayMat = nodeNames.indexOf('materials');
+                for (var i = 0; i < arrayMat.length; i++) {
+                    var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
                 }
-            }
+                var texture = nodeNames.indexOf("texture");
+                var idTex = this.reader.getString(componentsChildren[texture], 'id');
+                var idLs = this.reader.getString(componentsChildren[texture], 'length_s');
+                var idLt = this.reader.getString(componentsChildren[texture], 'length_t');
 
-            var arrayMat = nodeNames.indexOf('materials');
-            for(var i=0; i<arrayMat.length; i++){
-                var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
+                var arrayChilds = nodeNames.indexOf('children');
             }
-            var texture = nodeNames.indexOf("texture");
-            var idTex = this.reader.getString(componentsChildren[texture], 'id');
-            var idLs = this.reader.getString(componentsChildren[texture], 'length_s');
-            var idLt = this.reader.getString(componentsChildren[texture], 'length_t');
-
-            var arrayChilds = nodeNames.indexOf('children');
+            this.log("Parsed components");
+            return null;
         }
-        this.log("Parsed components");
-        return null;
     }
 
 

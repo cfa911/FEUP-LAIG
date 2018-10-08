@@ -4,7 +4,7 @@
  * @constructor
  */
 
-class MyComponents extends CGFobject
+class MyComponent extends CGFobject
 {
 	constructor(scene, id, transformations, materials, textures, children)
 	{

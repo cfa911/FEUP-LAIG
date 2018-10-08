@@ -22,8 +22,7 @@ var ambientValue2 = 0;
 
 var ambientMap = new Map();
 var viewsMap = new Map();
-var omniMap = new Map();
-var spotMap = new Map();
+this.lights = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
 var primitivesMap = new Map();
@@ -376,7 +375,7 @@ class MySceneGraph {
         for (var j = 0; j < omniElements.length; j++) {
 
             var omniChildren = omniElements[j].children;
-            var idOmni = this.reader.getString(omniElements[j], 'id');
+            this.idOmni = this.reader.getString(omniElements[j], 'id');
             var enabledOmni = this.reader.getBoolean(omniElements[j], 'enabled');
 
             for (var i = 0; i < omniChildren.length; i++)
@@ -411,13 +410,13 @@ class MySceneGraph {
                 var b3 = this.reader.getFloat(omniChildren[specular1], 'b');
                 var a3 = this.reader.getFloat(omniChildren[specular1], 'a');
 
-                var omniA = [x, y, z, w];
-                var omniB = [r1, g1, b1, a1];
-                var omniC = [r2, g2, b2, a2];
-                var omniD = [r3, g3, b3, a3];
-                var omniE = [enabledOmni];
+                this.location = [x, y, z, w];
+                this.ambient = [r1, g1, b1, a1];
+                this.diffuse = [r2, g2, b2, a2];
+                this.specular = [r3, g3, b3, a3];
+                this.enabled = enabledOmni;
 
-                omniMap.set(idOmni, [omniA, omniB, omniC, omniD, omniE]);
+                lights[this.idOmni] = ["omni",this.enabled,this.location, this.ambient, this.diffuse, this.specular];
 
             }
         }
@@ -426,7 +425,7 @@ class MySceneGraph {
 
         for (var j = 0; j < spotElements.length; j++) {
             var spotChildren = spotElements[j].children;
-            var idSpot = this.reader.getString(spotElements[j], 'id');
+            this.idSpot = this.reader.getString(spotElements[j], 'id');
             var enableSpot = this.reader.getBoolean(spotElements[j], 'enabled');
             var angleSpot = this.reader.getFloat(spotElements[j], 'angle');
             var exponentSpot = this.reader.getFloat(spotElements[j], 'exponent');
@@ -467,14 +466,15 @@ class MySceneGraph {
                 var b3 = this.reader.getFloat(spotChildren[specular2], 'b');
                 var a3 = this.reader.getFloat(spotChildren[specular2], 'a');
 
-                var spotA = [x1, y1, z1];
-                var spotB = [x2, y2, z2];
-                var spotC = [r1, g1, b1, a1];
-                var spotD = [r2, g2, b2, a2];
-                var spotE = [r3, g3, b3, a3];
-                var spotF = [enableSpot, angleSpot, exponentSpot];
+                this.location = [x1, y1, z1];
+                this.target = [x2, y2, z2];
+                this.ambient = [r1, g1, b1, a1];
+                this.diffuse = [r2, g2, b2, a2];
+                this.specular = [r3, g3, b3, a3];
+                this.enabled = enableSpot;
+                this.spot = [angleSpot, exponentSpot];
 
-                spotMap.set(idSpot, [spotA, spotB, spotC, spotD, spotE, spotF]);
+                lights[this.idSpot] = ["spot",this.enabled,this.location, this.ambient, this.diffuse, this.specular,this.target,this.spot];
 
             }
         }
@@ -580,8 +580,8 @@ class MySceneGraph {
 
             var transformationChildren = arrayTransformation[j].children;
             var idTransform = this.reader.getString(arrayTransformation[j], 'id');
-            var nodeNames = [];
             var transformArray = mat4.create();
+
             for (var i = 0; i < transformationChildren.length; i++) {
                 if (transformationChildren[i].nodeName == "translate") {
                     var tx = this.reader.getFloat(transformationChildren[i], 'x');
@@ -607,6 +607,7 @@ class MySceneGraph {
                 }
 
             }
+            transformMap[idTransform] = transformArray;
             transformMap.set(idTransform, transformArray)
         }
         this.log("Parsed transformations");
@@ -690,8 +691,23 @@ class MySceneGraph {
 
         var arrayComponents = componentsNode.getElementsByTagName('component');
         var nodeNames = [];
-        for (var j = 0; j < arrayComponents.length; j++) {
 
+        for (var j = 0; j < arrayComponents.length; j++) {
+            var componentsChildren = arrayComponents[j].children;
+            var idComponent = this.reader.getString(arrayComponents[j], 'id');
+
+            for (var i = 0; i < componentsChildren.length; i++)
+                nodeNames.push(componentsChildren[i].nodeName);
+
+            var arrayTrans = nodeNames.indexOf('transformation');
+            var arrayMat = nodeNames.indexOf('materials');
+
+            var texture = nodeNames.indexOf("texture");
+            var idTex = this.reader.getString(componentsChildren[texture], 'id');
+            var idLs = this.reader.getString(componentsChildren[texture], 'length_s');
+            var idLt = this.reader.getString(componentsChildren[texture], 'length_t');
+
+            var arrayChilds = nodeNames.indexOf('children');
         }
         this.log("Parsed components");
         return null;

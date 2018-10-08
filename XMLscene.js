@@ -58,13 +58,18 @@ class XMLscene extends CGFscene {
                 var light = this.graph.lights[key];
 
                 //lights are predefined in cgfscene
-                this.lights[i].setPosition(light[1][0], light[1][1], light[1][2], light[1][3]);
-                this.lights[i].setAmbient(light[2][0], light[2][1], light[2][2], light[2][3]);
-                this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
-                this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
+                this.lights[i].setPosition(light[2][0], light[2][1], light[2][2]);
+                this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
+                this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
+                this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
+                if(this.lights[0] == "spot"){
+                    this.lights[i].setSpotCutOff(light[7][0]);
+                    this.lights[i].setSpotDirection(light[6][0] - light[2][0], light[6][1] - light[2][1], light[6][2] - light[2][2], light[6][3] -light[2][3]);
+                    this.lights[i].setSpotExponent(light[7][1]);
+                }
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light[1])
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
@@ -85,7 +90,7 @@ class XMLscene extends CGFscene {
         this.camera.far = this.graph.far;
 
         //TODO: Change reference length according to parsed graph
-        //this.axis = new CGFaxis(this, this.graph.referenceLength);
+        this.axis = new CGFaxis(this, this.graph.axis_length);
 
         // TODO: Change ambient and background details according to parsed graph
         this.gl.clearColor(red2,green2,blue2,ambientValue2); //global varibles from parser

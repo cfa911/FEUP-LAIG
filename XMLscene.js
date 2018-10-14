@@ -34,6 +34,13 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+        this.sphere = new MySphere(this, 20, 20, 0.25);
+
+        this.t = new CGFappearance(this);
+		this.t.setAmbient(0.1, 0.1, 0.1, 1);
+		this.t.setDiffuse(0.5, 0.5, 0.5, 1);
+		this.t.setSpecular(0, 0, 0, 1);
+        this.t.loadTexture("../scenes/images/bank.jpg");
     }
 
     /**
@@ -145,6 +152,13 @@ class XMLscene extends CGFscene {
             }
 
             // Displays the scene (MySceneGraph function).
+            this.pushMatrix();
+                this.scale(10,10,10);
+                this.translate(1, 1.5, 1);
+                this.rotate(-Math.PI / 3, 1, 0, 0);
+                this.t.apply();
+                this.sphere.display();
+        this.popMatrix();
             //this.graph.displayScene();
         }
         else {
@@ -153,6 +167,7 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
+
         // ---- END Background, camera and axis setup
     }
 }

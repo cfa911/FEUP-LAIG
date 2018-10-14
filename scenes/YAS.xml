@@ -41,7 +41,7 @@
             <target x="4" y="4" z="6" />
             <ambient r="0.3" g="0.3" b="0.3" a="1" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1" />
-            <specular r=".7" g=".7" b="0.7" a="1" />
+            <specular r="0.7" g="0.7" b="0.7" a="1" />
         </spot>
     </lights>
     <textures>
@@ -53,10 +53,10 @@
         <!-- Deve existir um ou mais blocos "material" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <material id="metal" shininess = "65">
-            <emission r="25" g="25" b="25" a="0.2" />
-            <ambient r="35" g="78" b="54" a="0.3" />
-            <diffuse r="50" g="90" b="69" a="0.7" />
-            <specular r="70" g="100" b="80" a="1" />
+            <emission r="0.3" g="0.3" b="0.3" a="1" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.7" g="0.7" b="0.7" a="1" />
         </material>
     </materials>
     <transformations>
@@ -122,7 +122,7 @@
         </primitive>
     </primitives >
     <components>
-    <component id="fase1">
+        <component id="fase1">
             <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->

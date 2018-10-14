@@ -608,7 +608,6 @@ class MySceneGraph {
 
             }
             transformMap[idTransform] = transformArray;
-            transformMap.set(idTransform, transformArray)
         }
         this.log("Parsed transformations");
         return null;
@@ -689,58 +688,51 @@ class MySceneGraph {
      */
     parseComponents(componentsNode) {
 
-        /*var arrayComponents = componentsNode.getElementsByTagName('component');
+        var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
-            var nodeNames = [];
-            //var component = new MyComponent();
-            var componentsChildren = arrayComponents[j].children;
+            var compo = new MyComponent(this.scene);
+            var Component = arrayComponents[j];
             var idComponent = this.reader.getString(arrayComponents[j], 'id');
 
-            for (var i = 0; i < componentsChildren.length; i++) {
-                if (componentsChildren[i].nodeName == "transformation") {
-                    var transformationChilds = componentsChildren[i].children;
-                    for (var k = 0; k < transformationChilds.length; k++) {
-                        var transformArray = mat4.create();
-                        if (transformationChilds[k].nodeName == "transformationref") {
-                            // codigo ref
-                            var tranformId = this.reader.getString(transformationChilds[k], 'id');
-                            var matrix = transformMap.get(tranformId); // da te a matrix com o mesmo id
-                            //component.tranformations = matrix;
-                        }
-                        else {
-                            for (var i = 0; i < transformationChilds[k].length; i++) {
-                                if (transformationChilds[k][i].nodeName == "translate") {
-                                    var tx = this.reader.getFloat(transformationChilds[k][i], 'x');
-                                    var ty = this.reader.getFloat(transformationChilds[k][i], 'y');
-                                    var tz = this.reader.getFloat(transformationChilds[k][i], 'z');
-                                    mat4.translate(transformArray, transformArray, [tx, ty, tz]);
-                                }
-                                if (transformationChilds[k][i].nodeName == "scale") {
-                                    var sx = this.reader.getFloat(transformationChilds[k][i], 'x');
-                                    var sy = this.reader.getFloat(transformationChilds[k][i], 'y');
-                                    var sz = this.reader.getFloat(transformationChilds[k][i], 'z');
-                                    mat4.scale(transformArray, transformArray, [sx, sy, sz]);
-                                }
-                                if (transformationChilds[k][i].nodeName == "rotate") {
-                                    var axis = this.reader.getString(transformationChilds[k][i], 'axis');
-                                    var angle = this.reader.getFloat(transformationChilds[k][i], 'angle');
-                                    if (axis == "x")
-                                        mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                                    else if (axis == "y")
-                                        mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                                    else if (axis == "z")
-                                        mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                                }
-
-                            }
-
-                            //save matrix
-                        }
+            var transformations = Component.getElementsByTagName('transformation');
+            var materials = Component.getElementsByTagName('materials');
+            var textures = Component.getElementsByTagName('texture');
+/*
+            for (var k = 0; k < transformations.length; i++) {
+                var transformationChilds = transformations[k];
+                var transformArray = mat4.create();
+                for (var i = 0; i < transformationChilds.length; i++) {
+                    if (transformationChilds[i].nodeName == "translate") {
+                        var tx = this.reader.getFloat(transformationChilds[i], 'x');
+                        var ty = this.reader.getFloat(transformationChilds[i], 'y');
+                        var tz = this.reader.getFloat(transformationChilds[i], 'z');
+                        mat4.translate(transformArray, transformArray, [tx, ty, tz]);
                     }
+                    else if (transformationChilds[i].nodeName == "scale") {
+                        var sx = this.reader.getFloat(transformationChilds[i], 'x');
+                        var sy = this.reader.getFloat(transformationChilds[i], 'y');
+                        var sz = this.reader.getFloat(transformationChilds[i], 'z');
+                        mat4.scale(transformArray, transformArray, [sx, sy, sz]);
+                    }
+                    else if (transformationChilds[i].nodeName == "rotate") {
+                        var axis = this.reader.getString(transformationChilds[i], 'axis');
+                        var angle = this.reader.getFloat(transformationChilds[i], 'angle');
+                        if (axis == "x")
+                            mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                        else if (axis == "y")
+                            mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                        else if (axis == "z")
+                            mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                    }
+                    else if (transformationChilds[i].nodeName == "transformationref") {
+                        var idTref = this.reader.getString(transformationChilds[i], 'id');
+                        transformArray = transformMap[idTref];
+                    }
+
                 }
-
-
+                compo.transformations = transformArray;
+            }*/
                 var arrayMat = nodeNames.indexOf('materials');
                 for (var i = 0; i < arrayMat.length; i++) {
                     var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
@@ -754,8 +746,8 @@ class MySceneGraph {
             }
             this.log("Parsed components");
             return null;
-        }*/
-    }
+        }
+    
 
 
     /*

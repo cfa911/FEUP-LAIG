@@ -6,7 +6,7 @@
 
 class MyComponent extends CGFobject
 {
-	constructor(scene, id, transformations, materials, textures, children)
+	constructor(scene, id, transformations = mat4.create(), materials = 0, textures = 0, children = 0)
 	{
 		super(scene);
 		this.id = id;
@@ -19,8 +19,5 @@ class MyComponent extends CGFobject
 
 	initBuffers()
 	{
-		//apply changes
-		this.primitiveType=this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
     }
 }

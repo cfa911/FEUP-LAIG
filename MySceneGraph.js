@@ -689,23 +689,23 @@ class MySceneGraph {
      */
     parseComponents(componentsNode) {
 
-        var arrayComponents = componentsNode.getElementsByTagName('component');
+        /*var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
             var nodeNames = [];
-            var component = new MyComponent();
+            //var component = new MyComponent();
             var componentsChildren = arrayComponents[j].children;
             var idComponent = this.reader.getString(arrayComponents[j], 'id');
 
             for (var i = 0; i < componentsChildren.length; i++) {
                 if (componentsChildren[i].nodeName == "transformation") {
-                    transformationChilds = componentsChildren[i].children;
+                    var transformationChilds = componentsChildren[i].children;
                     for (var k = 0; k < transformationChilds.length; k++) {
                         var transformArray = mat4.create();
                         if (transformationChilds[k].nodeName == "transformationref") {
                             // codigo ref
                             var tranformId = this.reader.getString(transformationChilds[k], 'id');
-                            var matrix = transformMap.get(transformId); // da te a matrix com o mesmo id
+                            var matrix = transformMap.get(tranformId); // da te a matrix com o mesmo id
                             //component.tranformations = matrix;
                         }
                         else {
@@ -754,7 +754,7 @@ class MySceneGraph {
             }
             this.log("Parsed components");
             return null;
-        }
+        }*/
     }
 
 

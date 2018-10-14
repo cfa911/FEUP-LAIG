@@ -1,5 +1,5 @@
 /**
- * MyComponents
+ * MyComponent
  * @param gl {WebGLRenderingContext}
  * @constructor
  */

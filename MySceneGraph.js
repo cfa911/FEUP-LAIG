@@ -26,6 +26,7 @@ var materialsMap = new Map();
 var textureMap = new Map();
 var primitivesMap = new Map();
 var transformMap = new Map();
+var componentMap = new Map();
 /**
  * MySceneGraph class, representing the scene graph.
  */
@@ -688,7 +689,7 @@ class MySceneGraph {
      */
     parseComponents(componentsNode) {
 
-        /*var arrayComponents = componentsNode.getElementsByTagName('component');
+        var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
             var compo = new MyComponent(this.scene);
@@ -698,10 +699,11 @@ class MySceneGraph {
             var transformations = Component.getElementsByTagName('transformation');
             var materials = Component.getElementsByTagName('materials');
             var textures = Component.getElementsByTagName('texture');
-/*
-            for (var k = 0; k < transformations.length; i++) {
-                var transformationChilds = transformations[k];
+
+            for (var k = 0; k < transformations.length; k++) {
+                var transformationChilds = transformations[k].children;
                 var transformArray = mat4.create();
+                
                 for (var i = 0; i < transformationChilds.length; i++) {
                     if (transformationChilds[i].nodeName == "translate") {
                         var tx = this.reader.getFloat(transformationChilds[i], 'x');
@@ -733,6 +735,21 @@ class MySceneGraph {
                 }
                 compo.transformations = transformArray;
             }
+            for (var k = 0; k < materials.length; k++) {
+                var materialChilds = materials[k].children;
+                for (var i = 0; i < materialChilds.length; i++) {
+                var idMat = this.reader.getString(materialChilds[i], 'id');
+                compo.materials = materialsMap.get(idMat);
+                }
+            }
+            for (var k = 0; k < textures.length; k++) {
+                var idTex = this.reader.getString(textures[k], 'id');
+                var length_s = this.reader.getFloat(textures[k], 'length_s');
+                var length_t = this.reader.getFloat(textures[k], 'length_t');
+                compo.textures = [textureMap.get(idTex),length_s,length_t];
+            }
+            componentMap.set(idComponent,compo);
+            /*
                 var arrayMat = nodeNames.indexOf('materials');
                 for (var i = 0; i < arrayMat.length; i++) {
                     var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
@@ -742,12 +759,12 @@ class MySceneGraph {
                 var idLs = this.reader.getString(componentsChildren[texture], 'length_s');
                 var idLt = this.reader.getString(componentsChildren[texture], 'length_t');
 
-                var arrayChilds = nodeNames.indexOf('children');
-        }*/
-            this.log("Parsed components");
-            return null;
+                var arrayChilds = nodeNames.indexOf('children');*/
         }
-    
+        this.log("Parsed components");
+        return null;
+    }
+
 
 
     /*

@@ -729,6 +729,8 @@ class MySceneGraph {
                 var transformations = Component.getElementsByTagName('transformation');
                 var materials = Component.getElementsByTagName('materials');
                 var textures = Component.getElementsByTagName('texture');
+                var children = Component.getElementsByTagName('children');
+                
 
                 for (var k = 0; k < transformations.length; k++) {
                     var transformationChilds = transformations[k].children;
@@ -769,15 +771,16 @@ class MySceneGraph {
                     var materialChilds = materials[k].children;
                     for (var i = 0; i < materialChilds.length; i++) {
                         var idMat = this.reader.getString(materialChilds[i], 'id');
-                        compo.materials = materialsMap.get(idMat);
+                        compo.materials = idMat;
                     }
                 }
                 for (var k = 0; k < textures.length; k++) {
                     var idTex = this.reader.getString(textures[k], 'id');
                     var length_s = this.reader.getFloat(textures[k], 'length_s');
                     var length_t = this.reader.getFloat(textures[k], 'length_t');
-                    compo.textures = [textureMap.get(idTex), length_s, length_t];
+                    compo.textures = [idTex, length_s, length_t];
                 }
+                compo.id = idComponent;
                 componentMap.set(idComponent, compo);
             }
             this.log("Parsed components");

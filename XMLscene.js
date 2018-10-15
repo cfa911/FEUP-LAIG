@@ -65,6 +65,11 @@ class XMLscene extends CGFscene {
                 }
             }
         }
+
+        //sets default camera ✓
+
+        this.camera = this.viewValues[this.graph.default];
+        this.interface.setActiveCamera(this.camera);
     }
     selectView(id) {
         this.camera = this.viewValues[id];
@@ -114,9 +119,7 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        //this.camera.near = this.graph.near;
-        //this.camera.far = this.graph.far;
-
+        
         //TODO: Change reference length according to parsed graph ✓
         this.axis = new CGFaxis(this,this.graph.axis_length);
         // TODO: Change ambient and background details according to parsed graph ✓
@@ -126,7 +129,7 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(ambient[0],ambient[1],ambient[2],ambient[3]);//global from parser ✓
         this.initLights();
         this.initViews();
-        // Adds lights group.
+        // Adds lights group ✓
         this.interface.addLightsGroup(this.graph.lights); //add all lights ✓
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;

@@ -29,6 +29,19 @@ class MyInterface extends CGFinterface {
      * Adds a folder containing the IDs of the lights passed as parameter.
      * @param {array} lights
      */
+
+    addViewsGroup(views) {
+
+        var group = this.gui.addFolder("Views");
+        group.open();
+
+        const cameraIdArray = Object.keys(views);
+        this.currentCameraId = this.scene.graph.default;
+
+        group.add(this, 'currentCameraId', cameraIdArray).name('Camera').onChange(val => this.scene.selectView(val));
+    }
+
+
     addLightsGroup(lights) {
 
         var group = this.gui.addFolder("Lights");

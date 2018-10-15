@@ -13,6 +13,7 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
+        this.viewValues = {};
     }
 
     /**
@@ -49,6 +50,25 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+    }
+    
+    initViews() {
+        for (var key in this.graph.views) {
+            var view = this.graph.views[key];
+
+            if (this.graph.views.hasOwnProperty(key)) {
+                if(view.type == "perspective"){
+                    this.viewValues[key] = new CGFcamera(view[0], view[1],view[2], view[3], view[4]);
+                }
+                if(view.type == "ortho"){
+                    this.viewValues[key] = new CGFcameraOrtho(view[0], view[1], view[2], view[3], view[4], view[5], view[6], view[7], view[8]);
+                }
+            }
+        }
+    }
+    selectView(id) {
+        this.camera = this.viewValues[id];
+        this.interface.setActiveCamera(this.camera);
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -104,10 +124,10 @@ class XMLscene extends CGFscene {
         this.gl.clearColor(red2,green2,blue2,ambientValue2); //global varibles from parser
         this.setGlobalAmbientLight(red1,green1,blue1,ambientValue1);//global varibles from parser
         this.initLights();
-
+        this.initViews();
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
-
+        this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
     }
 
@@ -164,7 +184,7 @@ class XMLscene extends CGFscene {
             this.pushMatrix();
                 this.quad.display();
             this.popMatrix();
-            //this.graph.displayScene();
+            this.graph.displayScene();
         }
         else {
             // Draw axis

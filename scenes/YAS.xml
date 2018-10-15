@@ -16,19 +16,19 @@
     <views default="perspective1">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
-        <perspective id="perspective1" near="1" far="20" angle="20">
-            <from x="0" y="0" z="0" />
-            <to x="10" y="10" z="10" />
+        <perspective id="perspective1" near="1" far="200" angle="90">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
         </perspective>
-        <ortho id="ortho1" near="0.2" far="60" left="6" right="9" top="10" bottom="3">
-            <position x="3" y="3" z="3"/>
-            <target x="0" y="1" z="0"/>
-            <up x="0" y="1" z="0"/>
+        <ortho id="ortho1" near="0.2" far="500" left="2" right="2" top="2" bottom="2">
+            <position x="10" y="10" z="10"/>
+            <target x="0" y="0" z="0"/>
+            <up x="0" y="1" z="1"/>
         </ortho>
    </views>
     <ambient>
-        <ambient r="0.3" g="0.3" b="0.3" a="1" />
-        <background r="0" g="0" b="0" a="1" />
+        <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
+        <background r="0" g="0.1" b="0.5" a="0.3" />
     </ambient>
     <lights>
         <!-- Deve existir um ou mais blocos "omni" ou "spot" -->

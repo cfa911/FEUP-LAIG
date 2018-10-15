@@ -11,15 +11,6 @@ var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
-var red1 = 0;
-var green1 = 0;
-var blue1 = 0;
-var ambientValue1 = 0;
-var red2 = 0;
-var green2 = 0;
-var blue2 = 0;
-var ambientValue2 = 0;
-
 var ambientMap = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
@@ -270,7 +261,7 @@ class MySceneGraph {
         this.perspectiveIndex = nodeNames.indexOf("perspective");
         this.orthoIndex = nodeNames.indexOf("ortho");
         if (this.perspectiveIndex == -1 && this.orthoIndex == -1) {
-            this.onXMLMinorError("Ambient planes missing;");
+            this.onXMLMinorError("views planes missing;");
         }
         else {
             if (this.perspectiveIndex != -1) {
@@ -367,6 +358,8 @@ class MySceneGraph {
 
             var children = ambientNode.children;
             var nodeNames = [];
+            this.ambient = [];
+            this.background = [];
 
 
             for (var i = 0; i < children.length; i++)
@@ -378,20 +371,20 @@ class MySceneGraph {
                 this.onXMLMinorError("Ambient planes missing;");
             }
             else {
-                red1 = this.reader.getFloat(children[indexAmbient], 'r');
-                green1 = this.reader.getFloat(children[indexAmbient], 'g');
-                blue1 = this.reader.getFloat(children[indexAmbient], 'b');
-                ambientValue1 = this.reader.getFloat(children[indexAmbient], 'a');
+                this.ambient[0] = this.reader.getFloat(children[indexAmbient], 'r');
+                this.ambient[1] = this.reader.getFloat(children[indexAmbient], 'g');
+                this.ambient[2] = this.reader.getFloat(children[indexAmbient], 'b');
+                this.ambient[3] = this.reader.getFloat(children[indexAmbient], 'a');
             }
 
             if (indexBackground == -1) {
                 this.onXMLMinorError("Background planes missing;");
             }
             else {
-                red2 = this.reader.getFloat(children[indexBackground], 'r');
-                green2 = this.reader.getFloat(children[indexBackground], 'g');
-                blue2 = this.reader.getFloat(children[indexBackground], 'b');
-                ambientValue2 = this.reader.getFloat(children[indexBackground], 'a');
+                this.background[0] = this.reader.getFloat(children[indexBackground], 'r');
+                this.background[1] = this.reader.getFloat(children[indexBackground], 'g');
+                this.background[2] = this.reader.getFloat(children[indexBackground], 'b');
+                this.background[3] = this.reader.getFloat(children[indexBackground], 'a');
             }
             this.log("Parsed Ambient");
 

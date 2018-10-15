@@ -688,7 +688,7 @@ class MySceneGraph {
      */
     parseComponents(componentsNode) {
 
-        var arrayComponents = componentsNode.getElementsByTagName('component');
+        /*var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
             var compo = new MyComponent(this.scene);
@@ -732,7 +732,7 @@ class MySceneGraph {
 
                 }
                 compo.transformations = transformArray;
-            }*/
+            }
                 var arrayMat = nodeNames.indexOf('materials');
                 for (var i = 0; i < arrayMat.length; i++) {
                     var idMat = this.reader.getString(componentsChildren[arrayMat], 'id');
@@ -743,7 +743,7 @@ class MySceneGraph {
                 var idLt = this.reader.getString(componentsChildren[texture], 'length_t');
 
                 var arrayChilds = nodeNames.indexOf('children');
-            }
+        }*/
             this.log("Parsed components");
             return null;
         }

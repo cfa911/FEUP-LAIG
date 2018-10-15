@@ -27,7 +27,7 @@ class MySphere extends CGFobject
    		this.indices = [];
 		this.texCoords = [];
 
-   		this.theta = (Math.PI/2) / this.slices; //i
+   		this.theta = 2*Math.PI / this.slices; //i
    		this.alpha = 2*Math.PI / this.stacks; //j
 
 

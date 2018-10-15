@@ -29,9 +29,9 @@ class MyTriangle extends CGFobject
 	initBuffers()
 	{
 		this.vertices = [
-            x1, y1, z1,
-            x2, y2, z2,
-            x3, y3, z3
+            this.x1, this.y1, this.z1,
+            this.x2, this.y2, this.z2,
+            this.x3, this.y3, this.z3
 
             ];
 
@@ -52,9 +52,9 @@ class MyTriangle extends CGFobject
         // vector V = p3 - p1
         // vector N = U X V (produto escalar)
 
-        var Nx = ((p2[1] - p1[1])*(p3[2] - p1[2]) - (p2[2] - p1[2])*(p3[1] - p1[1]))/Math.sqrt(Math.pow((p2[1] - p1[1])*(p3[2] - p1[2]) - (p2[2] - p1[2])*(p3[1] - p1[1]),2) + Math.pow((p2[2] - p1[2])*(p3[0] - p1[0]) - (p2[0] - p1[0]) * (p3[2] - p1[2]),2) + Math.pow((p2[0] - p1[0])*(p3[1] - p1[1]) - (p2[1] - p1[1])*(p3[0] - p1[0]),2));
-        var Ny = ((p2[2] - p1[2])*(p3[0] - p1[0]) - (p2[0] - p1[0])*(p3[2] - p1[2]))/Math.sqrt(Math.pow((p2[1] - p1[1])*(p3[2] - p1[2]) - (p2[2] - p1[2])*(p3[1] - p1[1]), 2) + Math.pow((p2[2] - p1[2])*(p3[0] - p1[0]) - (p2[0] - p1[0])*(p3[2] - p1[2]),2) + Math.pow((p2[0] - p1[0])*(p3[1] - p1[1]) - (p2[1] - p1[1])*(p3[0] - p1[0]),2));
-        var Nz = ((p2[0] - p1[0])*(p3[1] - p1[1]) - (p2[1] - p1[1])*(p3[0] - p1[0]))/Math.sqrt(Math.pow((p2[1] - p1[1])*(p3[2] - p1[2])- (p2[2] - p1[2])*(p3[1] - p1[1]), 2) + Math.pow((p2[2] - p1[2])*(p3[0] - p1[0]) - (p2[0] - p1[0])*(p3[2] - p1[2]),2) + Math.pow((p2[0] - p1[0])*(p3[1] - p1[1]) - (p2[1] - p1[1])*(p3[0] - p1[0]), 2));
+        var Nx = ((this.p2[1] - this.p1[1])*(this.p3[2] - this.p1[2]) - (this.p2[2] - this.p1[2])*(this.p3[1] - this.p1[1]))/Math.sqrt(Math.pow((this.p2[1] - this.p1[1])*(this.p3[2] - this.p1[2]) - (this.p2[2] - this.p1[2])*(this.p3[1] - this.p1[1]),2) + Math.pow((this.p2[2] - this.p1[2])*(this.p3[0] - this.p1[0]) - (this.p2[0] - this.p1[0]) * (this.p3[2] - this.p1[2]),2) + Math.pow((this.p2[0] - this.p1[0])*(this.p3[1] - this.p1[1]) - (this.p2[1] - this.p1[1])*(this.p3[0] - this.p1[0]),2));
+        var Ny = ((this.p2[2] - this.p1[2])*(this.p3[0] - this.p1[0]) - (this.p2[0] - this.p1[0])*(this.p3[2] - this.p1[2]))/Math.sqrt(Math.pow((this.p2[1] - this.p1[1])*(this.p3[2] - this.p1[2]) - (this.p2[2] - this.p1[2])*(this.p3[1] - this.p1[1]), 2) + Math.pow((this.p2[2] - this.p1[2])*(this.p3[0] - this.p1[0]) - (this.p2[0] - this.p1[0])*(this.p3[2] - this.p1[2]),2) + Math.pow((this.p2[0] - this.p1[0])*(this.p3[1] - this.p1[1]) - (this.p2[1] - this.p1[1])*(this.p3[0] - this.p1[0]),2));
+        var Nz = ((this.p2[0] - this.p1[0])*(this.p3[1] - this.p1[1]) - (this.p2[1] - this.p1[1])*(this.p3[0] - this.p1[0]))/Math.sqrt(Math.pow((this.p2[1] - this.p1[1])*(this.p3[2] - this.p1[2])- (this.p2[2] - this.p1[2])*(this.p3[1] - this.p1[1]), 2) + Math.pow((this.p2[2] - this.p1[2])*(this.p3[0] - this.p1[0]) - (this.p2[0] - this.p1[0])*(this.p3[2] - this.p1[2]),2) + Math.pow((this.p2[0] - this.p1[0])*(this.p3[1] - this.p1[1]) - (this.p2[1] - this.p1[1])*(this.p3[0] - this.p1[0]), 2));
 
         this.normals = [
             Nx, Ny, Nz,

@@ -11,15 +11,6 @@ var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 
-var red1 = 0;
-var green1 = 0;
-var blue1 = 0;
-var ambientValue1 = 0;
-var red2 = 0;
-var green2 = 0;
-var blue2 = 0;
-var ambientValue2 = 0;
-
 var ambientMap = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
@@ -270,7 +261,7 @@ class MySceneGraph {
         this.perspectiveIndex = nodeNames.indexOf("perspective");
         this.orthoIndex = nodeNames.indexOf("ortho");
         if (this.perspectiveIndex == -1 && this.orthoIndex == -1) {
-            this.onXMLMinorError("Ambient planes missing;");
+            this.onXMLMinorError("views planes missing;");
         }
         else {
             if (this.perspectiveIndex != -1) {
@@ -299,7 +290,7 @@ class MySceneGraph {
                         var yt = this.reader.getFloat(perspectiveChildren[toIndex], 'y');
                         var zt = this.reader.getFloat(perspectiveChildren[toIndex], 'z');
 
-                        this.views[idPerspective] = [angle*DEGREE_TO_RAD , near, far, [xf, yf, zf], [xt, yt, zt]];
+                        this.views[idPerspective] = [angle * DEGREE_TO_RAD, near, far, [xf, yf, zf], [xt, yt, zt]];
                         this.views[idPerspective].type = "perspective";
 
                     }
@@ -353,289 +344,415 @@ class MySceneGraph {
                 }
             }
         }
-            this.log("Parsed views");
+        this.log("Parsed views");
 
-            return null;
+        return null;
+    }
+
+
+    /**
+     * Parses the <ambient> node.
+     * @param {ambient block element} ambientNode
+     */
+    parseAmbient(ambientNode) {
+
+        var children = ambientNode.children;
+        var nodeNames = [];
+        this.ambient = [];
+        this.background = [];
+
+
+        for (var i = 0; i < children.length; i++)
+            nodeNames.push(children[i].nodeName);
+
+        var indexAmbient = nodeNames.indexOf("ambient");
+        var indexBackground = nodeNames.indexOf("background");
+        if (indexAmbient == -1) {
+            this.onXMLMinorError("Ambient planes missing;");
+        }
+        else {
+            this.ambient[0] = this.reader.getFloat(children[indexAmbient], 'r');
+            this.ambient[1] = this.reader.getFloat(children[indexAmbient], 'g');
+            this.ambient[2] = this.reader.getFloat(children[indexAmbient], 'b');
+            this.ambient[3] = this.reader.getFloat(children[indexAmbient], 'a');
         }
 
+        if (indexBackground == -1) {
+            this.onXMLMinorError("Background planes missing;");
+        }
+        else {
+            this.background[0] = this.reader.getFloat(children[indexBackground], 'r');
+            this.background[1] = this.reader.getFloat(children[indexBackground], 'g');
+            this.background[2] = this.reader.getFloat(children[indexBackground], 'b');
+            this.background[3] = this.reader.getFloat(children[indexBackground], 'a');
+        }
+        this.log("Parsed Ambient");
 
-        /**
-         * Parses the <ambient> node.
-         * @param {ambient block element} ambientNode
-         */
-        parseAmbient(ambientNode) {
+        return null;
+    }
 
-            var children = ambientNode.children;
-            var nodeNames = [];
+    /**
+     * Parses the <lights> block. 
+     * @param {lights block element} lightsNode
+     */
+    parseLights(lightsNode) {
 
+        this.lights = [];
+        var omniElements = lightsNode.getElementsByTagName('omni');
+        var spotElements = lightsNode.getElementsByTagName('spot');
 
-            for (var i = 0; i < children.length; i++)
-                nodeNames.push(children[i].nodeName);
+        var nodeNames = [];
 
-            var indexAmbient = nodeNames.indexOf("ambient");
-            var indexBackground = nodeNames.indexOf("background");
-            if (indexAmbient == -1) {
-                this.onXMLMinorError("Ambient planes missing;");
+        for (var j = 0; j < omniElements.length; j++) {
+
+            var omniChildren = omniElements[j].children;
+            this.idOmni = this.reader.getString(omniElements[j], 'id');
+            var enabledOmni = this.reader.getBoolean(omniElements[j], 'enabled');
+
+            for (var i = 0; i < omniChildren.length; i++)
+                nodeNames.push(omniChildren[i].nodeName);
+
+            var location1 = nodeNames.indexOf('location');
+            var ambient1 = nodeNames.indexOf("ambient");
+            var diffuse1 = nodeNames.indexOf("diffuse");
+            var specular1 = nodeNames.indexOf("specular");
+
+            if (location1 == -1 || ambient1 == -1 || diffuse1 == -1 || specular1 == -1) {
+                this.onXMLError("Omni childrens missing");
             }
             else {
-                red1 = this.reader.getFloat(children[indexAmbient], 'r');
-                green1 = this.reader.getFloat(children[indexAmbient], 'g');
-                blue1 = this.reader.getFloat(children[indexAmbient], 'b');
-                ambientValue1 = this.reader.getFloat(children[indexAmbient], 'a');
-            }
+                var x = this.reader.getFloat(omniChildren[location1], 'x');
+                var y = this.reader.getFloat(omniChildren[location1], 'y');
+                var z = this.reader.getFloat(omniChildren[location1], 'z');
+                var w = this.reader.getFloat(omniChildren[location1], 'w');
 
-            if (indexBackground == -1) {
-                this.onXMLMinorError("Background planes missing;");
+                var r1 = this.reader.getFloat(omniChildren[ambient1], 'r');
+                var g1 = this.reader.getFloat(omniChildren[ambient1], 'g');
+                var b1 = this.reader.getFloat(omniChildren[ambient1], 'b');
+                var a1 = this.reader.getFloat(omniChildren[ambient1], 'a');
+
+                var r2 = this.reader.getFloat(omniChildren[diffuse1], 'r');
+                var g2 = this.reader.getFloat(omniChildren[diffuse1], 'g');
+                var b2 = this.reader.getFloat(omniChildren[diffuse1], 'b');
+                var a2 = this.reader.getFloat(omniChildren[diffuse1], 'a');
+
+                var r3 = this.reader.getFloat(omniChildren[specular1], 'r');
+                var g3 = this.reader.getFloat(omniChildren[specular1], 'g');
+                var b3 = this.reader.getFloat(omniChildren[specular1], 'b');
+                var a3 = this.reader.getFloat(omniChildren[specular1], 'a');
+
+                this.location = [x, y, z, w];
+                this.ambient = [r1, g1, b1, a1];
+                this.diffuse = [r2, g2, b2, a2];
+                this.specular = [r3, g3, b3, a3];
+                this.enabled = enabledOmni;
+
+                this.lights[this.idOmni] = ["omni", this.enabled, this.location, this.ambient, this.diffuse, this.specular];
+
+            }
+        }
+
+        nodeNames = [];
+
+        for (var j = 0; j < spotElements.length; j++) {
+            var spotChildren = spotElements[j].children;
+            this.idSpot = this.reader.getString(spotElements[j], 'id');
+            var enableSpot = this.reader.getBoolean(spotElements[j], 'enabled');
+            var angleSpot = this.reader.getFloat(spotElements[j], 'angle');
+            var exponentSpot = this.reader.getFloat(spotElements[j], 'exponent');
+
+            for (var i = 0; i < spotChildren.length; i++)
+                nodeNames.push(spotChildren[i].nodeName)
+
+            var location2 = nodeNames.indexOf("location");
+            var target2 = nodeNames.indexOf("target");
+            var ambient2 = nodeNames.indexOf("ambient");
+            var diffuse2 = nodeNames.indexOf("diffuse");
+            var specular2 = nodeNames.indexOf("specular");
+
+            if (location2 == -1 || target2 == -1 || ambient2 == -1 || diffuse2 == -1 || specular2 == -1) {
+                this.onXMLError("Spot childrens missing");
             }
             else {
-                red2 = this.reader.getFloat(children[indexBackground], 'r');
-                green2 = this.reader.getFloat(children[indexBackground], 'g');
-                blue2 = this.reader.getFloat(children[indexBackground], 'b');
-                ambientValue2 = this.reader.getFloat(children[indexBackground], 'a');
-            }
-            this.log("Parsed Ambient");
+                var x1 = this.reader.getFloat(spotChildren[location2], 'x');
+                var y1 = this.reader.getFloat(spotChildren[location2], 'y');
+                var z1 = this.reader.getFloat(spotChildren[location2], 'z');
 
-            return null;
+                var x2 = this.reader.getFloat(spotChildren[target2], 'x');
+                var y2 = this.reader.getFloat(spotChildren[target2], 'y');
+                var z2 = this.reader.getFloat(spotChildren[target2], 'z');
+
+                var r1 = this.reader.getFloat(spotChildren[ambient2], 'r');
+                var g1 = this.reader.getFloat(spotChildren[ambient2], 'g');
+                var b1 = this.reader.getFloat(spotChildren[ambient2], 'b');
+                var a1 = this.reader.getFloat(spotChildren[ambient2], 'a');
+
+                var r2 = this.reader.getFloat(spotChildren[diffuse2], 'r');
+                var g2 = this.reader.getFloat(spotChildren[diffuse2], 'g');
+                var b2 = this.reader.getFloat(spotChildren[diffuse2], 'b');
+                var a2 = this.reader.getFloat(spotChildren[diffuse2], 'a');
+
+                var r3 = this.reader.getFloat(spotChildren[specular2], 'r');
+                var g3 = this.reader.getFloat(spotChildren[specular2], 'g');
+                var b3 = this.reader.getFloat(spotChildren[specular2], 'b');
+                var a3 = this.reader.getFloat(spotChildren[specular2], 'a');
+
+                this.location = [x1, y1, z1];
+                this.target = [x2, y2, z2];
+                this.ambient = [r1, g1, b1, a1];
+                this.diffuse = [r2, g2, b2, a2];
+                this.specular = [r3, g3, b3, a3];
+                this.enabled = enableSpot;
+                this.spot = [angleSpot, exponentSpot];
+
+                this.lights[this.idSpot] = ["spot", this.enabled, this.location, this.ambient, this.diffuse, this.specular, this.target, this.spot];
+
+            }
         }
 
-        /**
-         * Parses the <lights> block. 
-         * @param {lights block element} lightsNode
-         */
-        parseLights(lightsNode) {
+        this.log("Parsed lights");
 
-            this.lights = [];
-            var omniElements = lightsNode.getElementsByTagName('omni');
-            var spotElements = lightsNode.getElementsByTagName('spot');
+        return null;
+    }
 
-            var nodeNames = [];
+    /**
+     * Parses the <textures> node.
+     * @param {textures block element} texturesNode
+     */
+    parseTextures(texturesNode) {
 
-            for (var j = 0; j < omniElements.length; j++) {
+        var children = texturesNode.children;
+        var nodeNames = [];
 
-                var omniChildren = omniElements[j].children;
-                this.idOmni = this.reader.getString(omniElements[j], 'id');
-                var enabledOmni = this.reader.getBoolean(omniElements[j], 'enabled');
+        for (var i = 0; i < children.length; i++)
+            nodeNames.push(children[i].nodeName);
 
-                for (var i = 0; i < omniChildren.length; i++)
-                    nodeNames.push(omniChildren[i].nodeName);
+        var indexTexture = nodeNames.indexOf("texture");
 
-                var location1 = nodeNames.indexOf('location');
-                var ambient1 = nodeNames.indexOf("ambient");
-                var diffuse1 = nodeNames.indexOf("diffuse");
-                var specular1 = nodeNames.indexOf("specular");
-
-                if (location1 == -1 || ambient1 == -1 || diffuse1 == -1 || specular1 == -1) {
-                    this.onXMLError("Omni childrens missing");
-                }
-                else {
-                    var x = this.reader.getFloat(omniChildren[location1], 'x');
-                    var y = this.reader.getFloat(omniChildren[location1], 'y');
-                    var z = this.reader.getFloat(omniChildren[location1], 'z');
-                    var w = this.reader.getFloat(omniChildren[location1], 'w');
-
-                    var r1 = this.reader.getFloat(omniChildren[ambient1], 'r');
-                    var g1 = this.reader.getFloat(omniChildren[ambient1], 'g');
-                    var b1 = this.reader.getFloat(omniChildren[ambient1], 'b');
-                    var a1 = this.reader.getFloat(omniChildren[ambient1], 'a');
-
-                    var r2 = this.reader.getFloat(omniChildren[diffuse1], 'r');
-                    var g2 = this.reader.getFloat(omniChildren[diffuse1], 'g');
-                    var b2 = this.reader.getFloat(omniChildren[diffuse1], 'b');
-                    var a2 = this.reader.getFloat(omniChildren[diffuse1], 'a');
-
-                    var r3 = this.reader.getFloat(omniChildren[specular1], 'r');
-                    var g3 = this.reader.getFloat(omniChildren[specular1], 'g');
-                    var b3 = this.reader.getFloat(omniChildren[specular1], 'b');
-                    var a3 = this.reader.getFloat(omniChildren[specular1], 'a');
-
-                    this.location = [x, y, z, w];
-                    this.ambient = [r1, g1, b1, a1];
-                    this.diffuse = [r2, g2, b2, a2];
-                    this.specular = [r3, g3, b3, a3];
-                    this.enabled = enabledOmni;
-
-                    this.lights[this.idOmni] = ["omni", this.enabled, this.location, this.ambient, this.diffuse, this.specular];
-
-                }
-            }
-
-            nodeNames = [];
-
-            for (var j = 0; j < spotElements.length; j++) {
-                var spotChildren = spotElements[j].children;
-                this.idSpot = this.reader.getString(spotElements[j], 'id');
-                var enableSpot = this.reader.getBoolean(spotElements[j], 'enabled');
-                var angleSpot = this.reader.getFloat(spotElements[j], 'angle');
-                var exponentSpot = this.reader.getFloat(spotElements[j], 'exponent');
-
-                for (var i = 0; i < spotChildren.length; i++)
-                    nodeNames.push(spotChildren[i].nodeName)
-
-                var location2 = nodeNames.indexOf("location");
-                var target2 = nodeNames.indexOf("target");
-                var ambient2 = nodeNames.indexOf("ambient");
-                var diffuse2 = nodeNames.indexOf("diffuse");
-                var specular2 = nodeNames.indexOf("specular");
-
-                if (location2 == -1 || target2 == -1 || ambient2 == -1 || diffuse2 == -1 || specular2 == -1) {
-                    this.onXMLError("Spot childrens missing");
-                }
-                else {
-                    var x1 = this.reader.getFloat(spotChildren[location2], 'x');
-                    var y1 = this.reader.getFloat(spotChildren[location2], 'y');
-                    var z1 = this.reader.getFloat(spotChildren[location2], 'z');
-
-                    var x2 = this.reader.getFloat(spotChildren[target2], 'x');
-                    var y2 = this.reader.getFloat(spotChildren[target2], 'y');
-                    var z2 = this.reader.getFloat(spotChildren[target2], 'z');
-
-                    var r1 = this.reader.getFloat(spotChildren[ambient2], 'r');
-                    var g1 = this.reader.getFloat(spotChildren[ambient2], 'g');
-                    var b1 = this.reader.getFloat(spotChildren[ambient2], 'b');
-                    var a1 = this.reader.getFloat(spotChildren[ambient2], 'a');
-
-                    var r2 = this.reader.getFloat(spotChildren[diffuse2], 'r');
-                    var g2 = this.reader.getFloat(spotChildren[diffuse2], 'g');
-                    var b2 = this.reader.getFloat(spotChildren[diffuse2], 'b');
-                    var a2 = this.reader.getFloat(spotChildren[diffuse2], 'a');
-
-                    var r3 = this.reader.getFloat(spotChildren[specular2], 'r');
-                    var g3 = this.reader.getFloat(spotChildren[specular2], 'g');
-                    var b3 = this.reader.getFloat(spotChildren[specular2], 'b');
-                    var a3 = this.reader.getFloat(spotChildren[specular2], 'a');
-
-                    this.location = [x1, y1, z1];
-                    this.target = [x2, y2, z2];
-                    this.ambient = [r1, g1, b1, a1];
-                    this.diffuse = [r2, g2, b2, a2];
-                    this.specular = [r3, g3, b3, a3];
-                    this.enabled = enableSpot;
-                    this.spot = [angleSpot, exponentSpot];
-
-                    this.lights[this.idSpot] = ["spot", this.enabled, this.location, this.ambient, this.diffuse, this.specular, this.target, this.spot];
-
-                }
-            }
-
-            this.log("Parsed lights");
-
-            return null;
+        if (indexTexture == -1) {
+            this.onXMLMinorError("Textures planes missing;");
+        }
+        else {
+            var idTex = this.reader.getString(children[indexTexture], 'id');
+            var fileTex = this.reader.getString(children[indexTexture], 'file');
+            textureMap.set(idTex, fileTex);
         }
 
-        /**
-         * Parses the <textures> node.
-         * @param {textures block element} texturesNode
-         */
-        parseTextures(texturesNode) {
+        this.log("Parsed textures");
+        return null;
 
-            var children = texturesNode.children;
-            var nodeNames = [];
+    }
 
-            for (var i = 0; i < children.length; i++)
-                nodeNames.push(children[i].nodeName);
+    /**
+     * Parses the <materials> block.
+     * @param {materials block element} materialsNode
+     */
+    parseMaterials(materialsNode) {
+        var arrayMaterial = materialsNode.getElementsByTagName('material');
+        var nodeNames = [];
 
-            var indexTexture = nodeNames.indexOf("texture");
+        for (var j = 0; j < arrayMaterial.length; j++) {
 
-            if (indexTexture == -1) {
-                this.onXMLMinorError("Textures planes missing;");
+            var materialsChildren = arrayMaterial[j].children;
+            var idMat = this.reader.getString(arrayMaterial[j], 'id');
+            var shiMat = this.reader.getFloat(arrayMaterial[j], 'shininess');
+
+            for (var i = 0; i < materialsChildren.length; i++)
+                nodeNames.push(materialsChildren[i].nodeName);
+
+            var emission = nodeNames.indexOf("emission");
+            var ambient = nodeNames.indexOf("ambient");
+            var diffuse = nodeNames.indexOf("diffuse");
+            var specular = nodeNames.indexOf("specular");
+
+            if (emission == -1 || ambient == -1 || diffuse == -1 || specular == -1) {
+                this.onXMLMinorError("Material childs planes missing;");
             }
             else {
-                var idTex = this.reader.getString(children[indexTexture], 'id');
-                var fileTex = this.reader.getString(children[indexTexture], 'file');
-                textureMap.set(idTex, fileTex);
+                var r1 = this.reader.getFloat(materialsChildren[emission], 'r');
+                var g1 = this.reader.getFloat(materialsChildren[emission], 'g');
+                var b1 = this.reader.getFloat(materialsChildren[emission], 'b');
+                var a1 = this.reader.getFloat(materialsChildren[emission], 'a');
+
+                var r2 = this.reader.getFloat(materialsChildren[ambient], 'r');
+                var g2 = this.reader.getFloat(materialsChildren[ambient], 'g');
+                var b2 = this.reader.getFloat(materialsChildren[ambient], 'b');
+                var a2 = this.reader.getFloat(materialsChildren[ambient], 'a');
+
+                var r3 = this.reader.getFloat(materialsChildren[diffuse], 'r');
+                var g3 = this.reader.getFloat(materialsChildren[diffuse], 'g');
+                var b3 = this.reader.getFloat(materialsChildren[diffuse], 'b');
+                var a3 = this.reader.getFloat(materialsChildren[diffuse], 'a');
+
+                var r4 = this.reader.getFloat(materialsChildren[specular], 'r');
+                var g4 = this.reader.getFloat(materialsChildren[specular], 'g');
+                var b4 = this.reader.getFloat(materialsChildren[specular], 'b');
+                var a4 = this.reader.getFloat(materialsChildren[specular], 'a');
+
+                materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
             }
-
-            this.log("Parsed textures");
-            return null;
-
         }
 
-        /**
-         * Parses the <materials> block.
-         * @param {materials block element} materialsNode
-         */
-        parseMaterials(materialsNode) {
-            var arrayMaterial = materialsNode.getElementsByTagName('material');
-            var nodeNames = [];
+        this.log("Parsed materials");
+        return null;
+    }
 
-            for (var j = 0; j < arrayMaterial.length; j++) {
+    /**
+     * Parses the <transformations> block.
+     * @param {transformations block element} transformationsNode
+     */
 
-                var materialsChildren = arrayMaterial[j].children;
-                var idMat = this.reader.getString(arrayMaterial[j], 'id');
-                var shiMat = this.reader.getFloat(arrayMaterial[j], 'shininess');
+    parseTransformations(transformationsNode) {
+        // TODO: Parse block
 
-                for (var i = 0; i < materialsChildren.length; i++)
-                    nodeNames.push(materialsChildren[i].nodeName);
+        var arrayTransformation = transformationsNode.getElementsByTagName("transformation");
 
-                var emission = nodeNames.indexOf("emission");
-                var ambient = nodeNames.indexOf("ambient");
-                var diffuse = nodeNames.indexOf("diffuse");
-                var specular = nodeNames.indexOf("specular");
+        for (var j = 0; j < arrayTransformation.length; j++) {
 
-                if (emission == -1 || ambient == -1 || diffuse == -1 || specular == -1) {
-                    this.onXMLMinorError("Material childs planes missing;");
+            var transformationChildren = arrayTransformation[j].children;
+            var idTransform = this.reader.getString(arrayTransformation[j], 'id');
+            var transformArray = mat4.create();
+
+            for (var i = 0; i < transformationChildren.length; i++) {
+                if (transformationChildren[i].nodeName == "translate") {
+                    var tx = this.reader.getFloat(transformationChildren[i], 'x');
+                    var ty = this.reader.getFloat(transformationChildren[i], 'y');
+                    var tz = this.reader.getFloat(transformationChildren[i], 'z');
+                    mat4.translate(transformArray, transformArray, [tx, ty, tz]);
                 }
-                else {
-                    var r1 = this.reader.getFloat(materialsChildren[emission], 'r');
-                    var g1 = this.reader.getFloat(materialsChildren[emission], 'g');
-                    var b1 = this.reader.getFloat(materialsChildren[emission], 'b');
-                    var a1 = this.reader.getFloat(materialsChildren[emission], 'a');
-
-                    var r2 = this.reader.getFloat(materialsChildren[ambient], 'r');
-                    var g2 = this.reader.getFloat(materialsChildren[ambient], 'g');
-                    var b2 = this.reader.getFloat(materialsChildren[ambient], 'b');
-                    var a2 = this.reader.getFloat(materialsChildren[ambient], 'a');
-
-                    var r3 = this.reader.getFloat(materialsChildren[diffuse], 'r');
-                    var g3 = this.reader.getFloat(materialsChildren[diffuse], 'g');
-                    var b3 = this.reader.getFloat(materialsChildren[diffuse], 'b');
-                    var a3 = this.reader.getFloat(materialsChildren[diffuse], 'a');
-
-                    var r4 = this.reader.getFloat(materialsChildren[specular], 'r');
-                    var g4 = this.reader.getFloat(materialsChildren[specular], 'g');
-                    var b4 = this.reader.getFloat(materialsChildren[specular], 'b');
-                    var a4 = this.reader.getFloat(materialsChildren[specular], 'a');
-
-                    materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
+                if (transformationChildren[i].nodeName == "scale") {
+                    var sx = this.reader.getFloat(transformationChildren[i], 'x');
+                    var sy = this.reader.getFloat(transformationChildren[i], 'y');
+                    var sz = this.reader.getFloat(transformationChildren[i], 'z');
+                    mat4.scale(transformArray, transformArray, [sx, sy, sz]);
                 }
+                if (transformationChildren[i].nodeName == "rotate") {
+                    var axis = this.reader.getString(transformationChildren[i], 'axis');
+                    var angle = this.reader.getFloat(transformationChildren[i], 'angle');
+                    if (axis == "x")
+                        mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                    else if (axis == "y")
+                        mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                    else if (axis == "z")
+                        mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
+                }
+
             }
-
-            this.log("Parsed materials");
-            return null;
+            transformMap[idTransform] = transformArray;
         }
+        this.log("Parsed transformations");
+        return null;
 
-        /**
-         * Parses the <transformations> block.
-         * @param {transformations block element} transformationsNode
-         */
 
-        parseTransformations(transformationsNode) {
-            // TODO: Parse block
+    }
+    /**
+     * Parses the <primitives> block.
+     * @param {primitives block element} primitivesNode
+     */
+    parsePrimitives(primitivesNode) {
 
-            var arrayTransformation = transformationsNode.getElementsByTagName("transformation");
+        var arrayPrimitive = primitivesNode.getElementsByTagName('primitive');
+        var nodeNames = [];
 
-            for (var j = 0; j < arrayTransformation.length; j++) {
+        for (var j = 0; j < arrayPrimitive.length; j++) {
 
-                var transformationChildren = arrayTransformation[j].children;
-                var idTransform = this.reader.getString(arrayTransformation[j], 'id');
+            var primitiveChildren = arrayPrimitive[j].children;
+            var idPrimitive = this.reader.getString(arrayPrimitive[j], 'id');
+
+            for (var i = 0; i < primitiveChildren.length; i++)
+                nodeNames.push(primitiveChildren[i].nodeName);
+
+            var rectangleIndex = nodeNames.indexOf("rectangle");
+            var triangleIndex = nodeNames.indexOf("triangle");
+            var cylinderIndex = nodeNames.indexOf("cylinder");
+            var sphereIndex = nodeNames.indexOf("sphere");
+            var torusIndex = nodeNames.indexOf("torus");
+
+            if (rectangleIndex != -1) {
+                var x1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x1');
+                var y1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y1');
+                var x2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x2');
+                var y2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y2');
+                primitivesMap.set(idPrimitive, [nodeNames[rectangleIndex], x1, y1, x2, y2]);
+            }
+            else if (triangleIndex != -1) {
+                var x1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x1');
+                var y1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y1');
+                var z1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z1');
+                var x2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x2');
+                var y2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y2');
+                var z2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z2');
+                var x3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x3');
+                var y3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y3');
+                var z3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z3');
+                primitivesMap.set(idPrimitive, [nodeNames[triangleIndex], x1, y1, z1, x2, y2, z2, x3, y3, z3]);
+            }
+            else if (cylinderIndex != -1) {
+                var base = this.reader.getFloat(primitiveChildren[cylinderIndex], 'base');
+                var top = this.reader.getFloat(primitiveChildren[cylinderIndex], 'top');
+                var height = this.reader.getFloat(primitiveChildren[cylinderIndex], 'height');
+                var slices = this.reader.getInteger(primitiveChildren[cylinderIndex], 'slices');
+                var stacks = this.reader.getInteger(primitiveChildren[cylinderIndex], 'stacks');
+                primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
+            }
+            else if (sphereIndex != -1) {
+                var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'base');
+                var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
+                var stacks = this.reader.getInteger(primitiveChildren[sphereIndex], 'stacks');
+                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
+            }
+            else if (torusIndex != -1) {
+                var inner = this.reader.getFloat(primitiveChildren[sphereIndex], 'inner');
+                var outer = this.reader.getFloat(primitiveChildren[sphereIndex], 'outer');
+                var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
+                var loops = this.reader.getInteger(primitiveChildren[sphereIndex], 'loops');
+                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], inner, outer, slices, loops]);
+            }
+        }
+        this.log("Parsed primitives");
+        return null;
+    }
+
+    /**
+     * Parses the <components> block.
+     * @param {components block element} componentsNode
+     */
+    parseComponents(componentsNode) {
+
+        var arrayComponents = componentsNode.getElementsByTagName('component');
+
+        for (var j = 0; j < arrayComponents.length; j++) {
+            var compo = new MyComponent(this.scene);
+            var Component = arrayComponents[j];
+            var idComponent = this.reader.getString(arrayComponents[j], 'id');
+            var arrayCompRef = [];
+            var arrayPrimRef = [];
+            var transformations = Component.getElementsByTagName('transformation');
+            var materials = Component.getElementsByTagName('materials');
+            var textures = Component.getElementsByTagName('texture');
+            var children = Component.getElementsByTagName('children');
+
+
+            for (var k = 0; k < transformations.length; k++) {
+                var transformationChilds = transformations[k].children;
                 var transformArray = mat4.create();
 
-                for (var i = 0; i < transformationChildren.length; i++) {
-                    if (transformationChildren[i].nodeName == "translate") {
-                        var tx = this.reader.getFloat(transformationChildren[i], 'x');
-                        var ty = this.reader.getFloat(transformationChildren[i], 'y');
-                        var tz = this.reader.getFloat(transformationChildren[i], 'z');
+                for (var i = 0; i < transformationChilds.length; i++) {
+                    if (transformationChilds[i].nodeName == "translate") {
+                        var tx = this.reader.getFloat(transformationChilds[i], 'x');
+                        var ty = this.reader.getFloat(transformationChilds[i], 'y');
+                        var tz = this.reader.getFloat(transformationChilds[i], 'z');
                         mat4.translate(transformArray, transformArray, [tx, ty, tz]);
                     }
-                    if (transformationChildren[i].nodeName == "scale") {
-                        var sx = this.reader.getFloat(transformationChildren[i], 'x');
-                        var sy = this.reader.getFloat(transformationChildren[i], 'y');
-                        var sz = this.reader.getFloat(transformationChildren[i], 'z');
+                    else if (transformationChilds[i].nodeName == "scale") {
+                        var sx = this.reader.getFloat(transformationChilds[i], 'x');
+                        var sy = this.reader.getFloat(transformationChilds[i], 'y');
+                        var sz = this.reader.getFloat(transformationChilds[i], 'z');
                         mat4.scale(transformArray, transformArray, [sx, sy, sz]);
                     }
-                    if (transformationChildren[i].nodeName == "rotate") {
-                        var axis = this.reader.getString(transformationChildren[i], 'axis');
-                        var angle = this.reader.getFloat(transformationChildren[i], 'angle');
+                    else if (transformationChilds[i].nodeName == "rotate") {
+                        var axis = this.reader.getString(transformationChilds[i], 'axis');
+                        var angle = this.reader.getFloat(transformationChilds[i], 'angle');
                         if (axis == "x")
                             mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
                         else if (axis == "y")
@@ -643,187 +760,84 @@ class MySceneGraph {
                         else if (axis == "z")
                             mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
                     }
-
-                }
-                transformMap[idTransform] = transformArray;
-            }
-            this.log("Parsed transformations");
-            return null;
-
-
-        }
-        /**
-         * Parses the <primitives> block.
-         * @param {primitives block element} primitivesNode
-         */
-        parsePrimitives(primitivesNode) {
-
-            var arrayPrimitive = primitivesNode.getElementsByTagName('primitive');
-            var nodeNames = [];
-
-            for (var j = 0; j < arrayPrimitive.length; j++) {
-
-                var primitiveChildren = arrayPrimitive[j].children;
-                var idPrimitive = this.reader.getString(arrayPrimitive[j], 'id');
-
-                for (var i = 0; i < primitiveChildren.length; i++)
-                    nodeNames.push(primitiveChildren[i].nodeName);
-
-                var rectangleIndex = nodeNames.indexOf("rectangle");
-                var triangleIndex = nodeNames.indexOf("triangle");
-                var cylinderIndex = nodeNames.indexOf("cylinder");
-                var sphereIndex = nodeNames.indexOf("sphere");
-                var torusIndex = nodeNames.indexOf("torus");
-
-                if (rectangleIndex != -1) {
-                    var x1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x1');
-                    var y1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y1');
-                    var x2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x2');
-                    var y2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y2');
-                    primitivesMap.set(idPrimitive, [nodeNames[rectangleIndex], x1, y1, x2, y2]);
-                }
-                else if (triangleIndex != -1) {
-                    var x1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x1');
-                    var y1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y1');
-                    var z1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z1');
-                    var x2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x2');
-                    var y2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y2');
-                    var z2 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z2');
-                    var x3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x3');
-                    var y3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y3');
-                    var z3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z3');
-                    primitivesMap.set(idPrimitive, [nodeNames[triangleIndex], x1, y1, z1, x2, y2, z2, x3, y3, z3]);
-                }
-                else if (cylinderIndex != -1) {
-                    var base = this.reader.getFloat(primitiveChildren[cylinderIndex], 'base');
-                    var top = this.reader.getFloat(primitiveChildren[cylinderIndex], 'top');
-                    var height = this.reader.getFloat(primitiveChildren[cylinderIndex], 'height');
-                    var slices = this.reader.getInteger(primitiveChildren[cylinderIndex], 'slices');
-                    var stacks = this.reader.getInteger(primitiveChildren[cylinderIndex], 'stacks');
-                    primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
-                }
-                else if (sphereIndex != -1) {
-                    var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'base');
-                    var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
-                    var stacks = this.reader.getInteger(primitiveChildren[sphereIndex], 'stacks');
-                    primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
-                }
-                else if (torusIndex != -1) {
-                    var inner = this.reader.getFloat(primitiveChildren[sphereIndex], 'inner');
-                    var outer = this.reader.getFloat(primitiveChildren[sphereIndex], 'outer');
-                    var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
-                    var loops = this.reader.getInteger(primitiveChildren[sphereIndex], 'loops');
-                    primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], inner, outer, slices, loops]);
-                }
-            }
-            this.log("Parsed primitives");
-            return null;
-        }
-
-        /**
-         * Parses the <components> block.
-         * @param {components block element} componentsNode
-         */
-        parseComponents(componentsNode) {
-
-            var arrayComponents = componentsNode.getElementsByTagName('component');
-
-            for (var j = 0; j < arrayComponents.length; j++) {
-                var compo = new MyComponent(this.scene);
-                var Component = arrayComponents[j];
-                var idComponent = this.reader.getString(arrayComponents[j], 'id');
-
-                var transformations = Component.getElementsByTagName('transformation');
-                var materials = Component.getElementsByTagName('materials');
-                var textures = Component.getElementsByTagName('texture');
-
-                for (var k = 0; k < transformations.length; k++) {
-                    var transformationChilds = transformations[k].children;
-                    var transformArray = mat4.create();
-
-                    for (var i = 0; i < transformationChilds.length; i++) {
-                        if (transformationChilds[i].nodeName == "translate") {
-                            var tx = this.reader.getFloat(transformationChilds[i], 'x');
-                            var ty = this.reader.getFloat(transformationChilds[i], 'y');
-                            var tz = this.reader.getFloat(transformationChilds[i], 'z');
-                            mat4.translate(transformArray, transformArray, [tx, ty, tz]);
-                        }
-                        else if (transformationChilds[i].nodeName == "scale") {
-                            var sx = this.reader.getFloat(transformationChilds[i], 'x');
-                            var sy = this.reader.getFloat(transformationChilds[i], 'y');
-                            var sz = this.reader.getFloat(transformationChilds[i], 'z');
-                            mat4.scale(transformArray, transformArray, [sx, sy, sz]);
-                        }
-                        else if (transformationChilds[i].nodeName == "rotate") {
-                            var axis = this.reader.getString(transformationChilds[i], 'axis');
-                            var angle = this.reader.getFloat(transformationChilds[i], 'angle');
-                            if (axis == "x")
-                                mat4.rotateX(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                            else if (axis == "y")
-                                mat4.rotateY(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                            else if (axis == "z")
-                                mat4.rotateZ(transformArray, transformArray, angle * DEGREE_TO_RAD);
-                        }
-                        else if (transformationChilds[i].nodeName == "transformationref") {
-                            var idTref = this.reader.getString(transformationChilds[i], 'id');
-                            transformArray = transformMap[idTref];
-                        }
-
+                    else if (transformationChilds[i].nodeName == "transformationref") {
+                        var idTref = this.reader.getString(transformationChilds[i], 'id');
+                        transformArray = transformMap[idTref];
                     }
-                    compo.transformations = transformArray;
+
                 }
-                for (var k = 0; k < materials.length; k++) {
-                    var materialChilds = materials[k].children;
-                    for (var i = 0; i < materialChilds.length; i++) {
-                        var idMat = this.reader.getString(materialChilds[i], 'id');
-                        compo.materials = materialsMap.get(idMat);
-                    }
-                }
-                for (var k = 0; k < textures.length; k++) {
-                    var idTex = this.reader.getString(textures[k], 'id');
-                    var length_s = this.reader.getFloat(textures[k], 'length_s');
-                    var length_t = this.reader.getFloat(textures[k], 'length_t');
-                    compo.textures = [textureMap.get(idTex), length_s, length_t];
-                }
-                componentMap.set(idComponent, compo);
+                compo.transformations = transformArray;
             }
-            this.log("Parsed components");
-            return null;
+            for (var k = 0; k < materials.length; k++) {
+                var materialChilds = materials[k].children;
+                for (var i = 0; i < materialChilds.length; i++) {
+                    var idMat = this.reader.getString(materialChilds[i], 'id');
+                    compo.materials = idMat;
+                }
+            }
+            for (var k = 0; k < textures.length; k++) {
+                var idTex = this.reader.getString(textures[k], 'id');
+                var length_s = this.reader.getFloat(textures[k], 'length_s');
+                var length_t = this.reader.getFloat(textures[k], 'length_t');
+                compo.textures = [idTex, length_s, length_t];
+            }
+            for (var k = 0; k < children.length; k++) {
+                var childChildren = children[k].children;
+                for (var i = 0; i < childChildren.length; i++) {
+                    if (childChildren[i].nodeName == "primitiveref") {
+                        var idPrim = this.reader.getString(childChildren[i], 'id');
+                        arrayPrimRef.push(idPrim);
+                    }
+                    if (childChildren[i].nodeName == "componentref") {
+                        var idComp = this.reader.getString(childChildren[i], 'id');
+                        arrayCompRef.push(idComp);
+                    }
+
+                }
+            }
+            compo.primitive = arrayPrimRef;
+            compo.children = arrayCompRef;
+            compo.id = idComponent;
+
+            componentMap.set(idComponent, compo);
         }
-
-
-
-        /*
-         * Callback to be executed on any read error, showing an error on the console.
-         * @param {string} message
-         */
-        onXMLError(message) {
-            console.error("XML Loading Error: " + message);
-            this.loadedOk = false;
-        }
-
-        /**
-         * Callback to be executed on any minor error, showing a warning on the console.
-         * @param {string} message
-         */
-        onXMLMinorError(message) {
-            console.warn("Warning: " + message);
-        }
-
-
-        /**
-         * Callback to be executed on any message.
-         * @param {string} message
-         */
-        log(message) {
-            console.log("   " + message);
-        }
-
-        /**
-         * Displays the scene, processing each node, starting in the root node.
-         */
-        displayScene() {
-            // entry point for graph rendering
-            //TODO: Render loop starting at root of graph
-        }
+        this.log("Parsed components");
+        return null;
     }
+
+
+
+    /*
+     * Callback to be executed on any read error, showing an error on the console.
+     * @param {string} message
+     */
+    onXMLError(message) {
+        console.error("XML Loading Error: " + message);
+        this.loadedOk = false;
+    }
+
+    /**
+     * Callback to be executed on any minor error, showing a warning on the console.
+     * @param {string} message
+     */
+    onXMLMinorError(message) {
+        console.warn("Warning: " + message);
+    }
+
+
+    /**
+     * Callback to be executed on any message.
+     * @param {string} message
+     */
+    log(message) {
+        console.log("   " + message);
+    }
+
+    /**
+     * Displays the scene, processing each node, starting in the root node.
+     */
+    displayScene() {
+        // entry point for graph rendering
+        //TODO: Render loop starting at root of graph
+    }
+}

@@ -65,6 +65,11 @@ class XMLscene extends CGFscene {
                 }
             }
         }
+
+        //sets default camera ✓
+
+        this.camera = this.viewValues[this.graph.default];
+        this.interface.setActiveCamera(this.camera);
     }
     selectView(id) {
         this.camera = this.viewValues[id];
@@ -114,19 +119,18 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        //this.camera.near = this.graph.near;
-        //this.camera.far = this.graph.far;
-
-        //TODO: Change reference length according to parsed graph
-        this.axis = new CGFaxis(this);
-
-        // TODO: Change ambient and background details according to parsed graph
-        this.gl.clearColor(red2,green2,blue2,ambientValue2); //global varibles from parser
-        this.setGlobalAmbientLight(red1,green1,blue1,ambientValue1);//global varibles from parser
+        
+        //TODO: Change reference length according to parsed graph ✓
+        this.axis = new CGFaxis(this,this.graph.axis_length);
+        // TODO: Change ambient and background details according to parsed graph ✓
+        var ambient = this.graph.ambient;
+        var background = this.graph.background;
+        this.gl.clearColor(background[0],background[1],background[2],background[3]); //global from parser ✓
+        this.setGlobalAmbientLight(ambient[0],ambient[1],ambient[2],ambient[3]);//global from parser ✓
         this.initLights();
         this.initViews();
-        // Adds lights group.
-        this.interface.addLightsGroup(this.graph.lights);
+        // Adds lights group ✓
+        this.interface.addLightsGroup(this.graph.lights); //add all lights ✓
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
     }
@@ -137,7 +141,7 @@ class XMLscene extends CGFscene {
      */
     display() {
         // ---- BEGIN Background, camera and axis setup
-
+        
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -192,7 +196,7 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
-
+        
         // ---- END Background, camera and axis setup
     }
 }

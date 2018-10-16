@@ -837,8 +837,46 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        //-> materials, textures.
         // entry point for graph rendering
-        
+        function through(node, info) {
+
+            var component = componentMap.get(node); //-> the node component
+
+            var mat = [[info[0,0],info[0,1],info[0,2],info[0,3]],
+                       [info[1,0],info[1,1],info[1,2],info[1,3]],
+                       [info[2,0],info[2,1],info[2,2],info[2,3]],
+                       [info[3,0],info[3,1],info[3,2],info[3,3]]]
+            var tex = info[5];
+
+            if(component.textures != "inherit")
+            {
+                this.texture = new CGFappearance(this);
+                this.texture.loadTexture(textureMap.get(component.texture));
+            }
+
+            if(component.materials != "inherit")
+            {
+                this.material = new CGFappearance(this);
+                this.material.setAmbient();
+                this.material.setDiffuse();
+                this.material.setSpecular();
+                this.material.setShininess();
+            }
+
+            info = [];
+            
+            this.scene.pushMatrix();
+            for (var i = 0; i < node.children.length; i++) {
+                for (var j = 0; i < node.primitive.length; j++){
+                    this.primitiva = new Object(); // segregate primitives and arguments 
+                    this.primitiva.display();
+                }
+                through(node.children[i], info);
+                this.scene.popMatrix();
+            }
+        }
+        through(this.root, null);
         //TODO: Render loop starting at root of graph
     }
 }

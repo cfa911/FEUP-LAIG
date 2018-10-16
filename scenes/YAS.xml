@@ -12,7 +12,7 @@
 <yas>
     <!-- deve definir-se um objeto para raiz da arvore, assim -->
     <!-- como o comprimento dos tres eixos (cilindros) -->
-    <scene root="1" axis_length= "10" />
+    <scene root="initial" axis_length= "10" />
     <views default="perspective1">
         <!-- tem de existir, pelo menos, uma vista de -->
         <!-- entre as seguintes (perspective ou ortho) -->
@@ -132,7 +132,19 @@
         </primitive>
     </primitives >
     <components>
-        <component id="fase1">
+        <component id="initial">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <children>
+                <componentref id="cubo" />
+                <componentref id="table" />
+            </children>
+        </component>
+        <component id="face1">
             <!-- Uma "component" e' um objeto composto e pode ser -->
             <!-- usada em nos intermédios -->
             <!-- bloco "transformation" e' obrigatorio -->
@@ -182,7 +194,7 @@
                 <primitiveref id="rect" />
             </children>
         </component>
-        <component id="fase2">
+        <component id="face2">
             <transformation>
                 <transformationref id="trans2" />
             </transformation>
@@ -194,7 +206,7 @@
                 <primitiveref id="rect" />
             </children>
         </component>
-        <component id="fase3">
+        <component id="face3">
             <transformation>
                 <transformationref id="trans3" />
             </transformation>
@@ -206,7 +218,7 @@
                 <primitiveref id="rect" />
             </children>
         </component>
-        <component id="fase4">
+        <component id="face4">
             <transformation>
                 <transformationref id="trans4" />
             </transformation>
@@ -218,7 +230,7 @@
                 <primitiveref id="rect" />
             </children>
         </component>
-        <component id="fase5">
+        <component id="face5">
             <transformation>
                 <transformationref id="trans5" />
             </transformation>
@@ -230,7 +242,7 @@
                 <primitiveref id="rect" />
             </children>
         </component>
-        <component id="fase6">
+        <component id="face6">
             <transformation>
                 <transformationref id="trans6" />
             </transformation>

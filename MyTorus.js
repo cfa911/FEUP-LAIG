@@ -74,34 +74,4 @@
  	    this.initGLBuffers();
     };
         
-
-
-
-
-
-
-
-        /*this.vertices = [];
-        this.indices = [];
-        this.normals = [];
-        this.texCoords = [];
-
-        var nPhi = 100, nTheta = 50,  Theta = 0, Phi = 0,
-        dTheta = 2*Math.PI / nTheta, dPhi = dTheta/nPhi;
-        var nn = nTheta*nPhi;
-
-        for (var i = 0; i < nn; i++ ){
-            Theta += dTheta;
-            Phi   += dPhi;
-            var cosTheta = Math.cos( Theta ),  sinTheta = Math.sin( Theta ),
-            cosPhi = Math.cos( Phi ),  sinPhi = Math.sin( Phi ),
-            dist   = this.outer + this.inner * cosTheta;
-            this.vertices.push( cosPhi*dist, -sinPhi*dist, this.inner*sinTheta );     // points
-            this.normals.push( cosPhi*cosTheta, -sinPhi*cosTheta, sinTheta); // normals
-            this.indices.push( i, (i + nTheta) % nn);
-        }
-        this.indices.push( 0, nTheta);
-
- 	    this.primitiveType = this.scene.gl.TRIANGLES;
- 	    this.initGLBuffers();*/
- 	};
+};

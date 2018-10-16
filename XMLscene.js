@@ -36,7 +36,7 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.sphere = new MySphere(this, 0.1, 15, 15);
-        this.quad = new MyTorus(this, 0.35, 1, 50, 20);
+        this.quad = new MyCylinderWTops(this, 1, 2, 5, 20, 20);
 
         this.t = new CGFappearance(this);
 		this.t.setAmbient(0.1, 0.1, 0.1, 1);

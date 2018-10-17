@@ -4,20 +4,15 @@
  * @constructor
  */
 
-class MyComponent extends CGFobject
+class MyComponent
 {
-	constructor(scene, transformations = mat4.create(), materials = "none", textures = "none", primitive = [],children = [])
+	constructor(transformations = mat4.create(), materials = null, textures = null, primitive = [],children = [])
 	{
-		super(scene);
         this.transformations = transformations;
         this.materials = materials;
 		this.textures = textures;
 		this.primitive = primitive;
-        this.children = children; "sera uma nova class de MyComponents"
-		this.initBuffers();
+        this.children = children;
 	};
 
-	initBuffers()
-	{
-    }
 }

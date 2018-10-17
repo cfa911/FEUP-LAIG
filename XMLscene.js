@@ -133,6 +133,7 @@ class XMLscene extends CGFscene {
         this.interface.addLightsGroup(this.graph.lights); //add all lights ✓
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
+
     }
 
 
@@ -177,7 +178,7 @@ class XMLscene extends CGFscene {
             }
 
             // Displays the scene (MySceneGraph function).
-            this.pushMatrix();
+            /*this.pushMatrix();
                 this.scale(10,10,10);
                 this.translate(1, 1.5, 1);
                 this.rotate(-Math.PI / 3, 1, 0, 0);
@@ -187,7 +188,7 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
                 this.quad.display();
-            this.popMatrix();
+            this.popMatrix();*/
             this.graph.displayScene();
         }
         else {

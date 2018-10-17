@@ -57,7 +57,7 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="1st" file="../scene/images/trunk-image.jpg" />
+        <texture id="1st" file="../scenes/images/trunk-image.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->

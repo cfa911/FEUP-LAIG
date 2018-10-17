@@ -652,10 +652,10 @@ class MySceneGraph {
     parsePrimitives(primitivesNode) {
 
         var arrayPrimitive = primitivesNode.getElementsByTagName('primitive');
-        var nodeNames = [];
+        
 
         for (var j = 0; j < arrayPrimitive.length; j++) {
-
+            var nodeNames = [];
             var primitiveChildren = arrayPrimitive[j].children;
             var idPrimitive = this.reader.getString(arrayPrimitive[j], 'id');
 
@@ -722,7 +722,7 @@ class MySceneGraph {
         var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
-            var compo = new MyComponent(this.scene);
+            var compo = new MyComponent();
             var Component = arrayComponents[j];
             var idComponent = this.reader.getString(arrayComponents[j], 'id');
             var arrayCompRef = [];
@@ -832,51 +832,78 @@ class MySceneGraph {
     log(message) {
         console.log("   " + message);
     }
+    through(node, info) {
 
+            
+        var component = componentMap.get(node); //-> the node component
+
+        if (info == null) {
+            info = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], 0 , [0,0]];
+        }
+        var mat = [[info[0, 0], info[0, 1], info[0, 2], info[0, 3]],
+        [info[1, 0], info[1, 1], info[1, 2], info[1, 3]],
+        [info[2, 0], info[2, 1], info[2, 2], info[2, 3]],
+        [info[3, 0], info[3, 1], info[3, 2], info[3, 3]]];
+
+        var tex = info[5];
+
+        if (component.textures != "inherit" && component.textures != null) {
+            info[5] = [component.textures[1],component.textures[2]];
+            info[4] = textureMap.get(component.textures[0]);
+            this.texture = new CGFappearance(this.scene);
+            this.texture.loadTexture(info[4]);
+        }
+        else if (component.textures != "none") {
+
+        }
+        if (component.materials != "inherit" && component.textures != null) {
+            
+            info[0] = component.materials[0];
+            info[1] = component.materials[1];
+            info[2] = component.materials[2];
+            info[3] = component.materials[3];
+            info[4] = component.materials[4];
+            this.material = new CGFappearance(this.scene);
+            this.material.setEmission(info[0][0], info[0][1], info[0][2], info[0][3]);
+            this.material.setAmbient(info[1][0], info[1][1], info[1][2], info[1][3]);
+            this.material.setDiffuse(info[2][0], info[2][1], info[2][2], info[2][3]);
+            this.material.setSpecular(info[3][0], info[3][1], info[3][2], info[3][3]);
+            this.material.setShininess(info[4]);
+        }
+        else if (component.textures != "none") {
+
+        }
+        //this.scene.multMatrix(component.transformations[0]);
+
+
+        
+        for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
+            this.scene.pushMatrix();
+            for (var j = 0; j < componentMap.get(node).primitive.length ; j++) {
+                var object = primitivesMap.get(componentMap.get(node).primitive[j]);
+                if(object[0] == "rectangle")
+                {
+                    this.primitiva = new MyRectangle(this.scene,object[1],object[2],object[3],object[4]);
+                }
+                this.primitiva.display();
+            }
+            if(componentMap.get(node).children[i] != null)
+            this.through(componentMap.get(node).children[i], info);
+            this.scene.popMatrix();
+        }
+    
+    //TODO: Render loop starting at root of graph 
+
+}
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
         //-> materials, textures.
         // entry point for graph rendering
-        function through(node, info) {
-
-            var component = componentMap.get(node); //-> the node component
-
-            var mat = [[info[0,0],info[0,1],info[0,2],info[0,3]],
-                       [info[1,0],info[1,1],info[1,2],info[1,3]],
-                       [info[2,0],info[2,1],info[2,2],info[2,3]],
-                       [info[3,0],info[3,1],info[3,2],info[3,3]]]
-            var tex = info[5];
-
-            if(component.textures != "inherit")
-            {
-                this.texture = new CGFappearance(this);
-                this.texture.loadTexture(textureMap.get(component.texture));
-            }
-
-            if(component.materials != "inherit")
-            {
-                this.material = new CGFappearance(this);
-                this.material.setAmbient();
-                this.material.setDiffuse();
-                this.material.setSpecular();
-                this.material.setShininess();
-            }
-
-            info = [];
-            
-            this.scene.pushMatrix();
-            for (var i = 0; i < node.children.length; i++) {
-                for (var j = 0; i < node.primitive.length; j++){
-                    this.primitiva = new Object(); // segregate primitives and arguments 
-                    this.primitiva.display();
-                }
-                through(node.children[i], info);
-                this.scene.popMatrix();
-            }
-        }
-        through(this.root, null);
-        //TODO: Render loop starting at root of graph
+        var length_s;
+        var length_t;
+        this.through(this.root, null);
     }
+        
 }

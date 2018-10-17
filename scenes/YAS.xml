@@ -57,7 +57,7 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="1st" file="../scenes/images/trunk-image.jpg" />
+        <texture id="1st" file="../scene/images/trunk-image.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -90,8 +90,6 @@
             <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="0.5" z="0" />
             <rotate axis="x" angle="-90" />
-            <translate x="0" y="0.5" z="0" />
-            <translate x="0" y="0.5" z="0" />
 
         </transformation>
         <transformation id="trans4">
@@ -122,7 +120,7 @@
             <!-- rectangle, triangle, cylinder, sphere, torus -->
             <!-- os parametros devem ser interpretados, genericamente, -->
             <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
-            <rectangle x1="-0.5" y1="-0.5" x2="1.0" y2="1.0" />
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
             <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
             <sphere radius="ff" slices="ii" stacks="ii" />
             <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
@@ -136,11 +134,7 @@
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
-            <materials>
-                <material id="none" />
-            </materials>
             <children>
-                <componentref id="cubo" />
                 <componentref id="table" />
             </children>
         </component>

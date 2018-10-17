@@ -535,9 +535,8 @@ class MySceneGraph {
         else {
             var idTex = this.reader.getString(children[indexTexture], 'id');
             var fileTex = this.reader.getString(children[indexTexture], 'file');
-            this.texture = new CGFappearance(this.scene);
-            this.texture.loadTexture(fileTex);
-            textureMap.set(idTex, this.texture);
+            this.test = new CGFtexture(this.scene,fileTex);
+            textureMap.set(idTex, this.test);
         }
 
         this.log("Parsed textures");
@@ -724,7 +723,7 @@ class MySceneGraph {
         var arrayComponents = componentsNode.getElementsByTagName('component');
 
         for (var j = 0; j < arrayComponents.length; j++) {
-            var compo = new MyComponent();
+            var compo = new MyComponent(this.scene);
             var Component = arrayComponents[j];
             var idComponent = this.reader.getString(arrayComponents[j], 'id');
             var arrayCompRef = [];
@@ -850,17 +849,38 @@ class MySceneGraph {
             this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
             this.material.setShininess(material[4]);
         }
-        else if (component.materials != "none") {
-
+        else if(component.textures == "inherit")
+        {
+            this.material = new CGFappearance(this.scene);
+            this.material.setEmission(material[0][0], material[0][1], material[0][2], material[0][3]);
+            this.material.setAmbient(material[1][0], material[1][1], material[1][2], material[1][3]);
+            this.material.setDiffuse(material[2][0], material[2][1], material[2][2], material[2][3]);
+            this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
+            this.material.setShininess(material[4]);
         }
+        else if (component.materials != "none") {
+            material = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],1];
+            this.material = new CGFappearance(this.scene);
+            this.material.setEmission(material[0][0], material[0][1], material[0][2], material[0][3]);
+            this.material.setAmbient(material[1][0], material[1][1], material[1][2], material[1][3]);
+            this.material.setDiffuse(material[2][0], material[2][1], material[2][2], material[2][3]);
+            this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
+            this.material.setShininess(material[4]);
+        }
+
+
         if (component.textures != "inherit" && component.textures != null) {
-            //info[1] = [component.textures[1],component.textures[2]]; //lengths
-            texture = textureMap.get(component.textures[0]);
-            this.material.setTexture("../scenes/images/trunk-image.jpg");
+            texture = component.textures[0];
+            this.tex = textureMap.get(component.textures[0]);
             
         }
+        else if(component.textures == "inherit")
+        {
+            this.tex = textureMap.get(texture);
+        }
         else if (component.textures != "none") {
-
+            if(this.tex != null)
+            this.tex.unbind();
         }
         
         this.scene.multMatrix(component.transformations);
@@ -869,11 +889,15 @@ class MySceneGraph {
         
         for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
             this.scene.pushMatrix();
-            //this.material.apply();
+            if(this.material != null)
+            this.material.apply();
+            if(this.tex != null)
+            this.tex.bind();
             for (var j = 0; j < componentMap.get(node).primitive.length ; j++) {
                 var object = primitivesMap.get(componentMap.get(node).primitive[j]);
                 if(object[0] == "rectangle")
-                {
+                {   
+                   
                     this.primitiva = new MyRectangle(this.scene,object[1],object[2],object[3],object[4]);
                 }
                 else if(object[0] == "triangle")

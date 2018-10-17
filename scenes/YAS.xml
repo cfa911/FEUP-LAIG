@@ -1,21 +1,6 @@
-<!-- Os comentarios devem ter espacos no inicio e no fim, a -->
-<!-- separar dos hifens -->
-<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
-<!-- Todas as tags e atributos sao obrigatorios, exceto onde for -->
-<!-- referido o contrario -->
-<!-- Na descricao abaixo, os simbolos utilizados tem o seguinte significado: -->
-<!-- ii: integer value -->
-<!-- ff: float value -->
-<!-- ss: string value -->
-<!-- cc: character "x" or "y" or "z" -->
-<!-- tt: "0" or "1" with Boolean significance -->
 <yas>
-    <!-- deve definir-se um objeto para raiz da arvore, assim -->
-    <!-- como o comprimento dos tres eixos (cilindros) -->
     <scene root="initial" axis_length= "10" />
     <views default="perspective1">
-        <!-- tem de existir, pelo menos, uma vista de -->
-        <!-- entre as seguintes (perspective ou ortho) -->
         <perspective id="perspective1" near="1" far="50" angle="90">
             <from x="10" y="10" z="10" />
             <to x="0" y="0" z="0" />
@@ -31,8 +16,6 @@
         <background r="0" g="0.1" b="0.5" a="0.3" />
     </ambient>
     <lights>
-        <!-- Deve existir um ou mais blocos "omni" ou "spot" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
         <omni id="first" enabled="0">
             <location x="15" y="2" z="5" w="0.1" />
             <ambient r="0.3" g="0.3" b="0.3" a="1" />
@@ -46,7 +29,6 @@
             <specular r="0.7" g="0.7" b="0.7" a="0.6" />
         </omni>
         <spot id="spot" enabled="0" angle="30" exponent="3">
-            <!-- atencao, "target" e' diferente de "direction" -->
             <location x="5" y="2" z="1" />
             <target x="4" y="4" z="6" />
             <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
@@ -57,7 +39,7 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="1st" file="../scene/images/trunk-image.jpg" />
+        <texture id="1st" file="../scenes/images/trunk-image.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -70,63 +52,45 @@
         </material>
     </materials>
     <transformations>
-        <!-- Deve existir um ou mais blocos "transformation" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-        <!-- Os angulos sao expressos em graus -->
-        <!-- <scale x="2" y="1" z="2" /> -->
         <transformation id="trans1">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="0" z="0.5" />
         </transformation>
         <transformation id="trans2">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="0" z="-0.5" />
             <rotate axis="x" angle="180" />
         </transformation>
         <transformation id="trans3">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="0.5" z="0" />
             <rotate axis="x" angle="-90" />
-
         </transformation>
         <transformation id="trans4">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="0" y="-0.5" z="0" />
             <rotate axis="x" angle="90" />
         </transformation>
         <transformation id="trans5">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="0.5" y="0" z="0" />
             <rotate axis="y" angle="90" />
         </transformation>
         <transformation id="trans6">
-            <!-- instrucoes a usar sem limite nem ordem -->
-            <!-- deve existir pelo menos uma transformacao -->
             <translate x="-0.5" y="0" z="0" />
             <rotate axis="y" angle="-90" />
         </transformation>
     </transformations>
     <primitives>
-        <!-- Uma "primitive" e' uma primitiva e pode ser usada em nos folha -->
-        <!-- Deve existir um ou mais blocos "primitive" -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
         <primitive id="rect">
-            <!-- apenas pode existir UMA das seguintes tags: -->
-            <!-- rectangle, triangle, cylinder, sphere, torus -->
-            <!-- os parametros devem ser interpretados, genericamente, -->
-            <!-- como em WebGL; o cilindro deve adicionalmente ter tampas -->
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
-            <!-- <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-            <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
         </primitive >
         <primitive id="tri">
             <triangle x1="-0.5" y1="-0.5" z1="0" x2="0.5" y2="-0.5" z2="0" x3="-0.5" y3="0.5" z3="0" />
+        </primitive>
+        <primitive id="tor">
+            <torus inner="1" outer="3" slices="30" loops="30" />
+        </primitive>
+        <primitive id="cyl">
+            <cylinder base="1" top="1" height="0.1" slices="30" stacks="30" />
+        </primitive>
+        <primitive id="sph">
+            <sphere radius="2" slices="30" stacks="30" />
         </primitive>
     </primitives >
     <components>
@@ -136,6 +100,14 @@
             </transformation>
             <children>
                 <componentref id="table" />
+                <componentref id="chair1" />
+                <componentref id="chair2" />
+                <componentref id="donut_plate1" />
+                <componentref id="donut_plate2" />
+                <componentref id="donut_plate3" />
+                <componentref id="donut_plate4" />
+                <componentref id="tree" />
+                <componentref id="floor" />
             </children>
         </component>
         <component id="face1">
@@ -339,12 +311,198 @@
             </materials>
             <texture id="1st" length_s="0.1" length_t="0.1" />
             <children>
-
                 <componentref id="top" />
                 <componentref id="leg1" />
                 <componentref id="leg2" />
                 <componentref id="leg3" />
                 <componentref id="leg4" />
+            </children>
+        </component>
+        <component id="tamp_chair">
+            <transformation>
+                <scale x="3.5" y="0.16" z="1" />
+                <translate x="0.7" y="10.9" z="4.1" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="cubo" />
+            </children>
+        </component>
+        <component id="base_chair">
+            <transformation>
+                <scale x="3.5" y="1.7" z="0.4" />
+                <translate x="0.7" y="0.5" z="11" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="cubo" />
+            </children>
+        </component>
+        <component id="chair1">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="base_chair" />
+                <componentref id="tamp_chair" />
+            </children>
+        </component>
+        <component id="chair2">
+            <transformation>
+                <translate x="5" y="0" z="3" />
+                <rotate axis="y" angle="180"/>
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="base_chair" />
+                <componentref id="tamp_chair" />
+            </children>
+        </component>
+         <component id="donut">
+            <transformation>
+                <translate x="4" y="4" z="1" />
+                <rotate axis="x" angle="90" />
+                <scale x="0.15" y="0.15" z="0.15" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="tor" />
+            </children>
+        </component>
+        <component id="plate">
+            <transformation>
+                <translate x="4" y="3.9" z="1" />
+                <rotate axis="x" angle="90" />
+                <scale x="0.6" y="0.6" z="0.9" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="donut_plate1">
+            <transformation>
+                <translate x="-2.5" y="0" z="-0.3" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="donut" />
+                <componentref id="plate" />
+            </children>
+        </component>
+        <component id="donut_plate2">
+            <transformation>
+                <translate x="-0.5" y="0" z="-0.3" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="donut" />
+                <componentref id="plate" />
+            </children>
+        </component>
+        <component id="donut_plate3">
+            <transformation>
+                <translate x="-2.5" y="0" z="1" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="donut" />
+                <componentref id="plate" />
+            </children>
+        </component>
+        <component id="donut_plate4">
+            <transformation>
+                <translate x="-0.5" y="0" z="1.2" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="donut" />
+                <componentref id="plate" />
+            </children>
+        </component>
+        <component id="tronco">
+            <transformation>
+                <translate x="0" y="0" z="5" />
+                <rotate axis="x" angle="-90"/>
+                <scale x="0.8" y="0.8" z="60" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="parte_cima">
+            <transformation>
+                <translate x="0" y="7" z="5" />
+                <scale x="1.3" y="1.3" z="1.3" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="sph" />
+            </children>
+        </component>
+        <component id="tree">
+            <transformation>
+                <translate x="0.5" y="0" z="6" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="tronco" />
+                <componentref id="parte_cima" />
+            </children>
+        </component>
+        <component id="floor">
+            <transformation>
+                <rotate axis="x" angle="-90"/>
+                <scale x="8" y="15" z="0" />
+                <translate x="0.5" y="-0.5" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <children>
+                <primitiveref id="rect" />
             </children>
         </component>
     </components>

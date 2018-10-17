@@ -42,7 +42,7 @@ class MyCylinder extends CGFobject
         
         for(i = 0; i <= this.stacks; i++)
         {
-            for(j = 0; j <= this.slices-5; j++)
+            for(j = 0; j <= this.slices; j++)
             {
 
                 this.vertices.push(inc * Math.cos(j * ang),inc * Math.sin(j * ang), i * this.h);

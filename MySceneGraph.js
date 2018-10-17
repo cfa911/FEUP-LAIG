@@ -698,17 +698,17 @@ class MySceneGraph {
                 primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
             }
             else if (sphereIndex != -1) {
-                var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'base');
+                var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'radius');
                 var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
                 var stacks = this.reader.getInteger(primitiveChildren[sphereIndex], 'stacks');
                 primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
             }
             else if (torusIndex != -1) {
-                var inner = this.reader.getFloat(primitiveChildren[sphereIndex], 'inner');
-                var outer = this.reader.getFloat(primitiveChildren[sphereIndex], 'outer');
-                var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
-                var loops = this.reader.getInteger(primitiveChildren[sphereIndex], 'loops');
-                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], inner, outer, slices, loops]);
+                var inner = this.reader.getFloat(primitiveChildren[torusIndex], 'inner');
+                var outer = this.reader.getFloat(primitiveChildren[torusIndex], 'outer');
+                var slices = this.reader.getInteger(primitiveChildren[torusIndex], 'slices');
+                var loops = this.reader.getInteger(primitiveChildren[torusIndex], 'loops');
+                primitivesMap.set(idPrimitive, [nodeNames[torusIndex], inner, outer, slices, loops]);
             }
         }
         this.log("Parsed primitives");

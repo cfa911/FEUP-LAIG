@@ -521,24 +521,22 @@ class MySceneGraph {
      */
     parseTextures(texturesNode) {
 
-        var children = texturesNode.children;
-        var nodeNames = [];
+        var arrayTextures = texturesNode.children;
+        var isTexture = texturesNode.children[0].nodeName;
 
-        for (var i = 0; i < children.length; i++)
-            nodeNames.push(children[i].nodeName);
-
-        var indexTexture = nodeNames.indexOf("texture");
-
-        if (indexTexture == -1) {
+        if (isTexture != "texture") {
             this.onXMLMinorError("Textures planes missing;");
         }
         else {
-            var idTex = this.reader.getString(children[indexTexture], 'id');
-            var fileTex = this.reader.getString(children[indexTexture], 'file');
-            this.test = new CGFtexture(this.scene,fileTex);
-            textureMap.set(idTex, this.test);
-        }
+            for(var i = 0; i < arrayTextures.length; i ++){
+                var idTex = this.reader.getString(arrayTextures[i], 'id');
+                var fileTex = this.reader.getString(arrayTextures[i], 'file');
+                this.test = new CGFtexture(this.scene,fileTex);
+                textureMap.set(idTex, this.test);
+            }
 
+        }
+        
         this.log("Parsed textures");
         return null;
 

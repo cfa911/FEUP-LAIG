@@ -41,6 +41,7 @@
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <texture id="1st" file="../scenes/images/trunk-image.jpg" />
         <texture id="relva" file="../scenes/images/leaves.jpg" />
+        <texture id="d_simps" file="../scenes/images/d_simpsons.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -381,7 +382,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="d_simps" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="tor" />
             </children>

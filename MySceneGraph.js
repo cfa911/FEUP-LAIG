@@ -587,8 +587,17 @@ class MySceneGraph {
                 var g4 = this.reader.getFloat(materialsChildren[specular], 'g');
                 var b4 = this.reader.getFloat(materialsChildren[specular], 'b');
                 var a4 = this.reader.getFloat(materialsChildren[specular], 'a');
+                this.material = new CGFappearance(this.scene);
+                //continue code material
+                this.material.setEmission(r1, g1, b1, a1);
+                this.material.setAmbient(r2, g2, b2, a2);
+                this.material.setDiffuse(r3, g3, b3, a3);
+                this.material.setSpecular(r4, g4, b4, a4);
+                this.material.setShininess(shiMat);
 
-                materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat])
+                materialsMap.set(idMat,this.material);
+
+                //materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat]);
             }
         }
 
@@ -840,30 +849,20 @@ class MySceneGraph {
         if (component.materials != "inherit" && component.materials != null) {
             
             material = materialsMap.get(component.materials);
-            this.material = new CGFappearance(this.scene);
-            this.material.setEmission(material[0][0], material[0][1], material[0][2], material[0][3]);
-            this.material.setAmbient(material[1][0], material[1][1], material[1][2], material[1][3]);
-            this.material.setDiffuse(material[2][0], material[2][1], material[2][2], material[2][3]);
-            this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
-            this.material.setShininess(material[4]);
+            this.mat = material;
         }
         else if(component.textures == "inherit")
         {
-            this.material = new CGFappearance(this.scene);
-            this.material.setEmission(material[0][0], material[0][1], material[0][2], material[0][3]);
-            this.material.setAmbient(material[1][0], material[1][1], material[1][2], material[1][3]);
-            this.material.setDiffuse(material[2][0], material[2][1], material[2][2], material[2][3]);
-            this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
-            this.material.setShininess(material[4]);
+            this.mat = material;
         }
-        else if (component.materials != "none") {
-            material = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],1];
-            this.material = new CGFappearance(this.scene);
-            this.material.setEmission(material[0][0], material[0][1], material[0][2], material[0][3]);
-            this.material.setAmbient(material[1][0], material[1][1], material[1][2], material[1][3]);
-            this.material.setDiffuse(material[2][0], material[2][1], material[2][2], material[2][3]);
-            this.material.setSpecular(material[3][0], material[3][1], material[3][2], material[3][3]);
-            this.material.setShininess(material[4]);
+        else if (component.materials == "none") {
+            material = new CGFappearance(this.scene);
+            material.setEmission(0,0,0,0);
+            material.setAmbient(0,0,0,0);
+            material.setDiffuse(0,0,0,0);
+            material.setSpecular(0,0,0,0);
+            material.setShininess(10);
+            this.mat = material;
         }
 
 
@@ -876,7 +875,7 @@ class MySceneGraph {
         {
             this.tex = textureMap.get(texture);
         }
-        else if (component.textures != "none") {
+        else if (component.textures == "none") {
             if(this.tex != null)
             this.tex.unbind();
         }
@@ -887,9 +886,9 @@ class MySceneGraph {
         
         for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
             this.scene.pushMatrix();
-            if(this.material != null)
-            this.material.apply();
-            if(this.tex != null)
+            if(this.mat != null && component.materials != "none")
+            this.mat.apply();
+            if(this.tex != null && component.textures != "none")
             this.tex.bind();
             for (var j = 0; j < componentMap.get(node).primitive.length ; j++) {
                 var object = primitivesMap.get(componentMap.get(node).primitive[j]);

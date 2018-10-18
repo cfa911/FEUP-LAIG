@@ -42,6 +42,8 @@
         <texture id="1st" file="../scenes/images/trunk-image.jpg" />
         <texture id="relva" file="../scenes/images/leaves.jpg" />
         <texture id="d_simps" file="../scenes/images/d_simpsons.jpg" />
+        <texture id="folhas" file="../scenes/images/arvore.jpg"/>
+        <texture id="madeira" file="../scenes/images/madeira.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -247,7 +249,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -260,7 +262,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -273,7 +275,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -286,7 +288,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -299,7 +301,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -311,7 +313,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="top" />
                 <componentref id="leg1" />
@@ -353,7 +355,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="base_chair" />
                 <componentref id="tamp_chair" />
@@ -367,7 +369,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="base_chair" />
                 <componentref id="tamp_chair" />
@@ -475,7 +477,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="folhas" length_s="1" length_t="0" />
             <children>
                 <primitiveref id="sph" />
             </children>
@@ -496,7 +498,7 @@
         <component id="floor">
             <transformation>
                 <rotate axis="x" angle="-90"/>
-                <scale x="8" y="15" z="0" />
+                <scale x="12" y="14" z="0" />
                 <translate x="0.5" y="-0.5" z="-0.5" />
             </transformation>
             <materials>

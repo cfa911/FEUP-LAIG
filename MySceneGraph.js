@@ -528,15 +528,15 @@ class MySceneGraph {
             this.onXMLMinorError("Textures planes missing;");
         }
         else {
-            for(var i = 0; i < arrayTextures.length; i ++){
+            for (var i = 0; i < arrayTextures.length; i++) {
                 var idTex = this.reader.getString(arrayTextures[i], 'id');
                 var fileTex = this.reader.getString(arrayTextures[i], 'file');
-                this.test = new CGFtexture(this.scene,fileTex);
+                this.test = new CGFtexture(this.scene, fileTex);
                 textureMap.set(idTex, this.test);
             }
 
         }
-        
+
         this.log("Parsed textures");
         return null;
 
@@ -595,7 +595,7 @@ class MySceneGraph {
                 this.material.setSpecular(r4, g4, b4, a4);
                 this.material.setShininess(shiMat);
 
-                materialsMap.set(idMat,this.material);
+                materialsMap.set(idMat, this.material);
 
                 //materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat]);
             }
@@ -660,7 +660,7 @@ class MySceneGraph {
     parsePrimitives(primitivesNode) {
 
         var arrayPrimitive = primitivesNode.getElementsByTagName('primitive');
-        
+
 
         for (var j = 0; j < arrayPrimitive.length; j++) {
             var nodeNames = [];
@@ -842,87 +842,110 @@ class MySceneGraph {
     }
     through(node, texture, material) {
 
-            
+
         var component = componentMap.get(node); //-> the node component
 
+            switch (component.materials) {
+                case "inherit":
+                    this.mat = material;
+                    this.mat.apply();
+                    break;
+                case "none":
+                    material = new CGFappearance(this.scene);
+                    material.setEmission(0, 0, 0, 0);
+                    material.setAmbient(0, 0, 0, 0);
+                    material.setDiffuse(0, 0, 0, 0);
+                    material.setSpecular(0, 0, 0, 0);
+                    material.setShininess(10);
+                    this.mat = material;
+                    this.mat.apply();
+                    break;
+                case null:
+                    break;
+                default:
+                    material = materialsMap.get(component.materials);
+                    this.mat = material;
+                    this.mat.apply();
+                    break;
 
-        if (component.materials != "inherit" && component.materials != null) {
-            
-            material = materialsMap.get(component.materials);
-            this.mat = material;
-        }
-        else if(component.textures == "inherit")
-        {
-            this.mat = material;
-        }
-        else if (component.materials == "none") {
-            material = new CGFappearance(this.scene);
-            material.setEmission(0,0,0,0);
-            material.setAmbient(0,0,0,0);
-            material.setDiffuse(0,0,0,0);
-            material.setSpecular(0,0,0,0);
-            material.setShininess(10);
-            this.mat = material;
-        }
+            }
+        
 
+        if (component.textures != null) {
+            switch (component.textures[0]) {
+                case "inherit":
+                    this.tex = textureMap.get(texture);
+                    this.tex.bind();
+                    break;
+                case "none":
+                    if (this.tex != null)
+                        this.tex.unbind();
+                    break;
+                case null:
+                    if (this.tex != null)
+                        this.tex.unbind();
+                    break;
+                default:
+                    texture = component.textures[0];
+                    this.tex = textureMap.get(texture);
+                    this.tex.bind();
+                    break;
 
-        if (component.textures != "inherit" && component.textures != null) {
-            texture = component.textures[0];
-            this.tex = textureMap.get(component.textures[0]);
-            
+            }
         }
-        else if(component.textures == "inherit")
+        /*
+        if(component.textures == "inherit")
         {
             this.tex = textureMap.get(texture);
+            this.tex.bind();
         }
         else if (component.textures == "none") {
             if(this.tex != null)
             this.tex.unbind();
         }
-        
+        else if (component.textures == null) {
+        }
+        else{
+            texture = component.textures[0];
+            this.tex = textureMap.get(texture);
+            this.tex.bind();
+        }*/
+
         this.scene.multMatrix(component.transformations);
 
 
-        
+
         for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
             this.scene.pushMatrix();
-            if(this.mat != null && component.materials != "none")
-            this.mat.apply();
-            if(this.tex != null && component.textures != "none")
-            this.tex.bind();
-            for (var j = 0; j < componentMap.get(node).primitive.length ; j++) {
+
+            for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = primitivesMap.get(componentMap.get(node).primitive[j]);
-                if(object[0] == "rectangle")
-                {   
-                   
-                    this.primitiva = new MyRectangle(this.scene,object[1],object[2],object[3],object[4]);
+                if (object[0] == "rectangle") {
+
+                    this.primitiva = new MyRectangle(this.scene, object[1], object[2], object[3], object[4]);
                 }
-                else if(object[0] == "triangle")
-                {
-                    this.primitiva = new MyTriangle(this.scene,object[1],object[2],object[3],object[4],object[5],object[6],object[7],object[8],object[9]);
+                else if (object[0] == "triangle") {
+                    this.primitiva = new MyTriangle(this.scene, object[1], object[2], object[3], object[4], object[5], object[6], object[7], object[8], object[9]);
                 }
-                if(object[0] == "cylinder")
-                {
-                    this.primitiva = new MyCylinderWTops(this.scene,object[1],object[2],object[3],object[4],object[5]);
+                if (object[0] == "cylinder") {
+                    this.primitiva = new MyCylinderWTops(this.scene, object[1], object[2], object[3], object[4], object[5]);
                 }
-                if(object[0] == "sphere")
-                {
-                    this.primitiva = new MySphere(this.scene,object[1],object[2],object[3]);
+                if (object[0] == "sphere") {
+                    this.primitiva = new MySphere(this.scene, object[1], object[2], object[3]);
                 }
-                if(object[0] == "torus")
-                {
-                    this.primitiva = new MyTorus(this.scene,object[1],object[2],object[3],object[4]);
+                if (object[0] == "torus") {
+                    this.primitiva = new MyTorus(this.scene, object[1], object[2], object[3], object[4]);
                 }
                 this.primitiva.display();
             }
-            if(componentMap.get(node).children[i] != null)
-            this.through(componentMap.get(node).children[i],texture, material);
+            if (componentMap.get(node).children[i] != null)
+                this.through(componentMap.get(node).children[i], texture, material);
             this.scene.popMatrix();
         }
-    
-    //TODO: Render loop starting at root of graph 
 
-}
+        //TODO: Render loop starting at root of graph 
+
+    }
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
@@ -931,7 +954,7 @@ class MySceneGraph {
         // entry point for graph rendering
         var length_s;
         var length_t;
-        this.through(this.root,null,null);
+        this.through(this.root, null, null);
     }
-        
+
 }

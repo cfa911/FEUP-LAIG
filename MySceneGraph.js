@@ -887,11 +887,16 @@ class MySceneGraph {
             switch (component.textures[0]) {
                 case "inherit":
                     this.tex = textureMap.get(texture);
+                    if (this.tex != null)
                     this.tex.bind();
                     break;
                 case "none":
-                    if (this.tex != null)
+                    this.tex = textureMap.get(texture);
+                    if (this.tex != null){
                         this.tex.unbind();
+                        this.tex = null;
+                        texture = this.tex;
+                    }
                     break;
                 case null:
                     if (this.tex != null)

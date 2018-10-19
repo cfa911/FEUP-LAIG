@@ -44,6 +44,8 @@
         <texture id="d_simps" file="../scenes/images/d_simpsons.jpg" />
         <texture id="folhas" file="../scenes/images/arvore.jpg"/>
         <texture id="madeira" file="../scenes/images/madeira.jpg" />
+        <texture id="wood" file="../scenes/images/wood.png" />
+        <texture id="petal" file="../scenes/images/petal.png" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -157,7 +159,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -174,7 +176,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -186,7 +188,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -198,7 +200,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -210,7 +212,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -222,7 +224,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -234,7 +236,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="face1" />
                 <componentref id="face2" />
@@ -252,7 +254,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="wood" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -316,7 +318,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="wood" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="top" />
                 <componentref id="leg1" />
@@ -641,7 +643,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="1" length_t="1" />
+            <texture id="petal" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cyl" />
             </children>

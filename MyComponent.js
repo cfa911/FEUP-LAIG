@@ -12,7 +12,9 @@ class MyComponent
         this.materials = materials;
 		this.textures = textures;
 		this.primitive = primitive;
-        this.children = children;
+		this.children = children;
+		this.display();
 	};
+	display(){}
 
 }

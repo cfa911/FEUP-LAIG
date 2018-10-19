@@ -681,7 +681,9 @@ class MySceneGraph {
                 var y1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y1');
                 var x2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x2');
                 var y2 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'y2');
-                primitivesMap.set(idPrimitive, [nodeNames[rectangleIndex], x1, y1, x2, y2]);
+                this.primitiva = new MyRectangle(this.scene, x1, y1, x2, y2);
+                this.primitiva.type = "Rectangle";
+                //primitivesMap.set(idPrimitive, [nodeNames[rectangleIndex], x1, y1, x2, y2]);
             }
             else if (triangleIndex != -1) {
                 var x1 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x1');
@@ -693,7 +695,9 @@ class MySceneGraph {
                 var x3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'x3');
                 var y3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'y3');
                 var z3 = this.reader.getFloat(primitiveChildren[triangleIndex], 'z3');
-                primitivesMap.set(idPrimitive, [nodeNames[triangleIndex], x1, y1, z1, x2, y2, z2, x3, y3, z3]);
+                this.primitiva = new MyTriangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+                this.primitiva.type = "Triangle";
+                //primitivesMap.set(idPrimitive, [nodeNames[triangleIndex], x1, y1, z1, x2, y2, z2, x3, y3, z3]);
             }
             else if (cylinderIndex != -1) {
                 var base = this.reader.getFloat(primitiveChildren[cylinderIndex], 'base');
@@ -701,21 +705,29 @@ class MySceneGraph {
                 var height = this.reader.getFloat(primitiveChildren[cylinderIndex], 'height');
                 var slices = this.reader.getInteger(primitiveChildren[cylinderIndex], 'slices');
                 var stacks = this.reader.getInteger(primitiveChildren[cylinderIndex], 'stacks');
-                primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
+                this.primitiva = new MyCylinderWTops(this.scene, base, top, height, slices, stacks);
+                this.primitiva.type = "Cylinder";
+                //primitivesMap.set(idPrimitive, [nodeNames[cylinderIndex], base, top, height, slices, stacks]);
             }
             else if (sphereIndex != -1) {
                 var base = this.reader.getFloat(primitiveChildren[sphereIndex], 'radius');
                 var slices = this.reader.getInteger(primitiveChildren[sphereIndex], 'slices');
                 var stacks = this.reader.getInteger(primitiveChildren[sphereIndex], 'stacks');
-                primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
+                this.primitiva = new MySphere(this.scene, base, slices, stacks);
+                this.primitiva.type = "Sphere";
+                //primitivesMap.set(idPrimitive, [nodeNames[sphereIndex], base, slices, stacks]);
             }
             else if (torusIndex != -1) {
                 var inner = this.reader.getFloat(primitiveChildren[torusIndex], 'inner');
                 var outer = this.reader.getFloat(primitiveChildren[torusIndex], 'outer');
                 var slices = this.reader.getInteger(primitiveChildren[torusIndex], 'slices');
                 var loops = this.reader.getInteger(primitiveChildren[torusIndex], 'loops');
-                primitivesMap.set(idPrimitive, [nodeNames[torusIndex], inner, outer, slices, loops]);
+                this.primitiva = new MyTorus(this.scene, inner, outer, slices, loops);
+                this.primitiva.type = "Torus";
+                //primitivesMap.set(idPrimitive, [nodeNames[torusIndex], inner, outer, slices, loops]);
             }
+            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1)
+                primitivesMap.set(idPrimitive, this.primitiva);
         }
         this.log("Parsed primitives");
         return null;
@@ -794,7 +806,7 @@ class MySceneGraph {
                 for (var i = 0; i < childChildren.length; i++) {
                     if (childChildren[i].nodeName == "primitiveref") {
                         var idPrim = this.reader.getString(childChildren[i], 'id');
-                        arrayPrimRef.push(idPrim);
+                        arrayPrimRef.push(primitivesMap.get(idPrim));
                     }
                     if (childChildren[i].nodeName == "componentref") {
                         var idComp = this.reader.getString(childChildren[i], 'id');
@@ -845,31 +857,31 @@ class MySceneGraph {
 
         var component = componentMap.get(node); //-> the node component
 
-            switch (component.materials) {
-                case "inherit":
-                    this.mat = material;
-                    this.mat.apply();
-                    break;
-                case "none":
-                    material = new CGFappearance(this.scene);
-                    material.setEmission(0, 0, 0, 0);
-                    material.setAmbient(0, 0, 0, 0);
-                    material.setDiffuse(0, 0, 0, 0);
-                    material.setSpecular(0, 0, 0, 0);
-                    material.setShininess(10);
-                    this.mat = material;
-                    this.mat.apply();
-                    break;
-                case null:
-                    break;
-                default:
-                    material = materialsMap.get(component.materials);
-                    this.mat = material;
-                    this.mat.apply();
-                    break;
+        switch (component.materials) {
+            case "inherit":
+                this.mat = material;
+                this.mat.apply();
+                break;
+            case "none":
+                material = new CGFappearance(this.scene);
+                material.setEmission(0, 0, 0, 0);
+                material.setAmbient(0, 0, 0, 0);
+                material.setDiffuse(0, 0, 0, 0);
+                material.setSpecular(0, 0, 0, 0);
+                material.setShininess(10);
+                this.mat = material;
+                this.mat.apply();
+                break;
+            case null:
+                break;
+            default:
+                material = materialsMap.get(component.materials);
+                this.mat = material;
+                this.mat.apply();
+                break;
 
-            }
-        
+        }
+
 
         if (component.textures != null) {
             switch (component.textures[0]) {
@@ -914,14 +926,25 @@ class MySceneGraph {
         this.scene.multMatrix(component.transformations);
 
 
-
         for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
             this.scene.pushMatrix();
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
+                var object = componentMap.get(node).primitive[j];
+               object.display();
+            }
+            if (componentMap.get(node).children[i] != null)
+                this.through(componentMap.get(node).children[i], texture, material);
+            this.scene.popMatrix();
+        }
+        /*
+        for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
+            this.scene.pushMatrix();
+ 
+            for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = primitivesMap.get(componentMap.get(node).primitive[j]);
                 if (object[0] == "rectangle") {
-
+ 
                     this.primitiva = new MyRectangle(this.scene, object[1], object[2], object[3], object[4]);
                 }
                 else if (object[0] == "triangle") {
@@ -941,8 +964,10 @@ class MySceneGraph {
             if (componentMap.get(node).children[i] != null)
                 this.through(componentMap.get(node).children[i], texture, material);
             this.scene.popMatrix();
+            
         }
-
+ 
+        */
         //TODO: Render loop starting at root of graph 
 
     }

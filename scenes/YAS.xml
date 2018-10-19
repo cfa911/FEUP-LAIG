@@ -93,6 +93,9 @@
         <primitive id="cyl">
             <cylinder base="1" top="1" height="0.1" slices="30" stacks="30" />
         </primitive>
+        <primitive id="cone">
+            <cylinder base="0.5" top="0" height="1" slices="30" stacks="30" />
+        </primitive>
         <primitive id="sph">
             <sphere radius="2" slices="30" stacks="30" />
         </primitive>
@@ -108,7 +111,10 @@
                 <componentref id="tree2" />
                 <componentref id="tree3" />
                 <componentref id="floor" />
-                <componentref id="flor" />
+                <componentref id="flor1" />
+                <componentref id="flor2" />
+                <componentref id="flor3" />
+                <componentref id="cone" />
             </children>
         </component>
         <component id="face1">
@@ -712,9 +718,9 @@
                 <componentref id="pet1" />
             </children>
         </component>
-        <component id="flor">
+        <component id="flor1">
             <transformation>
-                <translate x="9" y="2.5" z="11" />
+                <translate x="6" y="1.5" z="13" />
             </transformation>
             <materials>
                 <material id="metal" />
@@ -730,6 +736,44 @@
                 <componentref id="pet6" />
                 <componentref id="pet7" />
                 <componentref id="raiz" />
+            </children>
+        </component>
+        <component id="flor2">
+            <transformation>
+                <translate x="-1.5" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="flor1" />
+            </children>
+        </component>
+        <component id="flor3">
+            <transformation>
+                <translate x="1.5" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="flor1" />
+            </children>
+        </component>
+        <component id="cone">
+            <transformation>
+                <scale x="2" y="4.5" z="2" />
+                <translate x="5" y="0" z="6" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cone" />
             </children>
         </component>
     </components>

@@ -103,15 +103,12 @@
                 <translate x="0" y="0" z="0" />
             </transformation>
             <children>
-                <componentref id="table" />
-                <componentref id="chair1" />
-                <componentref id="chair2" />
-                <componentref id="donut_plate1" />
-                <componentref id="donut_plate2" />
-                <componentref id="donut_plate3" />
-                <componentref id="donut_plate4" />
-                <componentref id="tree" />
+                <componentref id="table_w_food" />
+                <componentref id="tree1" />
+                <componentref id="tree2" />
+                <componentref id="tree3" />
                 <componentref id="floor" />
+                <componentref id="flor" />
             </children>
         </component>
         <component id="face1">
@@ -154,7 +151,7 @@
             <!-- do tipo escalamento violem esta regra. -->
             <!-- Nao e' necessario aplicar fatores de escala em -->
             <!-- quadricas (esfera, cilindro...) -->
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <!-- bloco "children" obrigatorio num "component" -->
             <children>
                 <!-- deve existir uma ou mais tags "componentref" e/ou -->
@@ -171,7 +168,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -183,7 +180,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -195,7 +192,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -207,7 +204,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -219,7 +216,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="rect" />
             </children>
@@ -231,7 +228,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="face1" />
                 <componentref id="face2" />
@@ -249,7 +246,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -262,7 +259,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -275,7 +272,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -288,7 +285,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -301,7 +298,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -482,17 +479,94 @@
                 <primitiveref id="sph" />
             </children>
         </component>
-        <component id="tree">
+        <component id="tree1">
             <transformation>
-                <translate x="0.5" y="0" z="6" />
+                <translate x="1" y="0" z="6" />
             </transformation>
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="tronco" />
                 <componentref id="parte_cima" />
+            </children>
+        </component>
+        <component id="tree2">
+            <transformation>
+                <translate x="0" y="0" z="-4" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="none" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="tree1" />
+            </children>
+        </component>
+        <component id="sph1">
+            <transformation>
+                <translate x="0" y="0" z="-4" />
+                <scale x="1.3" y="1.3" z="1.3" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <texture id="folhas" length_s="1" length_t="0" />
+            <children>
+                <primitiveref id="sph" />
+            </children>
+        </component>
+        <component id="sph2">
+            <transformation>
+                <translate x="1" y="-0.5" z="-3" />
+                <scale x="1.2" y="1.2" z="1.2" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <texture id="folhas" length_s="1" length_t="0" />
+            <children>
+                <primitiveref id="sph" />
+            </children>
+        </component>
+        <component id="parte_cima_maior">
+            <transformation>
+                <translate x="5" y="7" z="-3.5" />
+                <rotate axis="y" angle="90"/>
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="folhas" length_s="1" length_t="0" />
+            <children>
+                <componentref id="sph1" />
+                <componentref id="sph2" />
+            </children>
+        </component>
+        <component id="tronco2">
+            <transformation>
+                <translate x="1" y="0" z="-9" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="tronco" />
+            </children>
+        </component>
+        <component id="tree3">
+            <transformation>
+                <translate x="1" y="0" z="6" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <texture id="folhas" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="tronco2" />
+                <componentref id="parte_cima_maior" />
             </children>
         </component>
         <component id="floor">
@@ -507,6 +581,155 @@
             <texture id="relva" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="table_w_food">
+            <transformation>
+                <translate x="5" y="0" z="4" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="table" />
+                <componentref id="chair1" />
+                <componentref id="chair2" />
+                <componentref id="donut_plate1" />
+                <componentref id="donut_plate2" />
+                <componentref id="donut_plate3" />
+                <componentref id="donut_plate4" />
+            </children>
+        </component>
+        <component id="centro">
+            <transformation>
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="raiz">
+            <transformation>
+                <translate x="0" y="-0.2" z="0" />
+                <rotate axis="x" angle="90" />
+                <scale x="0.05" y="0.05" z="17" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="pet1">
+            <transformation>
+                <translate x="0" y="0.4" z="0" />
+                <scale x="0.15" y="0.25" z="0.25" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="pet2">
+            <transformation>
+                <rotate axis="z" angle="51" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="pet3">
+            <transformation>
+                <rotate axis="z" angle="102" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="pet4">
+            <transformation>
+                <rotate axis="z" angle="153" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="pet5">
+            <transformation>
+                <rotate axis="z" angle="204" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="pet6">
+            <transformation>
+                <rotate axis="z" angle="255" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="pet7">
+            <transformation>
+                <rotate axis="z" angle="306" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="pet1" />
+            </children>
+        </component>
+        <component id="flor">
+            <transformation>
+                <translate x="9" y="2.5" z="11" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="1st" length_s="1" length_t="1" />
+            <children>
+                <componentref id="centro" />
+                <componentref id="pet1" />
+                <componentref id="pet2" />
+                <componentref id="pet3" />
+                <componentref id="pet4" />
+                <componentref id="pet5" />
+                <componentref id="pet6" />
+                <componentref id="pet7" />
+                <componentref id="raiz" />
             </children>
         </component>
     </components>

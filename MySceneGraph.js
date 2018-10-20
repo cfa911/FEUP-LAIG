@@ -792,7 +792,7 @@ class MySceneGraph {
                 var materialChilds = materials[k].children;
                 for (var i = 0; i < materialChilds.length; i++) {
                     var idMat = this.reader.getString(materialChilds[i], 'id');
-                    compo.materials = idMat;
+                    compo.materials.push(idMat);
                 }
             }
             for (var k = 0; k < textures.length; k++) {
@@ -856,31 +856,40 @@ class MySceneGraph {
 
 
         var component = componentMap.get(node); //-> the node component
+        var material_aux = component.materials;
+        switch (material_aux[v]) {
+                case "inherit":
+                    this.mat = materialsMap.get(material[v]);
+                    this.mat.apply();
+                    break;
+                case "none":
+                    material = [];
+                    material.push("none");
+                    if(!materialsMap.get("none")){
+                    this.mat = new CGFappearance(this.scene);
+                    this.mat.setEmission(0, 0, 0, 0);
+                    this.mat.setAmbient(0, 0, 0, 0);
+                    this.mat.setDiffuse(0, 0, 0, 0);
+                    this.mat.setSpecular(0, 0, 0, 0);
+                    this.mat.setShininess(10);
+                    materialsMap.set("none", this.mat);
+                    }
+                    else{
+                        this.mat = materialsMap.get(material[0]);
+                        this.mat.apply();
+                    }
+                    break;
+                case null:
+                    break;
+                case undefined:
+                    break;
+                default:
+                    material = component.materials;
+                    this.mat = materialsMap.get(material[v]);
+                    this.mat.apply();
+                    break;
 
-        switch (component.materials) {
-            case "inherit":
-                this.mat = material;
-                this.mat.apply();
-                break;
-            case "none":
-                material = new CGFappearance(this.scene);
-                material.setEmission(0, 0, 0, 0);
-                material.setAmbient(0, 0, 0, 0);
-                material.setDiffuse(0, 0, 0, 0);
-                material.setSpecular(0, 0, 0, 0);
-                material.setShininess(10);
-                this.mat = material;
-                this.mat.apply();
-                break;
-            case null:
-                break;
-            default:
-                material = materialsMap.get(component.materials);
-                this.mat = material;
-                this.mat.apply();
-                break;
-
-        }
+            }
 
 
         if (component.textures != null) {
@@ -888,11 +897,11 @@ class MySceneGraph {
                 case "inherit":
                     this.tex = textureMap.get(texture);
                     if (this.tex != null)
-                    this.tex.bind();
+                        this.tex.bind();
                     break;
                 case "none":
                     this.tex = textureMap.get(texture);
-                    if (this.tex != null){
+                    if (this.tex != null) {
                         this.tex.unbind();
                         this.tex = null;
                         texture = this.tex;
@@ -936,7 +945,7 @@ class MySceneGraph {
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = componentMap.get(node).primitive[j];
-               object.display();
+                object.display();
             }
             if (componentMap.get(node).children[i] != null)
                 this.through(componentMap.get(node).children[i], texture, material);
@@ -984,7 +993,7 @@ class MySceneGraph {
         // entry point for graph rendering
         var length_s;
         var length_t;
-        this.through(this.root, null, null);
+        this.through(this.root, "none",["none"]);
     }
 
 }

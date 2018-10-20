@@ -40,7 +40,9 @@ class MyInterface extends CGFinterface {
 
         group.add(this, 'currentCameraId', cameraIdArray).name('Camera').onChange(val => this.scene.selectView(val));
     }
-
+    isKeyPressed(keyCode) {
+		return this.activeKeys[keyCode] || false;
+	}
 
     addLightsGroup(lights) {
 

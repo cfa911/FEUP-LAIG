@@ -1,5 +1,5 @@
 var DEGREE_TO_RAD = Math.PI / 180;
-
+var v = 0;
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */

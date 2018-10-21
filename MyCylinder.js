@@ -20,15 +20,14 @@ class MyCylinder extends CGFobject
         this.minT = minT;
         this.maxT = maxT;
 
-        this.h = this.height / this.stacks;
+        this.deltaH = this.height / this.stacks;
         this.delta = (this.top - this.base) / this.stacks;
+
 		this.initBuffers();
 	};
 
 	initBuffers()
 	{
-        var i, ang_og;
-
         this.vertices = [];
         this.indices = [];
         this.normals = [];
@@ -37,33 +36,41 @@ class MyCylinder extends CGFobject
         var ang = 2*Math.PI / this.slices;
         var i, j;
 
-        var inc = this.base;
         //Filling Vertices, normals and texCoords
         
         for(i = 0; i <= this.stacks; i++)
         {
+            var inc = (i * this.delta) + this.base;
+
             for(j = 0; j <= this.slices; j++)
             {
 
-                this.vertices.push(inc * Math.cos(j * ang),inc * Math.sin(j * ang), i * this.h);
+                this.vertices.push(inc * Math.cos(j * ang),inc * Math.sin(j * ang), i * this.deltaH);
                 this.normals.push(Math.cos(j * ang), Math.sin(j * ang), Math.atan((this.base - this.top) / this.height));
                 this.texCoords.push(this.minS + j * (this.maxS - this.minS) / this.slices,
                 this.minT + i * (this.maxT - this.minT) / this.stacks);
             }
-
-            inc = (i+1) * this.delta + this.base;
+            
         }
+    
 
-        //Filling Indexs
-
-        for(i = 0; i <= this.stacks * this.slices -1 - this.slices; i++)
+        var sides = this.slices +1;
+    
+        for (var j = 0; j < this.stacks; j++)
         {
-            this.indices.push(i, i + this.slices, i + this.slices - 1);
-            this.indices.push(i, i + this.slices - 1, i + this.slices);
-            this.indices.push(i, i + 1, i + this.slices);
-            this.indices.push(i, i + this.slices, i + 1);
+            for (var i = 0; i < this.slices; i++)
+            {
+    
+                this.indices.push(sides*j+i, sides*(j+1)+i, sides*j+i+1);
+                this.indices.push(sides*j+i+1, sides*(j+1)+i, sides*(j+1)+i+1);
+    
+                this.indices.push(sides*j+i, sides*j+i+1, sides*(j+1)+i);
+                this.indices.push(sides*j+i+1, sides*(j+1)+i+1, sides*(j+1)+i);
+    
+            }
+    
         }
-
+        
 		this.primitiveType=this.scene.gl.TRIANGLES;
 
 		this.initGLBuffers();

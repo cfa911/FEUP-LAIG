@@ -46,6 +46,8 @@
         <texture id="madeira" file="../scenes/images/madeira.jpg" />
         <texture id="wood" file="../scenes/images/wood.png" />
         <texture id="petal" file="../scenes/images/petal.png" />
+        <texture id="pratos" file="../scenes/images/prato.jpg" />
+        <texture id="rochas" file="../scenes/images/toCone.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -118,6 +120,7 @@
                 <componentref id="tree1" />
                 <componentref id="tree2" />
                 <componentref id="tree3" />
+                <componentref id="tree4" />
                 <componentref id="floor" />
                 <componentref id="flor1" />
                 <componentref id="flor2" />
@@ -260,7 +263,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="wood" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -273,7 +276,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -286,7 +289,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -299,7 +302,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -312,7 +315,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="none" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -324,7 +327,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="wood" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="top" />
                 <componentref id="leg1" />
@@ -341,7 +344,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -354,7 +357,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="madeira" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -366,7 +369,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="base_chair" />
                 <componentref id="tamp_chair" />
@@ -380,7 +383,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="base_chair" />
                 <componentref id="tamp_chair" />
@@ -409,7 +412,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="pratos" length_s="0.1" length_t="0.1" />
             <children>
                 <primitiveref id="cyl" />
             </children>
@@ -421,7 +424,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="donut" />
                 <componentref id="plate" />
@@ -434,7 +437,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="donut" />
                 <componentref id="plate" />
@@ -447,7 +450,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="donut" />
                 <componentref id="plate" />
@@ -460,7 +463,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="donut" />
                 <componentref id="plate" />
@@ -518,69 +521,28 @@
                 <componentref id="tree1" />
             </children>
         </component>
-        <component id="sph1">
-            <transformation>
-                <translate x="0" y="0" z="-4" />
-                <scale x="1.3" y="1.3" z="1.3" />
-            </transformation>
-            <materials>
-                <material id="none" />
-            </materials>
-            <texture id="folhas" length_s="1" length_t="0" />
-            <children>
-                <primitiveref id="sph" />
-            </children>
-        </component>
-        <component id="sph2">
-            <transformation>
-                <translate x="1" y="-0.5" z="-3" />
-                <scale x="1.2" y="1.2" z="1.2" />
-            </transformation>
-            <materials>
-                <material id="none" />
-            </materials>
-            <texture id="folhas" length_s="1" length_t="0" />
-            <children>
-                <primitiveref id="sph" />
-            </children>
-        </component>
-        <component id="parte_cima_maior">
-            <transformation>
-                <translate x="5" y="7" z="-3.5" />
-                <rotate axis="y" angle="90"/>
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="folhas" length_s="1" length_t="0" />
-            <children>
-                <componentref id="sph1" />
-                <componentref id="sph2" />
-            </children>
-        </component>
-        <component id="tronco2">
-            <transformation>
-                <translate x="1" y="0" z="-9" />
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
-            <children>
-                <componentref id="tronco" />
-            </children>
-        </component>
         <component id="tree3">
             <transformation>
-                <translate x="1" y="0" z="6" />
+                <translate x="0" y="0" z="-8" />
             </transformation>
             <materials>
-                <material id="none" />
+                <material id="metal" />
             </materials>
-            <texture id="folhas" length_s="0.1" length_t="0.1" />
+            <texture id="none" length_s="0.1" length_t="0.1" />
             <children>
-                <componentref id="tronco2" />
-                <componentref id="parte_cima_maior" />
+                <componentref id="tree1" />
+            </children>
+        </component>
+        <component id="tree4">
+            <transformation>
+                <translate x="4" y="0" z="-10" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="none" length_s="0.1" length_t="0.1" />
+            <children>
+                <componentref id="tree1" />
             </children>
         </component>
         <component id="floor">
@@ -729,7 +691,7 @@
         </component>
         <component id="flor1">
             <transformation>
-                <translate x="6" y="1.5" z="13" />
+                <translate x="6" y="2" z="13" />
             </transformation>
             <materials>
                 <material id="metal" />
@@ -780,7 +742,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="1st" length_s="1" length_t="1" />
+            <texture id="rochas" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cone" />
             </children>

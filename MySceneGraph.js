@@ -48,7 +48,7 @@ class MySceneGraph {
          * After the file is read, the reader calls onXMLReady on this object.
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
-
+        this.change = 0;
         this.reader.open('scenes/' + filename, this);
     }
 
@@ -857,9 +857,9 @@ class MySceneGraph {
 
         var component = componentMap.get(node); //-> the node component
         var material_aux = component.materials;
-        switch (material_aux[v]) {
+        switch (material_aux[0]) {
                 case "inherit":
-                    this.mat = materialsMap.get(material[v]);
+                    this.mat = materialsMap.get(material[this.change % material.length]);
                     this.mat.apply();
                     break;
                 case "none":
@@ -875,7 +875,7 @@ class MySceneGraph {
                     materialsMap.set("none", this.mat);
                     }
                     else{
-                        this.mat = materialsMap.get(material[0]);
+                        this.mat = materialsMap.get(material[this.change % material.length]);
                         this.mat.apply();
                     }
                     break;
@@ -885,7 +885,7 @@ class MySceneGraph {
                     break;
                 default:
                     material = component.materials;
-                    this.mat = materialsMap.get(material[v]);
+                    this.mat = materialsMap.get(material[this.change % material.length]);
                     this.mat.apply();
                     break;
 
@@ -991,8 +991,6 @@ class MySceneGraph {
     displayScene() {
         //-> materials, textures.
         // entry point for graph rendering
-        var length_s;
-        var length_t;
         this.through(this.root, "none",["none"]);
     }
 

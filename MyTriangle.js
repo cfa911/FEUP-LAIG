@@ -40,11 +40,24 @@ class MyTriangle extends CGFobject
 
             ];
 
+        var p1ap3 = Math.sqrt((this.p1[0] - this.p3[0]) * (this.p1[0] - this.p3[0]) +
+			 		   (this.p1[1] - this.p3[1]) * (this.p1[1] - this.p3[1]) +
+			 		   (this.p1[2] - this.p3[2]) * (this.p1[2] - this.p3[2]));
+
+	    var p2ap1 = Math.sqrt((this.p2[0] - this.p1[0]) * (this.p2[0] - this.p1[0]) +
+			 		   (this.p2[1] - this.p1[1]) * (this.p2[1] - this.p1[1]) +
+			 		   (this.p2[2] - this.p1[2]) * (this.p2[2] - this.p1[2]));
+
+	    var p3ap2 = Math.sqrt((this.p3[0] - this.p2[0]) * (this.p3[0] - this.p2[0]) +
+			 		   (this.p3[1] - this.p2[1]) * (this.p3[1] - this.p2[1]) +
+                        (this.p3[2] - this.p2[2]) * (this.p3[2] - this.p2[2]));
+            
+        var beta = Math.acos(( p3ap2 * p3ap2 - p1ap3 * p1ap3 + p2ap1 * p2ap1) / (2 * p3ap2 * p2ap1));
+
         this.textCoords = [
-        0, 1,
-        1, 1,
         0, 0,
-        1, 0
+        p2ap1 / 1, 0,
+        (p2ap1 - p3ap2 * Math.cos(beta)) / 1, (p3ap2 * Math.sin(beta)) / 1,
 
         ];
 

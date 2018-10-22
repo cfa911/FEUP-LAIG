@@ -126,7 +126,6 @@
                 <componentref id="flor2" />
                 <componentref id="flor3" />
                 <componentref id="cone" />
-                <componentref id="triangulo" />
             </children>
         </component>
         <component id="face1">
@@ -746,19 +745,6 @@
             <texture id="rochas" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cone" />
-            </children>
-        </component>
-        <component id="triangulo">
-            <transformation>
-                <scale x="2" y="2" z="2" />
-                <translate x="0.5" y="0.5" z="0" />
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="none" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="tri" />
             </children>
         </component>
     </components>

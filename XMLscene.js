@@ -35,13 +35,13 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.sphere = new MySphere(this, 0.1, 15, 15);
-        this.quad = new MyTriangle(this,-0.5, -0.5, 0, 0.5, -0.5, 0, -0.5, 0.5, 0);
+        this.quad = new MyCylinderWTops(this, 1, 2, 5, 20, 20);
 
         this.t = new CGFappearance(this);
 		this.t.setAmbient(0.1, 0.1, 0.1, 1);
 		this.t.setDiffuse(0.5, 0.5, 0.5, 1);
 		this.t.setSpecular(0, 0, 0, 1);
-        this.t.loadTexture("../scenes/images/trunk-image.jpg");
+        this.t.loadTexture("../scenes/images/bank.jpg");
     }
 
     /**
@@ -177,6 +177,17 @@ class XMLscene extends CGFscene {
             }
 
             // Displays the scene (MySceneGraph function).
+            /*this.pushMatrix();
+                this.scale(10,10,10);
+                this.translate(1, 1.5, 1);
+                this.rotate(-Math.PI / 3, 1, 0, 0);
+                this.t.apply();
+                this.sphere.display();
+            this.popMatrix();
+
+            this.pushMatrix();
+                this.quad.display();
+            this.popMatrix();*/
             this.graph.displayScene();
         }
         else {

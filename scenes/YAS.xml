@@ -126,6 +126,7 @@
                 <componentref id="flor2" />
                 <componentref id="flor3" />
                 <componentref id="cone" />
+                <componentref id="triangulo" />
             </children>
         </component>
         <component id="face1">
@@ -289,7 +290,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -302,7 +303,7 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="madeira" length_s="0.1" length_t="0.1" />
+            <texture id="inherit" length_s="0.1" length_t="0.1" />
             <children>
                 <componentref id="cubo" />
             </children>
@@ -477,6 +478,7 @@
             </transformation>
             <materials>
                 <material id="metal" />
+                <material id="green" />
             </materials>
             <texture id="1st" length_s="0.1" length_t="0.1" />
             <children>
@@ -745,6 +747,18 @@
             <texture id="rochas" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="cone" />
+            </children>
+        </component>
+        <component id="triangulo">
+            <transformation>
+                <translate x="5" y="0" z="6" />
+            </transformation>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="rochas" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="tri" />
             </children>
         </component>
     </components>

@@ -34,14 +34,13 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.sphere = new MySphere(this, 0.1, 15, 15);
-        this.quad = new MyCylinderWTops(this, 1, 2, 5, 20, 20);
+        this.quad = new MyTriangle(this, -0.5, -0.5, 0, 0.5, -0.5, 0, -0.5, 0.5, 0);
 
         this.t = new CGFappearance(this);
 		this.t.setAmbient(0.1, 0.1, 0.1, 1);
 		this.t.setDiffuse(0.5, 0.5, 0.5, 1);
 		this.t.setSpecular(0, 0, 0, 1);
-        this.t.loadTexture("../scenes/images/bank.jpg");
+        this.t.loadTexture("../scenes/images/wood.png");
     }
 
     /**
@@ -183,11 +182,13 @@ class XMLscene extends CGFscene {
                 this.rotate(-Math.PI / 3, 1, 0, 0);
                 this.t.apply();
                 this.sphere.display();
-            this.popMatrix();
+            this.popMatrix();*/
 
             this.pushMatrix();
+                this.t.apply();
                 this.quad.display();
-            this.popMatrix();*/
+            this.popMatrix();
+
             this.graph.displayScene();
         }
         else {

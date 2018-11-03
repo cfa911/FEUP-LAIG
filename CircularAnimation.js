@@ -1,6 +1,6 @@
 class CircularAnimation extends Animation{
 
-    constructor(scene, id, center, radius, AngInicial, AngRotate, time) {
+    constructor(scene, id, time, center, radius, AngInicial, AngRotate) {
 
         super(scene, id, speed);
 

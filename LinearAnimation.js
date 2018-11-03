@@ -1,6 +1,6 @@
 class LinearAnimation extends Animation{
 
-    constructor(scene, id, controlPts, time) {
+    constructor(scene, id, time, controlPts) {
 
         super(scene, id, speed);
 

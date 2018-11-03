@@ -6,6 +6,9 @@
 
  class MyTorus extends CGFobject
  {
+	 // a textura ainda ta dentro do construtor e tbm fora
+	 // precisamos de no reunir pra ver isso
+	 
     constructor(scene, inner, outer, slices, loops)
     {
         super(scene);
@@ -72,6 +75,24 @@
         }
         this.primitiveType = this.scene.gl.TRIANGLES;
  	    this.initGLBuffers();
-    };
+	};
+	
+	setTexture(ls, lt){
+
+		this.ls = ls;
+		this.lt = lt;
+
+		for (var i = 0; i <= this.loops; i++) {
+
+			for (var j = 0; j <= this.slices; j++) {
+
+				var s = ls - (i / this.loops);
+				var t = lt - (j / this.slices);
+
+				this.texCoords.push(s, t);
+			}
+		}
+
+	};
         
 };

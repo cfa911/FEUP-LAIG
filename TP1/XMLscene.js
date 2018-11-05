@@ -37,10 +37,11 @@ class XMLscene extends CGFscene {
         this.quad = new MyTriangle(this, -0.5, -0.5, 0, 0.5, -0.5, 0, -0.5, 0.5, 0);
 
         this.t = new CGFappearance(this);
-		this.t.setAmbient(0.1, 0.1, 0.1, 1);
+		this.t.setAmbient(0.4, 0.1, 0.1, 1);
 		this.t.setDiffuse(0.5, 0.5, 0.5, 1);
-		this.t.setSpecular(0, 0, 0, 1);
+		this.t.setSpecular(1, 1, 1, 1);
         this.t.loadTexture("../scenes/images/wood.png");
+        this.text = new CGFtexture(this,"../scenes/images/d_simpsons.jpg");
     }
 
     /**
@@ -186,6 +187,7 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
                 this.t.apply();
+                this.text.bind();
                 this.quad.display();
             this.popMatrix();
 

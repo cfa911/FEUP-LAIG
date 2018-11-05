@@ -50,19 +50,17 @@ class MyTriangle extends CGFobject
         var cosBeta = (Math.pow(a,2) - Math.pow(b,2) + Math.pow(c,2)) / (2*a*c);
         var v = a*Math.sin(Math.acos(cosBeta));
 
-        /*this.textCoords = [
+        this.texCoords = [
             c - a*cosBeta, v - a*Math.sin(Math.acos(cosBeta)),
-            v, 0,
-            c, v,
-        ];*/
+            0, 1,
+            c, 1,
+        ];
 
-        this.textCoords = [
+        /*this.texCoords = [
             0, v,
             c, v,
             c - a*cosBeta, v-a*Math.sin(Math.acos(cosBeta)),
-    
-            ];
-    
+            ];*/
 
         // vector U = p2 - p1
         // vector V = p3 - p1
@@ -84,5 +82,20 @@ class MyTriangle extends CGFobject
     }
     changeLength(length_s,length_t){
 
+        this.length_s = length_s;
+        this.length_t = length_t;
+
+        var a = Math.sqrt( Math.pow((this.x1-this.x3),2) +  Math.pow((this.y1-this.y3),2) +  Math.pow((this.z1-this.z3),2) );
+        var b = Math.sqrt( Math.pow((this.x2-this.x1),2) +  Math.pow((this.y2-this.y1),2) +  Math.pow((this.z2-this.z1),2) );
+        var c = (Math.sqrt( Math.pow((this.x3-this.x2),2) +  Math.pow((this.y3-this.y2),2) +  Math.pow((this.z3-this.z2),2) )) * length_s;
+
+        var cosBeta = (Math.pow(a,2) - Math.pow(b,2) + Math.pow(c,2)) / (2*a*c);
+        var v = (a*Math.sin(Math.acos(cosBeta))) * length_t;
+
+        this.texCoords = [
+            c - a*cosBeta, v - a*Math.sin(Math.acos(cosBeta)),
+            0, 1,
+            c, 1,
+        ];
     }
 }

@@ -897,8 +897,6 @@ class MySceneGraph {
             switch (component.textures[0]) {
                 case "inherit":
                     this.tex = textureMap.get(texture[0]);
-                    if (this.tex != null)
-                        this.tex.bind();
                     break;
                 case "none":
                     this.tex = textureMap.get(texture);
@@ -917,7 +915,6 @@ class MySceneGraph {
                 default:
                     texture = component.textures;
                     this.tex = textureMap.get(texture[0]);
-                    this.tex.bind();
                     break;
 
             }
@@ -950,6 +947,8 @@ class MySceneGraph {
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = componentMap.get(node).primitive[j];
+                if(this.tex != null)
+                this.tex.bind();
                 object.changeLength(length_s,length_t);
                 object.display();
             }
@@ -995,8 +994,6 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //-> materials, textures.
-        // entry point for graph rendering
         this.through(this.root, "none",["none"]);
     }
 

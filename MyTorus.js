@@ -77,7 +77,7 @@
  	    this.initGLBuffers();
 	};
 	
-	changeLength(ls, lt){
+	changeLength(ls, lt){/*
 
 		this.ls = ls;
 		this.lt = lt;
@@ -91,7 +91,7 @@
 
 				this.texCoords.push(s, t);
 			}
-		}
+		}*/
 
 	};
         

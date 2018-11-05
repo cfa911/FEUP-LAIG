@@ -75,7 +75,7 @@ class MyCylinder extends CGFobject
 		this.initGLBuffers();
     };
     
-    changeLength(length_s, length_t) {
+    changeLength(length_s, length_t) {/*
 
         this.length_s = length_s;
 		this.length_t = length_t;
@@ -88,6 +88,6 @@ class MyCylinder extends CGFobject
             }    
         }
 
-        this.updateTexCoordsGLBuffers();
+        this.updateTexCoordsGLBuffers();*/
     }
 };

@@ -38,8 +38,8 @@
      }
     };
     changeLength(length_s,length_t) {
-        this.tamp.changeLength(length_s,length_t);
-        this.cyl.changeLength(length_s,length_t);
+        //this.tamp.changeLength(length_s,length_t);
+        //this.cyl.changeLength(length_s,length_t);
         //this.updateTexCoordsGLBuffers();
 	};
  };

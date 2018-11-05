@@ -82,7 +82,7 @@ class MyDisk extends CGFobject
     
     changeLength(length_s, length_t) {
 
-        this.length_s = length_s;
+        /*this.length_s = length_s;
         this.length_t = length_t;
 
         var ang = 2*Math.PI / this.slices;
@@ -96,6 +96,6 @@ class MyDisk extends CGFobject
         }
 
         this.texCoords.push(0.5,0.5);
-        this.updateTexCoordsGLBuffers();
+        this.updateTexCoordsGLBuffers();*/
     }
 };

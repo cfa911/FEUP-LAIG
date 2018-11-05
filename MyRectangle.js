@@ -53,5 +53,21 @@ class MyRectangle extends CGFobject
 
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
-    }
+	}
+	changeLength(length_s,length_t) {
+
+		this.length_s = length_s;
+		this.length_t = length_t;
+	
+		this.texCoords = [
+			0, (this.y1 - this.y2) / this.length_t,
+			(this.x2- this.x1) / this.length_s, (this.y1 - this.y2) / this.length_t,
+			0, 0,
+			(this.x2- this.x1) / this.length_s, 0,
+		];
+	
+		this.setTex = true;
+	
+		this.updateTexCoordsGLBuffers();
+	};
 }

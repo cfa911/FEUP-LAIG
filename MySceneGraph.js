@@ -854,12 +854,13 @@ class MySceneGraph {
     }
     through(node, texture, material) {
 
-
+        var length_s = 1;
+        var length_t = 1;
         var component = componentMap.get(node); //-> the node component
         var material_aux = component.materials;
         switch (material_aux[0]) {
                 case "inherit":
-                    this.mat = materialsMap.get(material[this.change % material.length]);
+                    this.mat = materialsMap.get(materialtthis.change % material.length]);
                     this.mat.apply();
                     break;
                 case "none":
@@ -895,7 +896,7 @@ class MySceneGraph {
         if (component.textures != null) {
             switch (component.textures[0]) {
                 case "inherit":
-                    this.tex = textureMap.get(texture);
+                    this.tex = textureMap.get(texture[0]);
                     if (this.tex != null)
                         this.tex.bind();
                     break;
@@ -904,7 +905,9 @@ class MySceneGraph {
                     if (this.tex != null) {
                         this.tex.unbind();
                         this.tex = null;
-                        texture = this.tex;
+                        texture[0] = this.tex;
+                        texture[1] = component.textures[1];
+                        texture[2] = component.textures[2];
                     }
                     break;
                 case null:
@@ -912,12 +915,14 @@ class MySceneGraph {
                         this.tex.unbind();
                     break;
                 default:
-                    texture = component.textures[0];
-                    this.tex = textureMap.get(texture);
+                    texture = component.textures;
+                    this.tex = textureMap.get(texture[0]);
                     this.tex.bind();
                     break;
 
             }
+            length_s = texture[1];
+            length_t = texture[2];
         }
         /*
         if(component.textures == "inherit")
@@ -945,6 +950,7 @@ class MySceneGraph {
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = componentMap.get(node).primitive[j];
+                object.changeLength(length_s,length_t);
                 object.display();
             }
             if (componentMap.get(node).children[i] != null)

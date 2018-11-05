@@ -72,4 +72,7 @@ class MySphere extends CGFobject
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
 	 };
+	 changeLength(length_s,length_t) {
+
+	};
 	};

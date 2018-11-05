@@ -72,7 +72,22 @@ class MyCylinder extends CGFobject
         }
         
 		this.primitiveType=this.scene.gl.TRIANGLES;
-
 		this.initGLBuffers();
-	};
+    };
+    
+    changeLength(length_s, length_t) {
+
+        this.length_s = length_s;
+		this.length_t = length_t;
+    
+        for(var i = 0; i <= this.stacks; i++)
+        {
+            for(var j = 0; j <= this.slices; j++)
+            {
+               this.texCoords.push(j * length_s / this.slices, i * length_t / this.stacks);
+            }    
+        }
+
+        this.updateTexCoordsGLBuffers();
+    }
 };

@@ -860,7 +860,7 @@ class MySceneGraph {
         var material_aux = component.materials;
         switch (material_aux[0]) {
                 case "inherit":
-                    this.mat = materialsMap.get(materialtthis.change % material.length]);
+                    this.mat = materialsMap.get(materialtthis.change % material.length);
                     this.mat.apply();
                     break;
                 case "none":

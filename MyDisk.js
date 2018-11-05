@@ -78,5 +78,24 @@ class MyDisk extends CGFobject
 		this.primitiveType=this.scene.gl.TRIANGLES;
 		
 		this.initGLBuffers();
-	};
+    };
+    
+    changeLength(length_s, length_t) {
+
+        this.length_s = length_s;
+        this.length_t = length_t;
+
+        var ang = 2*Math.PI / this.slices;
+        
+        for(var j = 0; j < this.slices; j++)
+        {
+           var x = Math.cos(j * ang);
+           var y = Math.sin(j * ang);
+
+            this.texCoords.push(x / 2 + 0.5, - y / 2 + 0.5);
+        }
+
+        this.texCoords.push(0.5,0.5);
+        this.updateTexCoordsGLBuffers();
+    }
 };

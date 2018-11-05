@@ -77,7 +77,7 @@
  	    this.initGLBuffers();
 	};
 	
-	setTexture(ls, lt){
+	changeLength(ls, lt){
 
 		this.ls = ls;
 		this.lt = lt;

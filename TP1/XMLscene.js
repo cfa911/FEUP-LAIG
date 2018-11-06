@@ -33,15 +33,6 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.axis = new CGFaxis(this);
-        this.quad = new MyTriangle(this, -0.5, -0.5, 0, 0.5, -0.5, 0, -0.5, 0.5, 0);
-
-        this.t = new CGFappearance(this);
-		this.t.setAmbient(0.4, 0.1, 0.1, 1);
-		this.t.setDiffuse(0.5, 0.5, 0.5, 1);
-		this.t.setSpecular(1, 1, 1, 1);
-        this.t.loadTexture("../scenes/images/wood.png");
-        this.text = new CGFtexture(this,"../scenes/images/d_simpsons.jpg");
     }
 
     /**
@@ -177,19 +168,6 @@ class XMLscene extends CGFscene {
             }
 
             // Displays the scene (MySceneGraph function).
-            /*this.pushMatrix();
-                this.scale(10,10,10);
-                this.translate(1, 1.5, 1);
-                this.rotate(-Math.PI / 3, 1, 0, 0);
-                this.t.apply();
-                this.sphere.display();
-            this.popMatrix();*/
-
-            this.pushMatrix();
-                this.t.apply();
-                this.text.bind();
-                this.quad.display();
-            this.popMatrix();
 
             this.graph.displayScene();
         }

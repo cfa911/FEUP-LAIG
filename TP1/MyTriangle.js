@@ -47,20 +47,14 @@ class MyTriangle extends CGFobject
         var b = Math.sqrt( Math.pow((this.x2-this.x1),2) +  Math.pow((this.y2-this.y1),2) +  Math.pow((this.z2-this.z1),2) );
         var c = Math.sqrt( Math.pow((this.x3-this.x2),2) +  Math.pow((this.y3-this.y2),2) +  Math.pow((this.z3-this.z2),2) );
 
-        var cosBeta = (Math.pow(a,2) - Math.pow(b,2) + Math.pow(c,2)) / (2*a*c);
-        var v = a*Math.sin(Math.acos(cosBeta));
+        var cosBeta = (Math.pow(c,2) - Math.pow(a,2) + Math.pow(b,2)) / (2*b*c);
+        var v = c*Math.sin(Math.acos(cosBeta));
 
         this.texCoords = [
-            c - a*cosBeta, v - a*Math.sin(Math.acos(cosBeta)),
-            0, 1,
-            c, 1,
-        ];
-
-        /*this.texCoords = [
             0, v,
-            c, v,
-            c - a*cosBeta, v-a*Math.sin(Math.acos(cosBeta)),
-            ];*/
+            b, v,
+            b - a*cosBeta, v-c*Math.sin(Math.acos(cosBeta)),
+            ];
 
         // vector U = p2 - p1
         // vector V = p3 - p1

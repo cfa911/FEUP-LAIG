@@ -689,11 +689,46 @@ class MySceneGraph {
                 this.animation.type = "Linear";
             }
             else if (arrayAnimations[i].nodeName == "circular") {
-                var center = this.reader.getFloat(arrayAnimations[i], 'center');
+                var center = this.reader.getString(arrayAnimations[i], 'center');
+                //iterate string to float
+                var x = "";
+                var y = "";
+                var z = "";
+                var counter = 0;
+                for(var j = 0; j < center.length ; j++)
+                {
+                    if(counter == 0)
+                    {
+                        if(center[j] == " ")
+                        counter += 1;
+                        else{
+                            x += center[j];
+                        }
+                    }
+                    else if(counter == 1)
+                    {
+                        if(center[j] == " ")
+                        counter += 1;
+                        else{
+                            y += center[j];
+                        }
+                    }
+                    else if(counter == 2){
+                        if(center[j] == " ")
+                        counter += 1;
+                        else{
+                            z += center[j];
+                        }
+                    }
+                    
+                }
+                var cx = parseFloat(x);
+                var cy = parseFloat(y);
+                var cz = parseFloat(z);
                 var radius = this.reader.getFloat(arrayAnimations[i], 'radius');
                 var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
                 var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
-                this.animation = new CircularAnimation(id,span,center,radius,startang,rotang);
+                this.animation = new CircularAnimation(id,span,[cx,cy,cz],radius,startang*DEGREE_TO_RAD,rotang*DEGREE_TO_RAD);
                 this.animation.type = "Circular";
             }
             animationsMap.set(id,this.animation);

@@ -22,4 +22,16 @@ class LinearAnimation extends Animation{
         }
     }
 
+    update(currTime) {
+
+        if(this.lastUpdatedTime <= time)
+        {
+            var deltaT = ((currTime - this.lastUpdatedTime) / 1000); // Calculate delta time
+
+            // Calculate distance travelled in the X and Z axis
+
+            this.travelDistanceX += Math.cos(this.turnAngle) * this.velocity * deltaT;
+            this.travelDistanceZ -= Math.sin(this.turnAngle) * this.velocity * deltaT;
+    }
+
 }

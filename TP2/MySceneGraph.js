@@ -683,9 +683,9 @@ class MySceneGraph {
                     var xx = this.reader.getFloat(arrayAnimations[i].children[j], 'xx');
                     var yy = this.reader.getFloat(arrayAnimations[i].children[j], 'yy');
                     var zz = this.reader.getFloat(arrayAnimations[i].children[j], 'zz');
-                    controlPoints.push([xx,yy,zz]);
+                    controlPoints.push([xx, yy, zz]);
                 }
-                this.animation = new LinearAnimation(id,span,controlPoints);
+                this.animation = new LinearAnimation(id, span, controlPoints);
                 this.animation.type = "Linear";
             }
             else if (arrayAnimations[i].nodeName == "circular") {
@@ -695,32 +695,29 @@ class MySceneGraph {
                 var y = "";
                 var z = "";
                 var counter = 0;
-                for(var j = 0; j < center.length ; j++)
-                {
-                    if(counter == 0)
-                    {
-                        if(center[j] == " ")
-                        counter += 1;
-                        else{
+                for (var j = 0; j < center.length; j++) {
+                    if (counter == 0) {
+                        if (center[j] == " ")
+                            counter += 1;
+                        else {
                             x += center[j];
                         }
                     }
-                    else if(counter == 1)
-                    {
-                        if(center[j] == " ")
-                        counter += 1;
-                        else{
+                    else if (counter == 1) {
+                        if (center[j] == " ")
+                            counter += 1;
+                        else {
                             y += center[j];
                         }
                     }
-                    else if(counter == 2){
-                        if(center[j] == " ")
-                        counter += 1;
-                        else{
+                    else if (counter == 2) {
+                        if (center[j] == " ")
+                            counter += 1;
+                        else {
                             z += center[j];
                         }
                     }
-                    
+
                 }
                 var cx = parseFloat(x);
                 var cy = parseFloat(y);
@@ -728,10 +725,10 @@ class MySceneGraph {
                 var radius = this.reader.getFloat(arrayAnimations[i], 'radius');
                 var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
                 var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
-                this.animation = new CircularAnimation(id,span,[cx,cy,cz],radius,startang*DEGREE_TO_RAD,rotang*DEGREE_TO_RAD);
+                this.animation = new CircularAnimation(id, span, [cx, cy, cz], radius, startang * DEGREE_TO_RAD, rotang * DEGREE_TO_RAD);
                 this.animation.type = "Circular";
             }
-            animationsMap.set(id,this.animation);
+            animationsMap.set(id, this.animation);
         }
         this.log("Parsed animations");
         return null;
@@ -758,6 +755,12 @@ class MySceneGraph {
             var cylinderIndex = nodeNames.indexOf("cylinder");
             var sphereIndex = nodeNames.indexOf("sphere");
             var torusIndex = nodeNames.indexOf("torus");
+            var planeIndex = nodeNames.indexOf("plane");
+            var patchIndex = nodeNames.indexOf("patch");
+            var vehicleIndex = nodeNames.indexOf("vehicle");
+            var secoCylIndex = nodeNames.indexOf("cylinder2");
+            var terrainIndex = nodeNames.indexOf("terrain");
+            var waterIndex = nodeNames.indexOf("water");
 
             if (rectangleIndex != -1) {
                 var x1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x1');
@@ -809,7 +812,57 @@ class MySceneGraph {
                 this.primitiva.type = "Torus";
                 //primitivesMap.set(idPrimitive, [nodeNames[torusIndex], inner, outer, slices, loops]);
             }
-            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1)
+            else if (planeIndex != -1) {
+                var npartsU = this.reader.getInteger(primitiveChildren[planeIndex], 'npartsU');
+                var npartsV = this.reader.getInteger(primitiveChildren[planeIndex], 'npartsV');
+                this.primitiva = new MyPlane(this.scene, npartsU, npartsV);
+                this.primitiva.type = "Plane";
+            }
+            else if (patchIndex != -1) {
+                var controlPoints = [];
+                var npointsU = this.reader.getInteger(primitiveChildren[patchIndex], 'npointsU');
+                var npointsV = this.reader.getInteger(primitiveChildren[patchIndex], 'npointsV');
+                var npartsU = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsU');
+                var npartsV = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsV');
+                for (var i = 0; i < primitiveChildren[patchIndex].children.length; i++) {
+                    var xx = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'xx');
+                    var yy = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'yy');
+                    var zz = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'zz');
+                    controlPoints.push([xx, yy, zz]);
+                }
+                this.primitiva = new MyPatch(this.scene, npointsU, npointsV, npartsU, npartsV, controlPoints);
+                this.primitiva.type = "Patch";
+            }
+            else if (vehicleIndex != -1) {
+                //TODO in nurbs
+            }
+            else if(secoCylIndex != -1){
+                var base = this.reader.getFloat(primitiveChildren[secoCylIndex], 'base');
+                var top = this.reader.getFloat(primitiveChildren[secoCylIndex], 'top');
+                var height = this.reader.getFloat(primitiveChildren[secoCylIndex], 'height');
+                var slices = this.reader.getInteger(primitiveChildren[secoCylIndex], 'slices');
+                var stacks = this.reader.getInteger(primitiveChildren[secoCylIndex], 'stacks');
+                this.primitiva = new My2ndCylinder(this.scene, base, top, height, slices, stacks);
+                this.primitiva.type = "SecondCylinder";
+            }
+            else if (terrainIndex != -1) {
+                var idtexture = this.reader.getString(primitiveChildren[terrainIndex], 'idtexture');
+                var idheightmap = this.reader.getString(primitiveChildren[terrainIndex], 'idheightmap');
+                var parts = this.reader.getInteger(primitiveChildren[terrainIndex], 'parts');
+                var heightscale = this.reader.getFloat(primitiveChildren[terrainIndex], 'heightscale');
+                this.primitiva = new MyTerrain(this.scene, idtexture, idheightmap, parts, heightscale);
+                this.primitiva.type = "Terrain";
+            }
+            else if (waterIndex != -1) {
+                var idtexture = this.reader.getString(primitiveChildren[waterIndex], 'idtexture');
+                var idwavemap = this.reader.getString(primitiveChildren[waterIndex], 'idwavemap');
+                var parts = this.reader.getInteger(primitiveChildren[waterIndex], 'parts');
+                var heightscale = this.reader.getFloat(primitiveChildren[waterIndex], 'heightscale');
+                var texscale = this.reader.getFloat(primitiveChildren[waterIndex], 'texscale');                
+                this.primitiva = new MyWater(this.scene, idtexture, idwavemap, parts, heightscale,texscale);
+                this.primitiva.type = "Water";
+            }
+            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex  != -1 || terrainIndex  != -1 || waterIndex  != -1)
                 primitivesMap.set(idPrimitive, this.primitiva);
         }
         this.log("Parsed primitives");
@@ -831,6 +884,7 @@ class MySceneGraph {
             var arrayCompRef = [];
             var arrayPrimRef = [];
             var transformations = Component.getElementsByTagName('transformation');
+            var animations = Component.getElementsByTagName('animations');            
             var materials = Component.getElementsByTagName('materials');
             var textures = Component.getElementsByTagName('texture');
             var children = Component.getElementsByTagName('children');
@@ -870,6 +924,13 @@ class MySceneGraph {
 
                 }
                 compo.transformations = transformArray;
+            }
+            for (var k = 0; k < animations.length; k++) {
+                var animationsChilds = animations[k].children;
+                for (var i = 0; i < animationsChilds.length; i++) {
+                    var idAnim = this.reader.getString(animationsChilds[i], 'id');
+                    compo.animations.push(idAnim);
+                }
             }
             for (var k = 0; k < materials.length; k++) {
                 var materialChilds = materials[k].children;

@@ -150,6 +150,7 @@
             <!-- primitiva patch é npointsU * npointsV -->
             <patch npointsU="ii" npointsV="ii" npartsU="ii" npartsV="ii" >
                 <controlpoint xx="ff" yy="ff" zz="ff" />
+                <controlpoint xx="ff" yy="ff" zz="ff" />
             </patch>
         </primitive>
         <primitive id="vehicle">
@@ -833,15 +834,6 @@
             <transformation>
                 <translate x="5" y="0" z="6" />
             </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="rochas" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="tri" />
-            </children>
-        </component>
-        <component id="animation">
                 <!-- bloco "animations" e' opcional -->
                 <!-- as transformacoes resultantes da animacao devem -->
                 <!-- declarar-se imediatamente após as transformacoes -->
@@ -850,8 +842,15 @@
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
-                <animationref id="ss" />
+                <animationref id="lin" />
             </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="rochas" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="tri" />
+            </children>
         </component>
     </components>
 </yas>

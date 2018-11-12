@@ -23,15 +23,17 @@ class LinearAnimation extends Animation{
             this.vecCPoints.push(temp);
         }
 
+        //P = (P2 - P1)*(currTime/span)
+
         var deltaT = currTime / this.span;
 
-        //P = (P2 - P1)*(currTime/span)
         for(var i=0; i< this.vecCPoints.length; i++) {
-            this.vecInterp.push(this.vecCPoints[i] / deltaT);
+            var temp = [ this.vecCPoints[i][0] / deltaT, this.vecCPoints[i][1] / deltaT, this.vecCPoints[i][2] / deltaT ];
+            this.vecInterp.push(temp);
         }
 
         var matrix = mat4.create();
-        mat4.translate(matrix, matrix, )
+        mat4.translate(matrix, matrix, [])
     }
 
 }

@@ -1,9 +1,10 @@
 class Animation
 {
-    constructor(scene, id)
+    constructor(id, span)
     {
-        this.scene = scene;
         this.id = id;
+        // duraçao do movimento
+        this.span = span;
     }
 
     update() {

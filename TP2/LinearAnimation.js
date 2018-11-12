@@ -1,37 +1,37 @@
 class LinearAnimation extends Animation{
 
-    constructor(scene, id, time, controlPts) {
+    constructor(id, span, controlPts) {
 
-        super(scene, id);
+        super(id, span);
 
         // {(0,0,0), (1,0,0), (1,1,0)}
         this.controlPts = controlPts;
-        // duraçao do movimento
-        this.time = time;
-        // distancia calculada em cada reta (p2-p1) (p3-p2) (p3-p1)
+        // distancia calculada em cada reta (p2-p1) (p3-p2) em x, y e z
         this.vecCPoints = [];
+        // Aplicando tempo nos pontos do vecPoints
+        this.vecInterp = [];
         // distancia total de todas as retas
         this.distance = 0;
     }
 
-    calculateDistance() {
-
-        for(var i=0; i<=this.controlPts.length; i++) {
-            this.distance += Math.sqrt(Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2) + Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2) + Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2));
-            this.vecCPoints.push(Math.sqrt(Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2) + Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2) + Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2)));
-        }
-    }
-
     update(currTime) {
 
-        if(this.lastUpdatedTime <= time)
-        {
-            var deltaT = ((currTime - this.lastUpdatedTime) / 1000); // Calculate delta time
+        //calcular distancias
+        for(var i=0; i<=this.controlPts.length; i++) {
+            this.distance += Math.sqrt(Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2) + Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2) + Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2));
+            var temp = [ Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2), Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2), Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2) ];
+            this.vecCPoints.push(temp);
+        }
 
-            // Calculate distance travelled in the X and Z axis
+        var deltaT = currTime / this.span;
 
-            this.travelDistanceX += Math.cos(this.turnAngle) * this.velocity * deltaT;
-            this.travelDistanceZ -= Math.sin(this.turnAngle) * this.velocity * deltaT;
+        //P = (P2 - P1)*(currTime/span)
+        for(var i=0; i< this.vecCPoints.length; i++) {
+            this.vecInterp.push(this.vecCPoints[i] / deltaT);
+        }
+
+        var matrix = mat4.create();
+        mat4.translate(matrix, matrix, )
     }
 
 }

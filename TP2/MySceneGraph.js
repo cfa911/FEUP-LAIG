@@ -8,12 +8,14 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 var ambientMap = new Map();
 var materialsMap = new Map();
 var textureMap = new Map();
+var animationsMap = new Map();
 var primitivesMap = new Map();
 var transformMap = new Map();
 var componentMap = new Map();
@@ -182,7 +184,17 @@ class MySceneGraph {
             if ((error = this.parseTransformations(nodes[index])) != null)
                 return error;
         }
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
 
+            //Parse textures block
+            if ((error = this.parseAnimations(nodes[index])) != null)
+                return error;
+        }
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
             return "tag <primitives> missing";
@@ -525,7 +537,7 @@ class MySceneGraph {
         var isTexture = texturesNode.children[0].nodeName;
 
         if (isTexture != "texture") {
-            this.onXMLMinorError("Textures planes missing;");
+            this.onXMLMinorError("Texture planes missing;");
         }
         else {
             for (var i = 0; i < arrayTextures.length; i++) {
@@ -652,6 +664,42 @@ class MySceneGraph {
         return null;
 
 
+    }
+    /**
+     * Parses the <animations> block.
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+
+        var arrayAnimations = animationsNode.children;
+
+        for (var i = 0; i < arrayAnimations.length; i++) {
+
+            var id = this.reader.getString(arrayAnimations[i], 'id');
+            var span = this.reader.getFloat(arrayAnimations[i], 'span');
+            if (arrayAnimations[i].nodeName == "linear") {
+                var controlPoints = [];
+                for (var j = 0; j < arrayAnimations[i].children.length; j++) {
+                    var xx = this.reader.getFloat(arrayAnimations[i].children[j], 'xx');
+                    var yy = this.reader.getFloat(arrayAnimations[i].children[j], 'yy');
+                    var zz = this.reader.getFloat(arrayAnimations[i].children[j], 'zz');
+                    controlPoints.push([xx,yy,zz]);
+                }
+                this.animation = new LinearAnimation(id,span,controlPoints);
+                this.animation.type = "Linear";
+            }
+            else if (arrayAnimations[i].nodeName == "circular") {
+                var center = this.reader.getFloat(arrayAnimations[i], 'center');
+                var radius = this.reader.getFloat(arrayAnimations[i], 'radius');
+                var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
+                var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
+                this.animation = new CircularAnimation(id,span,center,radius,startang,rotang);
+                this.animation.type = "Circular";
+            }
+            animationsMap.set(id,this.animation);
+        }
+        this.log("Parsed animations");
+        return null;
     }
     /**
      * Parses the <primitives> block.
@@ -859,14 +907,14 @@ class MySceneGraph {
         var component = componentMap.get(node); //-> the node component
         var material_aux = component.materials;
         switch (material_aux[0]) {
-                case "inherit":
-                    this.mat = materialsMap.get(materialtthis.change % material.length);
-                    this.mat.apply();
-                    break;
-                case "none":
-                    material = [];
-                    material.push("none");
-                    if(!materialsMap.get("none")){
+            case "inherit":
+                this.mat = materialsMap.get(materialtthis.change % material.length);
+                this.mat.apply();
+                break;
+            case "none":
+                material = [];
+                material.push("none");
+                if (!materialsMap.get("none")) {
                     this.mat = new CGFappearance(this.scene);
                     this.mat.setEmission(0, 0, 0, 0);
                     this.mat.setAmbient(0, 0, 0, 0);
@@ -874,23 +922,23 @@ class MySceneGraph {
                     this.mat.setSpecular(0, 0, 0, 0);
                     this.mat.setShininess(10);
                     materialsMap.set("none", this.mat);
-                    }
-                    else{
-                        this.mat = materialsMap.get(material[this.change % material.length]);
-                        this.mat.apply();
-                    }
-                    break;
-                case null:
-                    break;
-                case undefined:
-                    break;
-                default:
-                    material = component.materials;
+                }
+                else {
                     this.mat = materialsMap.get(material[this.change % material.length]);
                     this.mat.apply();
-                    break;
+                }
+                break;
+            case null:
+                break;
+            case undefined:
+                break;
+            default:
+                material = component.materials;
+                this.mat = materialsMap.get(material[this.change % material.length]);
+                this.mat.apply();
+                break;
 
-            }
+        }
 
 
         if (component.textures != null) {
@@ -947,9 +995,9 @@ class MySceneGraph {
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = componentMap.get(node).primitive[j];
-                if(this.tex != null)
-                this.tex.bind();
-                object.changeLength(length_s,length_t);
+                if (this.tex != null)
+                    this.tex.bind();
+                object.changeLength(length_s, length_t);
                 object.display();
             }
             if (componentMap.get(node).children[i] != null)
@@ -994,7 +1042,7 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        this.through(this.root, "none",["none"]);
+        this.through(this.root, "none", ["none"]);
     }
 
 }

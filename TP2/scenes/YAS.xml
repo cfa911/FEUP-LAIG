@@ -90,12 +90,15 @@
             <rotate axis="y" angle="-90" />
         </transformation>
     </transformations>
+
+
     <animations>
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
         <linear id="ss" span="ff" >
         <!-- devem existir pelo menos dois pontos de controlo -->
+            <controlpoint xx="ff" yy="ff" zz="ff" />
             <controlpoint xx="ff" yy="ff" zz="ff" />
         </linear>
         <!-- center corresponde ao ponto que serve -->

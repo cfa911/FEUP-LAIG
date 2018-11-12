@@ -27,7 +27,7 @@ class XMLscene extends CGFscene {
         this.initCameras();
 
         this.enableTextures(true);
-
+        this.axis = new CGFaxis(this);
         this.gl.clearDepth(100.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);

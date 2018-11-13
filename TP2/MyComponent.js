@@ -14,6 +14,6 @@ class MyComponent
 		this.textures = textures;
 		this.primitive = primitive;
 		this.children = children;
-	};
+	}
 
 }

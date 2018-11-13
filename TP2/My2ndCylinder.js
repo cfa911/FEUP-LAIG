@@ -39,7 +39,7 @@ class My2ndCylinder extends CGFobject
             {
                this.texCoords.push(j * length_s / this.slices, i * length_t / this.stacks);
             }    
-        }
+        } commit
 
         this.updateTexCoordsGLBuffers();*/
     }

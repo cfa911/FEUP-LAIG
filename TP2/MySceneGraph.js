@@ -685,7 +685,7 @@ class MySceneGraph {
                     var zz = this.reader.getFloat(arrayAnimations[i].children[j], 'zz');
                     controlPoints.push([xx, yy, zz]);
                 }
-                this.animation = new LinearAnimation(id, span, controlPoints);
+                this.animation = new LinearAnimation(span, controlPoints);
                 this.animation.type = "Linear";
             }
             else if (arrayAnimations[i].nodeName == "circular") {
@@ -725,7 +725,7 @@ class MySceneGraph {
                 var radius = this.reader.getFloat(arrayAnimations[i], 'radius');
                 var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
                 var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
-                this.animation = new CircularAnimation(id, span, [cx, cy, cz], radius, startang * DEGREE_TO_RAD, rotang * DEGREE_TO_RAD);
+                this.animation = new CircularAnimation(span, [cx, cy, cz], radius, startang * DEGREE_TO_RAD, rotang * DEGREE_TO_RAD);
                 this.animation.type = "Circular";
             }
             animationsMap.set(id, this.animation);

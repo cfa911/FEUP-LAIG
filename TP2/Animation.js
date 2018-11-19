@@ -1,8 +1,7 @@
 class Animation
 {
-    constructor(id, span)
+    constructor(span)
     {
-        this.id = id;
         // duraçao do movimento
         this.span = span;
     }
@@ -11,7 +10,7 @@ class Animation
         //calculate matrix
     }
 
-    apply(deltaTime) {
+    apply() {
         //apply matrix
     }
 }

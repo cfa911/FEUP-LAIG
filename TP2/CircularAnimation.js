@@ -1,8 +1,8 @@
 class CircularAnimation extends Animation{
 
-    constructor(id, span, center, radius, AngInicial, AngRotate) {
+    constructor(span, center, radius, AngInicial, AngRotate) {
 
-        super(id, span);
+        super(span);
 
         // center = [x, y, z]
         this.center = center;

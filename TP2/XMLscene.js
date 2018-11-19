@@ -32,6 +32,10 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+        this.setUpdatePeriod(1000/60);
+
+        this.tri = new MyRectangle(0, 0, 1, 1);
+        
 
     }
 
@@ -126,6 +130,12 @@ class XMLscene extends CGFscene {
 
     }
 
+    update(currTime) {
+        var deltaTime = (currTime - this.lastTime) / 1000;
+        // funcao que percorre animacoes e atualiza as 
+        // deltaTime a dividir po 1000
+        this.lastTime = currTime;
+    }
 
     /**
      * Displays the scene.

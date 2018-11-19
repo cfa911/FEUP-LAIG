@@ -7,11 +7,11 @@ class Animation
         this.span = span;
     }
 
-    update() {
+    update(deltaTime) {
         //calculate matrix
     }
 
-    apply(node) {
+    apply(deltaTime) {
         //apply matrix
     }
 }

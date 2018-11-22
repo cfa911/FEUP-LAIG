@@ -6,7 +6,7 @@
 
 class MyPlane extends CGFobject
 {
-	constructor(scene, npartsU, npartsV,degree1 = 1,degree2 = 1,controlvertexes = [[[-1.0, -1.0, 0.0, 0.5 ],[-1.0,  1.0, 0.0, 0.5 ]],[[ 1.0, -1.0, 0.0,0.5 ],[ 1.0, 1.0, 0.0, 0.5 ]]],translation = [0,0,0])
+	constructor(scene, npartsU, npartsV,degree1 = 1,degree2 = 1,controlvertexes = [[[-0.5, -0.5, 0.0, 0.25 ],[-0.5,  0.5, 0.0, 0.25 ]],[[ 0.5, -0.5, 0.0,0.25 ],[ 0.5, 0.5, 0.0, 0.25 ]]],translation = [0,0,0])
 	{
         super(scene);
         this.npartsU = npartsU;
@@ -15,27 +15,22 @@ class MyPlane extends CGFobject
         this.degree2 = degree2;
         this.controlvertexes = controlvertexes;
         this.translation = translation;
-        this.surfaces = [];
-        this.translations = [];
         this.create();
 	};
 
 	create()
 	{
 		var nurbsSurface = new CGFnurbsSurface(this.degree1 , this.degree2, this.controlvertexes);
-		var obj = new CGFnurbsObject(this.scene,  this.npartsU,  this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
-		this.surfaces.push(obj);	
-        this.translations.push(this.translation);
+		var obj = new CGFnurbsObject(this.scene, this.npartsU,  this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
+		this.surfaces = obj;
     }
     display(){
-        for (i =0; i<this.surfaces.length; i++) {
 			this.scene.pushMatrix();
-		
-			this.scene.translate(this.translations[i][0], this.translations[i][1], this.translations[i][2]);
-
-			this.surfaces[i].display();
+            this.scene.rotate(270*DEGREE_TO_RAD,1,0,0);
+			this.scene.translate(this.translation[0], this.translation[1], this.translation[2]);
+			this.surfaces.display();
 			this.scene.popMatrix();
-		}
+		
     }
     changeLength(length_s, length_t) {/*
 

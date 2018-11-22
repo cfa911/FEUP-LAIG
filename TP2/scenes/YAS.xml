@@ -854,7 +854,7 @@
         </component>
         <component id="plane">
             <transformation>
-                <translate x="5" y="0" z="6" />
+                <translate x="0" y="0" z="0" />
             </transformation>
             <!-- bloco "animations" e' opcional -->
             <!-- as transformacoes resultantes da animacao devem -->

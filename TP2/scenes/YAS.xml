@@ -96,8 +96,8 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="lin" span="5" >
-        <!-- devem existir pelo menos dois pontos de controlo -->
+        <linear id="lin" span="5">
+            <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="1" yy="0" zz="0" />
             <controlpoint xx="1" yy="1" zz="0" />
@@ -148,7 +148,7 @@
             <!-- a ser usada para o cálculo da superficie -->
             <!-- - o número de pontos de controlo dentro da -->
             <!-- primitiva patch é npointsU * npointsV -->
-            <patch npointsU="ii" npointsV="ii" npartsU="ii" npartsV="ii" >
+            <patch npointsU="ii" npointsV="ii" npartsU="ii" npartsV="ii">
                 <controlpoint xx="ff" yy="ff" zz="ff" />
                 <controlpoint xx="ff" yy="ff" zz="ff" />
             </patch>
@@ -158,8 +158,8 @@
             <!-- parâmetros iguais ao cilindro original -->
         </primitive>
         <primitive id="cyl2">
-        <!-- — Nova primitiva: cilindro baseado em NURBS -->
-        <!-- parâmetros iguais ao cilindro original -->
+            <!-- — Nova primitiva: cilindro baseado em NURBS -->
+            <!-- parâmetros iguais ao cilindro original -->
             <cylinder2 base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
         </primitive>
         <primitive id="terrain">
@@ -207,7 +207,7 @@
                 <componentref id="flor2" />
                 <componentref id="flor3" />
                 <componentref id="cone" /> -->
-                <componentref id="triangulo" />
+                <componentref id="plane" />
             </children>
         </component>
         <component id="face1">
@@ -834,10 +834,10 @@
             <transformation>
                 <translate x="5" y="0" z="6" />
             </transformation>
-                <!-- bloco "animations" e' opcional -->
-                <!-- as transformacoes resultantes da animacao devem -->
-                <!-- declarar-se imediatamente após as transformacoes -->
-                <!-- do componente -->
+            <!-- bloco "animations" e' opcional -->
+            <!-- as transformacoes resultantes da animacao devem -->
+            <!-- declarar-se imediatamente após as transformacoes -->
+            <!-- do componente -->
             <animations>
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
@@ -850,6 +850,28 @@
             <texture id="rochas" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="tri" />
+            </children>
+        </component>
+        <component id="plane">
+            <transformation>
+                <translate x="5" y="0" z="6" />
+            </transformation>
+            <!-- bloco "animations" e' opcional -->
+            <!-- as transformacoes resultantes da animacao devem -->
+            <!-- declarar-se imediatamente após as transformacoes -->
+            <!-- do componente -->
+            <animations>
+                <!-- pode conter zero ou mais referencias a "animations" -->
+                <!-- declaradas anteriormente e que serão executadas em -->
+                <!-- sequencia. Este elemento e' opcional -->
+                <animationref id="lin" />
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
             </children>
         </component>
     </components>

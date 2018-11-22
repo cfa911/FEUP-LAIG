@@ -39,15 +39,15 @@
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
-        <texture id="1st" file="../scenes/images/trunk-image.jpg" />
-        <texture id="relva" file="../scenes/images/leaves.jpg" />
-        <texture id="d_simps" file="../scenes/images/d_simpsons.jpg" />
-        <texture id="folhas" file="../scenes/images/arvore.jpg"/>
-        <texture id="madeira" file="../scenes/images/madeira.jpg" />
-        <texture id="wood" file="../scenes/images/wood.png" />
-        <texture id="petal" file="../scenes/images/petal.png" />
-        <texture id="pratos" file="../scenes/images/prato.jpg" />
-        <texture id="rochas" file="../scenes/images/toCone.jpg" />
+        <texture id="1st" file="./scenes/images/trunk-image.jpg" />
+        <texture id="relva" file="./scenes/images/leaves.jpg" />
+        <texture id="d_simps" file="./scenes/images/d_simpsons.jpg" />
+        <texture id="folhas" file="./scenes/images/arvore.jpg"/>
+        <texture id="madeira" file="./scenes/images/madeira.jpg" />
+        <texture id="wood" file="./scenes/images/wood.png" />
+        <texture id="petal" file="./scenes/images/petal.png" />
+        <texture id="pratos" file="./scenes/images/prato.jpg" />
+        <texture id="rochas" file="./scenes/images/toCone.jpg" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -197,7 +197,7 @@
                 <translate x="0" y="0" z="0" />
             </transformation>
             <children>
-                <componentref id="table_w_food" />
+                <!-- <componentref id="table_w_food" />
                 <componentref id="tree1" />
                 <componentref id="tree2" />
                 <componentref id="tree3" />
@@ -206,7 +206,7 @@
                 <componentref id="flor1" />
                 <componentref id="flor2" />
                 <componentref id="flor3" />
-                <componentref id="cone" />
+                <componentref id="cone" /> -->
                 <componentref id="triangulo" />
             </children>
         </component>

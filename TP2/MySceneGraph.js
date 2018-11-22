@@ -685,7 +685,7 @@ class MySceneGraph {
                     var zz = this.reader.getFloat(arrayAnimations[i].children[j], 'zz');
                     controlPoints.push([xx, yy, zz]);
                 }
-                this.animation = new LinearAnimation(span, controlPoints);
+                this.animation = new LinearAnimation(this.scene, span, controlPoints);
                 this.animation.type = "Linear";
             }
             else if (arrayAnimations[i].nodeName == "circular") {

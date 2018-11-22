@@ -1,8 +1,8 @@
 class LinearAnimation extends Animation{
 
-    constructor(span, controlPts) {
+    constructor(scene, span, controlPts) {
 
-        super(span);
+        super(scene, span);
 
         // {(0,0,0), (1,0,0), (1,1,0)}
         this.controlPts = controlPts;
@@ -12,8 +12,6 @@ class LinearAnimation extends Animation{
         this.vecInterp = [];
         // distancia total de todas as retas
         this.distance = 0;
-        this.matrixAni = mat4.create();
-        this.final = false;
 
         this.totalTime = 0;
 
@@ -25,8 +23,11 @@ class LinearAnimation extends Animation{
         for(var i=0; i < this.controlPts.length - 1; i++) {
             this.distance += Math.sqrt(Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2) + Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2) + Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2));
             var temp = [this.controlPts[i+1][0] - this.controlPts[i][0], this.controlPts[i+1][1] - this.controlPts[i][1], this.controlPts[i+1][2] - this.controlPts[i][2] ];
+            console.log(temp);
             this.vecCPoints.push(temp);
         }
+
+        //this.span = this.span * 1000;
 
         this.speed = this.distance / this.span;
 
@@ -35,9 +36,19 @@ class LinearAnimation extends Animation{
 
     update(deltaTime) {
 
-        if(this.totalTime > this.span) {
+
+
+        if(this.totalTime >= this.span) {
             this.final = true;
+            this.finalMatrix = this.matrixAni;
             return;
+        }
+        else{
+            console.log("totalTime: ");
+            console.log(this.totalTime);
+            console.log("Span: ");
+            console.log(this.span);
+            console.log(deltaTime);
         }
 
         if(this.totalTime > (this.timeTroco * this.index)) {
@@ -50,9 +61,13 @@ class LinearAnimation extends Animation{
         var y = this.vecCPoints[this.index][1] * this.speed * (deltaTime / this.span);
         var z = this.vecCPoints[this.index][2] * this.speed * (deltaTime / this.span);
 
+        this.final = false;
+
         mat4.translate(this.matrixAni, this.matrixAni, [x, y, z]);
+
+        //this.final = false;
     }
     apply(){
-        return this.matrixAni;
+        super.apply();
     }
 }

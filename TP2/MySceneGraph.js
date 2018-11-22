@@ -824,19 +824,27 @@ class MySceneGraph {
                 var npointsV = this.reader.getInteger(primitiveChildren[patchIndex], 'npointsV');
                 var npartsU = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsU');
                 var npartsV = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsV');
-                for (var i = 0; i < primitiveChildren[patchIndex].children.length; i++) {
-                    var xx = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'xx');
-                    var yy = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'yy');
-                    var zz = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'zz');
-                    controlPoints.push([xx, yy, zz]);
+                var i = 0;
+                while(i < primitiveChildren[patchIndex].children.length){
+                    var Uarray = [];
+                    var V = 0
+                    while(V <= npointsV){
+                        var xx = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'xx');
+                        var yy = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'yy');
+                        var zz = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'zz');
+                        Uarray.push([xx, yy, zz, 1]);
+                        V++;
+                        i++;
+                    }
+                    controlPoints.push(Uarray);
                 }
-                this.primitiva = new MyPatch(this.scene, npointsU, npointsV, npartsU, npartsV, controlPoints);
+                this.primitiva = new MyPlane(this.scene, npartsU, npartsV, npointsU, npointsV,controlPoints);
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {
                 //TODO in nurbs
             }
-            else if(secoCylIndex != -1){
+            else if (secoCylIndex != -1) {
                 var base = this.reader.getFloat(primitiveChildren[secoCylIndex], 'base');
                 var top = this.reader.getFloat(primitiveChildren[secoCylIndex], 'top');
                 var height = this.reader.getFloat(primitiveChildren[secoCylIndex], 'height');
@@ -858,11 +866,11 @@ class MySceneGraph {
                 var idwavemap = this.reader.getString(primitiveChildren[waterIndex], 'idwavemap');
                 var parts = this.reader.getInteger(primitiveChildren[waterIndex], 'parts');
                 var heightscale = this.reader.getFloat(primitiveChildren[waterIndex], 'heightscale');
-                var texscale = this.reader.getFloat(primitiveChildren[waterIndex], 'texscale');                
-                this.primitiva = new MyWater(this.scene, idtexture, idwavemap, parts, heightscale,texscale);
+                var texscale = this.reader.getFloat(primitiveChildren[waterIndex], 'texscale');
+                this.primitiva = new MyWater(this.scene, idtexture, idwavemap, parts, heightscale, texscale);
                 this.primitiva.type = "Water";
             }
-            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex  != -1 || terrainIndex  != -1 || waterIndex  != -1)
+            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex != -1 || terrainIndex != -1 || waterIndex != -1)
                 primitivesMap.set(idPrimitive, this.primitiva);
         }
         this.log("Parsed primitives");
@@ -884,7 +892,7 @@ class MySceneGraph {
             var arrayCompRef = [];
             var arrayPrimRef = [];
             var transformations = Component.getElementsByTagName('transformation');
-            var animations = Component.getElementsByTagName('animations');            
+            var animations = Component.getElementsByTagName('animations');
             var materials = Component.getElementsByTagName('materials');
             var textures = Component.getElementsByTagName('texture');
             var children = Component.getElementsByTagName('children');

@@ -61,6 +61,17 @@ class LinearAnimation extends Animation{
 
         if(this.totalTime > (this.timeTroco * (this.index + 1))) {
             this.index++;
+            this.indexAux = this.index - 1;
+            
+            var total = Math.abs(this.vecAngles[this.indexAux][0]) + Math.abs(this.vecAngles[this.indexAux][1]) + Math.abs(this.vecAngles[this.indexAux][2]);
+           /* var angleX = (this.vecAngles[this.indexAux][0]/total)*2*Math.PI;
+            var angleY = (this.vecAngles[this.indexAux][1]/total)*2*Math.PI;
+            var angleZ = (this.vecAngles[this.indexAux][2]/total)*2*Math.PI;
+            mat4.translate(this.matrixAni,this.matrixAni,[-this.controlPts[this.index][0],-this.controlPts[this.index][2],-this.controlPts[this.index][2]]);
+            mat4.rotateX(this.matrixAni, this.matrixAni,angleX);
+            mat4.rotateY(this.matrixAni, this.matrixAni,angleY);
+            mat4.rotateZ(this.matrixAni, this.matrixAni,angleZ);*/
+
         }
 
         this.totalTime += deltaTime;
@@ -68,14 +79,18 @@ class LinearAnimation extends Animation{
         var x = this.vecCPoints[this.index][0] * this.speed * (deltaTime / this.span);
         var y = this.vecCPoints[this.index][1] * this.speed * (deltaTime / this.span);
         var z = this.vecCPoints[this.index][2] * this.speed * (deltaTime / this.span);
-        var angleX = this.vecAngles[this.index][0];
-        var angleY = this.vecAngles[this.index][1];
-        var angleZ = this.vecAngles[this.index][2];
 
+
+        
         mat4.translate(this.matrixAni, this.matrixAni, [x, y, z]);
+        /*
         console.log(angleX);
         console.log(angleY);
         console.log(angleZ);
+        */
+
+        //mat4.rotate(this.matrixAni, this.matrixAni, [0, angleY, 0], [0,1,0]);
+        //mat4.rotate(this.matrixAni, this.matrixAni, [0, 0, angleZ], [0,0,1]);
         //mat4.rotate(this.matrixAni, this.matrixAni, [angleX, angleY, angleZ], [0,1,0]);
 
     }

@@ -12,6 +12,12 @@ class CircularAnimation extends Animation{
 
         this.elapsedTime = 0;
         this.AngAtual = 0;
+        this.AngAnterior = 0;
+        this.init();
+    }
+    init(){
+        mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
+        mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
     }
 
     update(deltaTime) {
@@ -25,16 +31,18 @@ class CircularAnimation extends Animation{
         console.log(this.center[0]);
         console.log(this.center[1]);
         console.log(this.center[2]);
-        mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
 
+        mat4.translate(this.matrixAni, this.matrixAni, [-this.center[0], -this.center[1], -this.center[2]]);
         this.elapsedTime = this.elapsedTime + deltaTime;
 
         console.log(this.AngAtual);
 
         //this.AngAtual = (this.elapsedTime / this.span) * this.AngRotate;
         this.AngAtual = (this.AngRotate * this.elapsedTime) / this.span;
-
-        //mat4.rotate(this.matrixAni, this.matrixAni, this.AngAtual * DEGREE_TO_RAD, [0,1,0]);
+        mat4.rotateY(this.matrixAni, this.matrixAni, (this.AngAtual - this.AngAnterior) * DEGREE_TO_RAD);
+        mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
+        this.AngAnterior = this.AngAtual;
+       
         //mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
     }
 

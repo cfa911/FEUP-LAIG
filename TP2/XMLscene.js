@@ -34,7 +34,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.setUpdatePeriod(1000/60);
         this.ani = new LinearAnimation(this, 5, [[0,0,0],[1,0,0],[1,1,0],[2,2,2]]);
-        this.cir = new CircularAnimation(this, 1, [5,0,5], 10, 358, 20);
+        this.cir = new CircularAnimation(this, 10, [5,0,5], 10, 358, 20);
         this.tri = new MyDisk(this,10);
         this.lastTime = -1;
     }
@@ -136,7 +136,7 @@ class XMLscene extends CGFscene {
         if(this.lastTime == -1)
             deltaTime = 0;
         else
-            deltaTime = (currTime - this.lastTime) / 1000;
+            deltaTime = (currTime - this.lastTime) / 60;
 
         this.lastTime = currTime;
         this.cir.update(deltaTime);

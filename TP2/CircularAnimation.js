@@ -26,24 +26,14 @@ class CircularAnimation extends Animation{
             this.finalMatrix = this.matrixAni;
             return;
         }
-        console.log(this.matrixAni);
-        // mover para o centro de rotaçao
-        console.log(this.center[0]);
-        console.log(this.center[1]);
-        console.log(this.center[2]);
 
-        mat4.translate(this.matrixAni, this.matrixAni, [-this.center[0], -this.center[1], -this.center[2]]);
+        mat4.translate(this.matrixAni, this.matrixAni, [-this.radius,0,0]);
         this.elapsedTime = this.elapsedTime + deltaTime;
 
-        console.log(this.AngAtual);
-
-        //this.AngAtual = (this.elapsedTime / this.span) * this.AngRotate;
         this.AngAtual = (this.AngRotate * this.elapsedTime) / this.span;
         mat4.rotateY(this.matrixAni, this.matrixAni, (this.AngAtual - this.AngAnterior) * DEGREE_TO_RAD);
-        mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
+        mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
         this.AngAnterior = this.AngAtual;
-       
-        //mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
     }
 
     apply() {

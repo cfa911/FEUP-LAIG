@@ -34,6 +34,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.setUpdatePeriod(1000/60);
         this.ani = new LinearAnimation(this, 5, [[0,0,0],[1,0,0],[1,1,0],[2,2,2]]);
+        this.cir = new CircularAnimation(this, 20, [1,1,1], 1, 40, 20);
         this.tri = new MyRectangle(this,-0.5, -0.5, 0.5, 0.5);
         this.lastTime = -1;
     }
@@ -138,7 +139,7 @@ class XMLscene extends CGFscene {
             deltaTime = (currTime - this.lastTime) / 1000;
 
         this.lastTime = currTime;
-        this.ani.update(deltaTime);
+        this.cir.update(deltaTime);
     }
 
     /**
@@ -188,7 +189,7 @@ class XMLscene extends CGFscene {
             this.pushMatrix();
             //console.log(this.ani.apply());
             //this.multMatrix(this.ani.apply());
-            this.ani.apply();
+            this.cir.apply();
             this.tri.display();
             this.popMatrix();
         }

@@ -10,17 +10,35 @@ class CircularAnimation extends Animation{
         this.AngInicial = AngInicial;
         this.AngRotate = AngRotate;
 
-        this.duration = this.AngRotate /this.span;
+        this.elapsedTime = 0;
+        this.AngAtual = 0;
     }
 
-    update(currTime) {
-
+    update(deltaTime) {
+        if(this.AngAtual > (this.AngInicial - this.AngRotate)) {
+            this.final = true;
+            this.finalMatrix = this.matrixAni;
+            return;
+        }
+        console.log(this.matrixAni);
         // mover para o centro de rotaçao
-        matrix = mat4.create();
-        mat4.translate(matrix, matrix, [center[0], center[1], center[2]]);
+        console.log(this.center[0]);
+        console.log(this.center[1]);
+        console.log(this.center[2]);
+        mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
+
+        this.elapsedTime = this.elapsedTime + deltaTime;
+
+        console.log(this.AngAtual);
+
+        //this.AngAtual = (this.elapsedTime / this.span) * this.AngRotate;
+        this.AngAtual = (this.AngRotate * this.elapsedTime) / this.span;
+
+        //mat4.rotate(this.matrixAni, this.matrixAni, this.AngAtual * DEGREE_TO_RAD, [0,1,0]);
+        //mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
     }
 
     apply() {
-        
+        super.apply();
     }
 }

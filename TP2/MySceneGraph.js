@@ -1103,11 +1103,12 @@ class MySceneGraph {
                     this.tex.bind();
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
-                if(component.i < component.animations.length){
-                    if(component.animations[i].final == true)
+                if(component.i < component.animations.length && component.animations != []){
+                    if(animationsMap.get(component.animations[i]).final == true)
                     component.i++;
                     else{
-                        component.animations[i].apply();
+                        //animationsMap.get(component.animations[i]).update(deltatime);
+                        animationsMap.get(component.animations[i]).apply();
                     }
                 }
                 object.display();

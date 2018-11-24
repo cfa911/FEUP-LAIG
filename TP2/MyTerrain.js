@@ -4,42 +4,31 @@
  * @constructor
  */
 
-class MyTerrain extends CGFobject
+class MyTerrain extends MyPlane
 {
-	constructor(scene,idtexture,idheightmap,parts,heightscale,minS = 0, maxS = 1, minT = 0, maxT = 1)
+	constructor(scene, idtexture, idheightmap, parts, heightscale)
 	{
-        super(scene);
+        super(scene, parts, parts);
         this.idtexture = idtexture;
         this.idheightmap = idheightmap;
-        this.parts = parts;
         this.heightscale = heightscale;
 
-		this.minS = minS;
-        this.maxS = maxS;
-        this.minT = minT;
-        this.maxT = maxT;
+        this.testShader = new CGFshader(this.scene.gl, "shaders/texture3.vert", "shaders/texture3.frag");
+        this.testShader.setUniformsValues({uSampler: 0});
+        this.testShader.setUniformsValues({uSampler2: 1});
+        this.testShader.setUniformsValues({heightscale: this.heightscale});
 
-		this.initBuffers();
 	};
 
-	initBuffers()
-	{
+    display() {
+        this.scene.setActiveShader(this.testShader);
+        //this.scene.pushMatrix();
+        // textura
+        this.idtexture.bind(0);
+        this.idheightmap.bind(1);
+        this.surfaces.display();
+        //this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader)
 
-    }
-    
-    changeLength(length_s, length_t) {/*
-
-        this.length_s = length_s;
-		this.length_t = length_t;
-    
-        for(var i = 0; i <= this.stacks; i++)
-        {
-            for(var j = 0; j <= this.slices; j++)
-            {
-               this.texCoords.push(j * length_s / this.slices, i * length_t / this.stacks);
-            }    
-        }
-
-        this.updateTexCoordsGLBuffers();*/
     }
 };

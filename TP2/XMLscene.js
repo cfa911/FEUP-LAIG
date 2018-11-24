@@ -9,7 +9,6 @@ class XMLscene extends CGFscene {
      */
     constructor(myinterface) {
         super();
-
         this.interface = myinterface;
         this.lightValues = {};
         this.viewValues = {};
@@ -188,12 +187,12 @@ class XMLscene extends CGFscene {
 
             this.graph.displayScene();
 
-            this.pushMatrix();
+            /*this.pushMatrix();
             //console.log(this.ani.apply());
             //this.multMatrix(this.ani.apply());
             this.ani.apply();
             this.tri.display();
-            this.popMatrix();
+            this.popMatrix();*/
         }
         else {
             // Draw axis

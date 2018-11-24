@@ -858,7 +858,7 @@ class MySceneGraph {
                 var idheightmap = this.reader.getString(primitiveChildren[terrainIndex], 'idheightmap');
                 var parts = this.reader.getInteger(primitiveChildren[terrainIndex], 'parts');
                 var heightscale = this.reader.getFloat(primitiveChildren[terrainIndex], 'heightscale');
-                this.primitiva = new MyTerrain(this.scene, idtexture, idheightmap, parts, heightscale);
+                this.primitiva = new MyTerrain(this.scene, textureMap.get(idtexture), textureMap.get(idheightmap), parts, heightscale);
                 this.primitiva.type = "Terrain";
             }
             else if (waterIndex != -1) {

@@ -48,6 +48,8 @@
         <texture id="petal" file="./scenes/images/petal.png" />
         <texture id="pratos" file="./scenes/images/prato.jpg" />
         <texture id="rochas" file="./scenes/images/toCone.jpg" />
+        <texture id="BW" file="./scenes/images/map_BW.jpg" />
+        <texture id="terrain_tex" file="./scenes/images/map_terrain.png" />
     </textures>
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
@@ -133,7 +135,7 @@
         </primitive>
         <primitive id="plane">
             <!-- Nova primitiva: plano, gerado por NURBS -->
-            <plane npartsU="5" npartsV="8" />
+            <plane npartsU="48" npartsV="48" />
             <!-- um plano de dimensões 1 x 1 unidades assente -->
             <!-- em XZ, centrado na origem -->
             <!-- e com a face visível apontando para +Y -->
@@ -175,7 +177,7 @@
             <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
             divisoes -->
             <!-- fator de escala das alturas -->
-            <terrain idtexture="ss" idheightmap="ss" parts="ii" heightscale="ff"/>
+            <terrain idtexture="terrain_tex" idheightmap="BW" parts="5" heightscale="1"/>
         </primitive>
         <primitive id="water">
             <!-- Nova primitiva: plano de água baseado em shaders -->
@@ -873,7 +875,7 @@
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="plane" />
+                <primitiveref id="terrain" />
             </children>
         </component>
     </components>

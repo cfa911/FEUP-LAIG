@@ -11,8 +11,8 @@ class CircularAnimation extends Animation{
         this.AngRotate = AngRotate;
 
         this.elapsedTime = 0;
-        this.AngAtual = 0;
-        this.AngAnterior = 0;
+        //this.distance = (this.AngRotate - this.AngInicial)* DEGREE_TO_RAD ;
+        this.speed = ((this.AngRotate - this.AngInicial) * DEGREE_TO_RAD)/this.span;
         this.init();
     }
     init(){
@@ -21,19 +21,16 @@ class CircularAnimation extends Animation{
     }
 
     update(deltaTime) {
-        if(this.AngAtual > (this.AngInicial - this.AngRotate)) {
+        if(this.elapsedTime >= this.span) {
             this.final = true;
             this.finalMatrix = this.matrixAni;
             return;
         }
-
         mat4.translate(this.matrixAni, this.matrixAni, [-this.radius,0,0]);
         this.elapsedTime = this.elapsedTime + deltaTime;
 
-        this.AngAtual = (this.AngRotate * this.elapsedTime) / this.span;
-        mat4.rotateY(this.matrixAni, this.matrixAni, (this.AngAtual - this.AngAnterior) * DEGREE_TO_RAD);
+        mat4.rotateY(this.matrixAni, this.matrixAni,  deltaTime*this.speed);
         mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
-        this.AngAnterior = this.AngAtual;
     }
 
     apply() {

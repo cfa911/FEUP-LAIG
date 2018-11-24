@@ -42,8 +42,6 @@ class LinearAnimation extends Animation{
         this.speed = this.distance / this.span;
 
         this.timeTroco = this.span / (this.vecCPoints.length);
-        this.iniTime = 0;
-        this.endTime = 0;
     }
 
     update(deltaTime) {
@@ -77,11 +75,10 @@ class LinearAnimation extends Animation{
         }
 
         this.totalTime += deltaTime;
-        this.endTime = deltaTime - this.iniTime;
-        var x = this.vecCPoints[this.index][0] * this.speed * this.endTime;
-        var y = this.vecCPoints[this.index][1] * this.speed * this.endTime;
-        var z = this.vecCPoints[this.index][2] * this.speed * this.endTime;
-        this.endTime = this.iniTime;
+
+        var x = this.vecCPoints[this.index][0] * this.speed * deltaTime;
+        var y = this.vecCPoints[this.index][1] * this.speed * deltaTime;
+        var z = this.vecCPoints[this.index][2] * this.speed * deltaTime;
 
         
         mat4.translate(this.matrixAni, this.matrixAni, [x, y, z]);

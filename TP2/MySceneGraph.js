@@ -1093,19 +1093,22 @@ class MySceneGraph {
 
         this.scene.multMatrix(component.transformations);
 
-
         for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
             this.scene.pushMatrix();
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {
                 var object = componentMap.get(node).primitive[j];
+
                 if (this.tex != null)
                     this.tex.bind();
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
-                if(componentMap.get(node).animation != [])
-                {
-
+                if(component.i < component.animations.length){
+                    if(component.animations[i].final == true)
+                    component.i++;
+                    else{
+                        component.animations[i].apply();
+                    }
                 }
                 object.display();
                 this.scene.pushMatrix();

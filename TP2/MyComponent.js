@@ -6,7 +6,7 @@
 
 class MyComponent
 {
-	constructor(transformations = mat4.create(),animations = [], materials = [], textures = null, primitive = [],children = [])
+	constructor(transformations = mat4.create(),animations = [], materials = [], textures = null, primitive = [],children = [],animation = [])
 	{
 		this.transformations = transformations;
 		this.animations = animations;
@@ -14,6 +14,7 @@ class MyComponent
 		this.textures = textures;
 		this.primitive = primitive;
 		this.children = children;
+		this.animation = animation;
 	}
 
 }

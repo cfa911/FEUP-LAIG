@@ -1101,8 +1101,14 @@ class MySceneGraph {
                 var object = componentMap.get(node).primitive[j];
                 if (this.tex != null)
                     this.tex.bind();
+                this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
+                if(componentMap.get(node).animation != [])
+                {
+
+                }
                 object.display();
+                this.scene.pushMatrix();
             }
             if (componentMap.get(node).children[i] != null)
                 this.through(componentMap.get(node).children[i], texture, material);

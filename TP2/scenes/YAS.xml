@@ -175,7 +175,7 @@
             <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
             divisoes -->
             <!-- fator de escala das alturas -->
-            <terrain idtexture="ss" idheightmap="ss" parts="ii" heightscale="ff"/>
+            <terrain idtexture="ss" idheightmap="ss" parts="ii" heightscale="ff"/> <!--mapa de cores é o idtexture mapa de alturas é o heightmap-->
         </primitive>
         <primitive id="water">
             <!-- Nova primitiva: plano de água baseado em shaders -->

@@ -6,7 +6,7 @@
 
 class MyPatch extends CGFobject
 {
-	constructor(scene,npointsU,npointsV, npartsU, npartsV,controlPoints,minS = 0, maxS = 1, minT = 0, maxT = 1)
+	constructor(scene, npointsU, npointsV, npartsU, npartsV, controlPoints, minS = 0, maxS = 1, minT = 0, maxT = 1)
 	{
         super(scene);
         this.npointsU = npointsU;

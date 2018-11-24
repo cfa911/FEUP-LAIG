@@ -6,7 +6,7 @@
 
 class My2ndCylinder extends CGFobject
 {
-	constructor(scene,base,top,height,slices,stacks,minS = 0, maxS = 1, minT = 0, maxT = 1)
+	constructor(scene,base,top,height,slices,stacks)
 	{
         super(scene);
         this.base = base;
@@ -14,33 +14,43 @@ class My2ndCylinder extends CGFobject
         this.height = height;
         this.slices = slices;
         this.stacks = stacks;
-
-		this.minS = minS;
-        this.maxS = maxS;
-        this.minT = minT;
-        this.maxT = maxT;
-
+        this.controlvertexes = [[[0,-this.base,0,1],
+                              [-this.base,-this.base,0,0.707],
+                              [-this.base,0,0,1],
+                              [-this.base,this.base,0,0.707],
+                              [0,this.base,0,1],
+                              [this.base,this.base,0,0.707],
+                              [this.base,0,0,1],
+                              [this.base,-this.base,0,0.707],
+                              [0,-this.base,0,1]],
+                              [[0,-this.top,this.height,1],
+                              [-this.top,-this.top,this.height,0.707],
+                              [-this.top,0,this.height,1],
+                              [-this.top,this.top,this.height,0.707],
+                              [0,this.top,this.height,1],
+                              [this.top,this.top,this.height,0.707],
+                              [this.top,0,this.height,1],
+                              [this.top,-this.top,this.height,0.707],
+                              [0,-this.top,this.height,1]]];
+                             
 		this.initBuffers();
 	};
 
 	initBuffers()
 	{
-
+        var nurbsSurface = new CGFnurbsSurface(1 , 8, this.controlvertexes);
+		var obj = new CGFnurbsObject(this.scene, this.stacks,  this.slices, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
+		this.surfaces = obj;        
     }
-    
-    changeLength(length_s, length_t) {/*
+    display(){
+        this.scene.pushMatrix();
+        /*
+        this.scene.rotate(270*DEGREE_TO_RAD,1,0,0);
+        this.scene.translate(this.translation[0], this.translation[1], this.translation[2]);*/
+        this.surfaces.display();
+        this.scene.popMatrix();
+    }
+    changeLength(length_s, length_t) {
 
-        this.length_s = length_s;
-		this.length_t = length_t;
-    
-        for(var i = 0; i <= this.stacks; i++)
-        {
-            for(var j = 0; j <= this.slices; j++)
-            {
-               this.texCoords.push(j * length_s / this.slices, i * length_t / this.stacks);
-            }    
-        } commit
-
-        this.updateTexCoordsGLBuffers();*/
     }
 };

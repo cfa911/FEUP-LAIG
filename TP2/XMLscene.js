@@ -32,9 +32,11 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
         this.setUpdatePeriod(20);
-        this.ani = new LinearAnimation(this, 10, [[0,0,0],[1,0,0]]);
-        this.cir = new CircularAnimation(this, 10, [5,0,5], 10, 358, 20);
-        this.tri = new MyRectangle(this,0,0,1,1);
+        this.ani = new LinearAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
+        this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
+        //this.tri = new MyRectangle(this,0,0,1,1);
+        this.tri = new My2ndCylinder(this,1,1,5,20,20);
+
         this.lastTime = -1;
     }
 

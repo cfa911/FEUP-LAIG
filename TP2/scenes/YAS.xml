@@ -96,11 +96,19 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="lin" span="5">
+        <linear id="lin" span="20">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="1" yy="0" zz="0" />
             <controlpoint xx="1" yy="1" zz="0" />
+
+        </linear>
+        <linear id="lin2" span="20">
+            <!-- devem existir pelo menos dois pontos de controlo -->
+            <controlpoint xx="0" yy="0" zz="0" />
+            <controlpoint xx="1" yy="0" zz="0" />
+            <controlpoint xx="1" yy="1" zz="0" />
+
         </linear>
         <!-- center corresponde ao ponto que serve -->
         <!-- de centro da animação circular -->
@@ -109,7 +117,7 @@
         <!-- startang e rotang correspondem, nomeadamente, -->
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
-        <circular id="circ" span="5" center="6.3 2.5 1.4" radius="3" startang="0" rotang="20" />
+        <circular id="circ" span="5" center="0 0 0" radius="3" startang="90" rotang="0" />
     </animations>
 
     <primitives>
@@ -175,7 +183,7 @@
             <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
             divisoes -->
             <!-- fator de escala das alturas -->
-            <terrain idtexture="terrain_tex" idheightmap="BW" parts="20" heightscale="0.15"/>
+            <terrain idtexture="terrain_tex" idheightmap="BW" parts="5" heightscale="0.15"/>
         </primitive>
         <primitive id="water">
             <!-- Nova primitiva: plano de água baseado em shaders -->
@@ -845,6 +853,7 @@
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
                 <animationref id="lin" />
+
             </animations>
             <materials>
                 <material id="metal" />
@@ -856,7 +865,7 @@
         </component>
         <component id="plane">
             <transformation>
-                <scale x="15" y="15" z="15" />
+                <scale x="2" y="2" z="2" />
             </transformation>
             <!-- bloco "animations" e' opcional -->
             <!-- as transformacoes resultantes da animacao devem -->
@@ -866,7 +875,10 @@
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
-                <!-- <animationref id="lin" /> -->
+                <animationref id="lin" />
+                <animationref id="lin2" />
+                <animationref id="circ" />
+
             </animations>
             <materials>
                 <material id="metal" />
@@ -875,6 +887,8 @@
             <children>
                 <primitiveref id="terrain" />
                 <primitiveref id="water" />
+                <primitiveref id="rect" />
+
             </children>
         </component>
     </components>

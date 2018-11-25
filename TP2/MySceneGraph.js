@@ -725,7 +725,8 @@ class MySceneGraph {
                 var radius = this.reader.getFloat(arrayAnimations[i], 'radius');
                 var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
                 var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
-                this.animation = new CircularAnimation(span, [cx, cy, cz], radius, startang * DEGREE_TO_RAD, rotang * DEGREE_TO_RAD);
+                var c = [cx, cy, cz];
+                this.animation = new CircularAnimation(this.scene, span, c, radius, startang, rotang);
                 this.animation.type = "Circular";
             }
             animationsMap.set(id, this.animation);
@@ -825,10 +826,10 @@ class MySceneGraph {
                 var npartsU = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsU');
                 var npartsV = this.reader.getInteger(primitiveChildren[patchIndex], 'npartsV');
                 var i = 0;
-                while(i < primitiveChildren[patchIndex].children.length){
+                while (i < primitiveChildren[patchIndex].children.length) {
                     var Uarray = [];
                     var V = 0
-                    while(V <= npointsV){
+                    while (V <= npointsV) {
                         var xx = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'xx');
                         var yy = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'yy');
                         var zz = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'zz');
@@ -838,7 +839,7 @@ class MySceneGraph {
                     }
                     controlPoints.push(Uarray);
                 }
-                this.primitiva = new MyPlane(this.scene, npartsU, npartsV, npointsU, npointsV,controlPoints);
+                this.primitiva = new MyPlane(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints);
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {
@@ -937,7 +938,7 @@ class MySceneGraph {
                 var animationsChilds = animations[k].children;
                 for (var i = 0; i < animationsChilds.length; i++) {
                     var idAnim = this.reader.getString(animationsChilds[i], 'id');
-                    compo.animations.push(idAnim);
+                    compo.animations.push(animationsMap.get(idAnim));
                 }
             }
             for (var k = 0; k < materials.length; k++) {
@@ -1103,12 +1104,21 @@ class MySceneGraph {
                     this.tex.bind();
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
-                if(component.i < component.animations.length && component.animations != []){
-                    if(animationsMap.get(component.animations[i]).final == true)
-                    component.i++;
-                    else{
-                        //animationsMap.get(component.animations[i]).update(deltatime);
-                        animationsMap.get(component.animations[i]).apply();
+                if (component.i < component.animations.length && component.animations != []) {
+                    console.log("entered");
+                    if (component.animations[component.i].final == true) {
+                        if (component.i >= component.animations.length - 1) {
+                            component.i = component.animations.length - 1;
+                            component.animations[component.i].apply();
+                        }
+                        else {
+                            component.i++;
+                            component.animations[component.i].apply();
+                        }
+
+                    }
+                    else {
+                        component.animations[component.i].apply();
                     }
                 }
                 object.display();

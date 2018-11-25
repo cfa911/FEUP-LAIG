@@ -31,7 +31,6 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
-        this.setUpdatePeriod(20);
         this.ani = new LinearAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
         this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
@@ -128,6 +127,7 @@ class XMLscene extends CGFscene {
         this.interface.addLightsGroup(this.graph.lights); //add all lights ✓
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
+        this.setUpdatePeriod(20);
 
     }
 
@@ -140,7 +140,11 @@ class XMLscene extends CGFscene {
             deltaTime = (currTime - this.lastTime) / 1000;
             this.cir.update(deltaTime);
             this.ani.update(deltaTime); //time is different for some reason linear porly done
-
+            for (const k of componentMap.keys()) {
+                var component = componentMap.get(k);
+                if(component.animations.length > component.i)
+                component.animations[component.i].update(deltaTime);
+            }
         this.lastTime = currTime;
 
     }

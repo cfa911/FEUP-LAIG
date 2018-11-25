@@ -35,6 +35,7 @@ class XMLscene extends CGFscene {
         this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
         this.tri = new My2ndCylinder(this,1,1,5,20,20);
+        this.vei = new MyVehicle(this);
 
         this.lastTime = -1;
     }
@@ -199,6 +200,7 @@ class XMLscene extends CGFscene {
             this.ani.apply();
             this.tri.display();
             this.popMatrix();*/
+            this.vei.display();
         }
         else {
             // Draw axis

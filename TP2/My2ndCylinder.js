@@ -6,7 +6,7 @@
 
 class My2ndCylinder extends CGFobject
 {
-	constructor(scene,base,top,height,slices,stacks)
+	constructor(scene, base, top, height, slices, stacks)
 	{
         super(scene);
         this.base = base;
@@ -50,7 +50,5 @@ class My2ndCylinder extends CGFobject
         this.surfaces.display();
         this.scene.popMatrix();
     }
-    changeLength(length_s, length_t) {
-
-    }
+    changeLength(length_s, length_t) {}
 };

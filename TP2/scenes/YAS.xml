@@ -140,12 +140,7 @@
             <sphere radius="2" slices="30" stacks="30" />
         </primitive>
         <primitive id="plane">
-            <!-- Nova primitiva: plano, gerado por NURBS -->
             <plane npartsU="48" npartsV="48" />
-            <!-- um plano de dimensões 1 x 1 unidades assente -->
-            <!-- em XZ, centrado na origem -->
-            <!-- e com a face visível apontando para +Y -->
-            <!-- com divisão em cinco partes por oito partes -->
         </primitive>
         <primitive id="patch">
             <!-- Nova primitiva: patch, gerada por NURBS -->
@@ -170,7 +165,7 @@
         <primitive id="cyl2">
             <!-- — Nova primitiva: cilindro baseado em NURBS -->
             <!-- parâmetros iguais ao cilindro original -->
-            <cylinder2 base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+            <cylinder2 base="1" top="1" height="0.1" slices="30" stacks="30" />
         </primitive>
         <primitive id="terrain">
             <!-- Nova primitiva: terreno baseado em shaders -->
@@ -186,18 +181,6 @@
             <terrain idtexture="terrain_tex" idheightmap="BW" parts="50" heightscale="0.15"/>
         </primitive>
         <primitive id="water">
-            <!-- Nova primitiva: plano de água baseado em shaders -->
-            <!-- parametros: -->
-            <!-- id da textura que deve ser visualizada sobre o terreno
-            (dimensões devem ser potências de 2) -->
-            <!-- id da textura que deve ser usada como mapa de ondulação
-            para formar o terreno (dimensões devem ser potencias de
-            2) -->
-            <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
-            divisoes -->
-            <!-- fator de escala das alturas -->
-            <!-- fator de escala das coordenadas de textura (para o numero
-            de repeticoes no plano) -->
             <water idtexture="water_tex" idwavemap="water_BW" parts="20" heightscale="0.05" texscale="1"/>
         </primitive>
     </primitives >
@@ -217,8 +200,9 @@
                 <componentref id="flor2" />
                 <componentref id="flor3" />
                 <componentref id="cone" /> -->
-                <componentref id="terrain" />
-                <componentref id="water" />
+                <!-- <componentref id="terrain" />
+                <componentref id="water" /> -->
+                <!-- <componentref id="vehicle" /> -->
             </children>
         </component>
         <component id="face1">
@@ -891,6 +875,21 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="water" />
+            </children>
+        </component>
+        <component id="vehicle">
+            <transformation>
+                <scale x="2" y="1" z="2" />
+                <translate  x="0" y="0.013" z="0" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="vehicle" />
             </children>
         </component>
     </components>

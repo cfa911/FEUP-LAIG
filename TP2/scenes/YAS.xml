@@ -98,11 +98,13 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="lin" span="5">
+        <linear id="lin" span="10">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
             <controlpoint xx="1" yy="0" zz="0" />
             <controlpoint xx="1" yy="1" zz="0" />
+            <controlpoint xx="-1" yy="-3" zz="0" />
+
         </linear>
         <!-- center corresponde ao ponto que serve -->
         <!-- de centro da animação circular -->
@@ -111,7 +113,7 @@
         <!-- startang e rotang correspondem, nomeadamente, -->
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
-        <circular id="circ" span="5" center="6.3 2.5 1.4" radius="3" startang="0" rotang="20" />
+        <circular id="circ" span="10" center="6.3 2.5 1.4" radius="3" startang="0" rotang="361" />
     </animations>
 
     <primitives>
@@ -868,6 +870,7 @@
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
+                <animationref id="circ" />
                 <animationref id="lin" />
             </animations>
             <materials>
@@ -875,7 +878,7 @@
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="terrain" />
+                <primitiveref id="rect" />
             </children>
         </component>
     </components>

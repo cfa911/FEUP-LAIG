@@ -612,7 +612,13 @@ class MySceneGraph {
                 //materialsMap.set(idMat, [[r1, g1, b1, a1], [r2, g2, b2, a2], [r3, g3, b3, a3], [r4, g4, b4, a4], shiMat]);
             }
         }
-
+        this.none = new CGFappearance(this.scene);
+        this.none.setEmission(0, 0, 0, 0);
+        this.none.setAmbient(0, 0, 0, 0);
+        this.none.setDiffuse(0, 0, 0, 0);
+        this.none.setSpecular(0, 0, 0, 0);
+        this.none.setShininess(10);
+        materialsMap.set("none", this.none);
         this.log("Parsed materials");
         return null;
     }
@@ -843,7 +849,9 @@ class MySceneGraph {
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {
-                //TODO in nurbs
+                this.primitiva = new MyVehicle(this.scene);
+                this.primitiva.type = "Vehicle";
+
             }
             else if (secoCylIndex != -1) {
                 var base = this.reader.getFloat(primitiveChildren[secoCylIndex], 'base');
@@ -1019,19 +1027,8 @@ class MySceneGraph {
             case "none":
                 material = [];
                 material.push("none");
-                if (!materialsMap.get("none")) {
-                    this.mat = new CGFappearance(this.scene);
-                    this.mat.setEmission(0, 0, 0, 0);
-                    this.mat.setAmbient(0, 0, 0, 0);
-                    this.mat.setDiffuse(0, 0, 0, 0);
-                    this.mat.setSpecular(0, 0, 0, 0);
-                    this.mat.setShininess(10);
-                    materialsMap.set("none", this.mat);
-                }
-                else {
-                    this.mat = materialsMap.get(material[this.change % material.length]);
-                    this.mat.apply();
-                }
+                this.mat = materialsMap.get(material[this.change % material.length]);
+                this.mat.apply();
                 break;
             case null:
                 break;

@@ -139,8 +139,7 @@ class XMLscene extends CGFscene {
             deltaTime = 0;
         else
             deltaTime = (currTime - this.lastTime) / 1000;
-            this.cir.update(deltaTime);
-            this.ani.update(deltaTime); //time is different for some reason linear porly done
+            //time is different for some reason linear porly done
             for (const k of componentMap.keys()) {
                 var component = componentMap.get(k);
                 if(component.animations.length > component.i)

@@ -10,7 +10,9 @@ class MyVehicle extends CGFobject
         this.cabeca = new MySphere(scene, 1, 30, 30);
     };
 
-    changeLength(length_s, length_t) {}
+    changeLength(length_s, length_t) {
+
+    };
     
     display() {
         this.tronco.display();

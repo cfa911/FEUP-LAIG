@@ -161,6 +161,7 @@
         <primitive id="vehicle">
             <!-- — Nova primitiva: cilindro baseado em NURBS -->
             <!-- parâmetros iguais ao cilindro original -->
+            <vehicle />
         </primitive>
         <primitive id="cyl2">
             <!-- — Nova primitiva: cilindro baseado em NURBS -->
@@ -202,7 +203,7 @@
                 <componentref id="cone" /> -->
                 <!-- <componentref id="terrain" />
                 <componentref id="water" /> -->
-                <!-- <componentref id="vehicle" /> -->
+                <componentref id="vehicle" />
             </children>
         </component>
         <component id="face1">
@@ -879,10 +880,14 @@
         </component>
         <component id="vehicle">
             <transformation>
-                <scale x="2" y="1" z="2" />
                 <translate  x="0" y="0.013" z="0" />
             </transformation>
             <animations>
+                <!-- pode conter zero ou mais referencias a "animations" -->
+                <!-- declaradas anteriormente e que serão executadas em -->
+                <!-- sequencia. Este elemento e' opcional -->
+                <animationref id="circ" />
+
             </animations>
             <materials>
                 <material id="metal" />

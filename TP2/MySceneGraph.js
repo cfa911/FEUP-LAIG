@@ -867,7 +867,7 @@ class MySceneGraph {
                 var parts = this.reader.getInteger(primitiveChildren[waterIndex], 'parts');
                 var heightscale = this.reader.getFloat(primitiveChildren[waterIndex], 'heightscale');
                 var texscale = this.reader.getFloat(primitiveChildren[waterIndex], 'texscale');
-                this.primitiva = new MyWater(this.scene, idtexture, idwavemap, parts, heightscale, texscale);
+                this.primitiva = new MyWater(this.scene, textureMap.get(idtexture), textureMap.get(idwavemap), parts, heightscale, texscale);
                 this.primitiva.type = "Water";
             }
             if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex != -1 || terrainIndex != -1 || waterIndex != -1)

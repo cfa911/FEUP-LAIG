@@ -6,9 +6,10 @@
 
 
 class MyTerrain extends MyPlane{
+    
 	constructor (scene, idtexture, idheightmap, parts, heightScale) {
 		super(scene, parts, parts);
-		this.texTerrain = idtexture;
+		this.idtexture = idtexture;
 		this.idheightmap = idheightmap;
 		this.heightScale = heightScale;
 
@@ -19,7 +20,7 @@ class MyTerrain extends MyPlane{
 
 	display() {
 		this.scene.setActiveShader(this.terrainShader);
-		this.texTerrain.bind();
+		this.idtexture.bind();
 		this.idheightmap.bind(1);
 		
 		this.terrainShader.setUniformsValues({heightScale: this.heightScale, uSampler2: 1});

@@ -11,10 +11,14 @@ varying vec2 vTextureCoord;
 uniform sampler2D uSampler2;
 
 uniform float heightScale;
+uniform float timeFactor;
+uniform float texScale;
 
 void main() {
-	vTextureCoord = aTextureCoord;
-	vec4 color = texture2D(uSampler2, aTextureCoord);
+    vec2 temp = (aTextureCoord + timeFactor) * texScale;
+	vTextureCoord = temp;
+	vec4 color = texture2D(uSampler2, temp);
+
 	vec4 pos = vec4(aVertexPosition.x,
 				aVertexPosition.y + color.r * color.a * heightScale,
 				aVertexPosition.z,
@@ -22,4 +26,3 @@ void main() {
 
 	gl_Position = uPMatrix * uMVMatrix * pos;
 }
-

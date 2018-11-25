@@ -25,9 +25,6 @@ class MyWater extends MyPlane {
         this.idwavemap.bind(1);
         var factor = (Date.now() - this.initTime) * 0.001 * 0.05;
         this.waterShader.setUniformsValues({timeFactor: factor, heightScale: this.heightscale, uSampler2: 1, texScale: this.texscale});
-        
-        //this.waterShader.setUniformsValues({heightScale: this.heightScale, uSampler2: 1});
-        this.scene.translate(0, 0.015, 0);
         this.surfaces.display();
 		this.scene.setActiveShader(this.scene.defaultShader);
     }

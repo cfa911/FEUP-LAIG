@@ -93,7 +93,9 @@ class LinearAnimation extends Animation{
         //mat4.rotate(this.matrixAni, this.matrixAni, [angleX, angleY, angleZ], [0,1,0]);
 
     }
-
+    apply(matrix) {
+        this.matrixAni = matrix;
+    }
     apply(){
         super.apply();
     }

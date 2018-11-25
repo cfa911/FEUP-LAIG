@@ -1105,7 +1105,8 @@ class MySceneGraph {
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
                 if (component.i < component.animations.length && component.animations != []) {
-                    if (component.animations[i].final == true) {
+                    console.log("entered");
+                    if (component.animations[component.i].final == true) {
                         if (component.i >= component.animations.length - 1) {
                             component.i = component.animations.length - 1;
                             component.animations[component.i].apply();
@@ -1117,7 +1118,7 @@ class MySceneGraph {
 
                     }
                     else {
-                        component.animations[i].apply();
+                        component.animations[component.i].apply();
                     }
                 }
                 object.display();

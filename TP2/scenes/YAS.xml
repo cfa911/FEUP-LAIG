@@ -177,7 +177,7 @@
             <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
             divisoes -->
             <!-- fator de escala das alturas -->
-            <terrain idtexture="terrain_tex" idheightmap="BW" parts="5" heightscale="1"/>
+            <terrain idtexture="terrain_tex" idheightmap="BW" parts="20" heightscale="0.15"/>
         </primitive>
         <primitive id="water">
             <!-- Nova primitiva: plano de água baseado em shaders -->
@@ -858,7 +858,7 @@
         </component>
         <component id="plane">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <scale x="15" y="15" z="15" />
             </transformation>
             <!-- bloco "animations" e' opcional -->
             <!-- as transformacoes resultantes da animacao devem -->
@@ -868,7 +868,7 @@
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
-                <animationref id="lin" />
+                <!-- <animationref id="lin" /> -->
             </animations>
             <materials>
                 <material id="metal" />

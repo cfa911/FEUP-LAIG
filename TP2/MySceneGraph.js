@@ -1118,9 +1118,9 @@ class MySceneGraph {
                         component.animations[component.i].apply();
                     }
                 }
-                this.scene.popMatrix();
-                object.display();
 
+                object.display();
+                this.scene.popMatrix();
             }
             if (componentMap.get(node).children[i] != null)
                 this.through(componentMap.get(node).children[i], texture, material);

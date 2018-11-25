@@ -99,9 +99,10 @@
         <linear id="lin" span="20">
             <!-- devem existir pelo menos dois pontos de controlo -->
             <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="1" yy="0" zz="0" />
-            <controlpoint xx="1" yy="1" zz="0" />
-
+            <controlpoint xx="0" yy="0" zz="10" />
+            <controlpoint xx="10" yy="0" zz="10" />
+            <controlpoint xx="10" yy="0" zz="0" />
+            <controlpoint xx="0" yy="0" zz="0" />
         </linear>
         <linear id="lin2" span="20">
             <!-- devem existir pelo menos dois pontos de controlo -->
@@ -117,7 +118,7 @@
         <!-- startang e rotang correspondem, nomeadamente, -->
         <!-- ao angulo inicial (em graus) e -->
         <!-- total de rotação (em graus) -->
-        <circular id="circ" span="20" center="0 0 0" radius="30" startang="90" rotang="0" />
+        <circular id="circ" span="10" center="0 0 0" radius="20" startang="90" rotang="0" />
     </animations>
 
     <primitives>
@@ -888,6 +889,8 @@
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
                 <animationref id="lin" />
+                <animationref id="circ" />
+
             </animations>
             <materials>
                 <material id="metal" />

@@ -14,9 +14,9 @@ uniform float heightScale;
 
 void main() {
 	vTextureCoord = aTextureCoord;
-	vec4 color = texture2D(uSampler2, aTextureCoord);
+
 	vec4 pos = vec4(aVertexPosition.x,
-				aVertexPosition.y + color.r * color.a * heightScale,
+				aVertexPosition.y + texture2D(uSampler2, aTextureCoord)[1] * heightScale,
 				aVertexPosition.z,
 				1.0);
 

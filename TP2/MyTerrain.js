@@ -4,27 +4,31 @@
  * @constructor
  */
 
+class MyTerrain extends MyPlane
+{
+	constructor(scene, idtexture, idheightmap, parts, heightscale)
+	{
+        super(scene, parts, parts);
+        this.idtexture = idtexture;
+        this.idheightmap = idheightmap;
+        this.heightscale = heightscale;
 
-class MyTerrain extends MyPlane{
-	constructor (scene, idtexture, idheightmap, parts, heightScale) {
-		super(scene, parts, parts);
-		this.texTerrain = idtexture;
-		this.idheightmap = idheightmap;
-		this.heightScale = heightScale;
+        this.testShader = new CGFshader(this.scene.gl, "shaders/texture3.vert", "shaders/texture3.frag");
+        this.testShader.setUniformsValues({uSampler: 0});
+        this.testShader.setUniformsValues({uSampler2: 1});
+        this.testShader.setUniformsValues({heightscale: this.heightscale});
 
-        this.terrainShader = new CGFshader(this.scene.gl, "shaders/texture3.vert", "shaders/texture3.frag");
-    }
-    
-    changeLength(length_s, length_t) {}
+	};
 
-	display() {
-		this.scene.setActiveShader(this.terrainShader);
-		this.texTerrain.bind();
-		this.idheightmap.bind(1);
-		
-		this.terrainShader.setUniformsValues({heightScale: this.heightScale, uSampler2: 1});
-
+    display() {
+        this.scene.setActiveShader(this.testShader);
+        //this.scene.pushMatrix();
+        // textura
+        this.idtexture.bind(0);
+        this.idheightmap.bind(1);
         this.surfaces.display();
-		this.scene.setActiveShader(this.scene.defaultShader);
-	}
-}
+        //this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader)
+
+    }
+};

@@ -845,7 +845,7 @@ class MySceneGraph {
                     }
                     controlPoints.push(Uarray);
                 }
-                this.primitiva = new MyPlane(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints);
+                this.primitiva = new MyPatch(this.scene, npointsU, npointsV,npartsU, npartsV, controlPoints);
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {
@@ -1102,7 +1102,6 @@ class MySceneGraph {
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
                 if (component.i < component.animations.length && component.animations != []) {
-                    console.log("entered");
                     if (component.animations[component.i].final == true) {
                         if (component.i >= component.animations.length - 1) {
                             component.i = component.animations.length - 1;

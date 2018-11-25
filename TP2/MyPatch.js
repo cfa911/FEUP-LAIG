@@ -4,29 +4,12 @@
  * @constructor
  */
 
-class MyPatch extends CGFobject
+class MyPatch extends MyPlane
 {
-	constructor(scene, npointsU, npointsV, npartsU, npartsV, controlPoints, minS = 0, maxS = 1, minT = 0, maxT = 1)
+	constructor(scene, npointsU, npointsV, npartsU, npartsV, controlPoints)
 	{
-        super(scene);
-        this.npointsU = npointsU;
-        this.npointsV = npointsV;
-        this.npartsU = npartsU;
-        this.npartsV = npartsV;
-        this.controlPoints = controlPoints;
-
-		this.minS = minS;
-        this.maxS = maxS;
-        this.minT = minT;
-        this.maxT = maxT;
-
-		this.initBuffers();
+        super(scene,npartsU,npartsV,npointsU,npointsV,controlPoints);
 	};
-
-	initBuffers()
-	{
-
-    }
     
     changeLength(length_s, length_t) {}
 };

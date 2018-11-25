@@ -203,7 +203,7 @@
                 <componentref id="cone" /> -->
                 <!-- <componentref id="terrain" />
                 <componentref id="water" /> -->
-                <componentref id="vehicle" />
+                <!-- <componentref id="vehicle" /> -->
             </children>
         </component>
         <component id="face1">

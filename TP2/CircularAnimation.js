@@ -18,9 +18,7 @@ class CircularAnimation extends Animation{
     init(){
         mat4.rotateY(this.matrixAni, this.matrixAni,  this.AngInicial * DEGREE_TO_RAD);
         mat4.translate(this.matrixAni, this.matrixAni, [this.radius,0,0]);
-
         mat4.translate(this.matrixAni, this.matrixAni, [this.center[0], this.center[1], this.center[2]]);
-
     }
 
     update(deltaTime) {

@@ -180,7 +180,7 @@
             <!-- numero de divisoes em s e t (parts=”5” => plano com 5x5
             divisoes -->
             <!-- fator de escala das alturas -->
-            <terrain idtexture="terrain_tex" idheightmap="BW" parts="50" heightscale="0.4"/>
+            <terrain idtexture="terrain_tex" idheightmap="BW" parts="50" heightscale="0.2"/>
         </primitive>
         <primitive id="water">
             <water idtexture="water_tex" idwavemap="water_BW" parts="20" heightscale="1" texscale="1"/>
@@ -852,8 +852,8 @@
         </component>
         <component id="terrain">
             <transformation>
-                <translate x="0" y="-2" z="0" />
-                <scale x="75" y="25" z="75" />
+                <translate x="0" y="-0.2" z="0" />
+                <scale x="75" y="50" z="100" />
             </transformation>
             <animations>
             </animations>

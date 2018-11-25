@@ -1102,6 +1102,7 @@ class MySceneGraph {
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
                 if (component.i < component.animations.length && component.animations != []) {
+
                     if (component.animations[component.i].final == true) {
                         if (component.i >= component.animations.length - 1) {
                             component.i = component.animations.length - 1;
@@ -1117,8 +1118,9 @@ class MySceneGraph {
                         component.animations[component.i].apply();
                     }
                 }
+                this.scene.popMatrix();
                 object.display();
-                this.scene.pushMatrix();
+
             }
             if (componentMap.get(node).children[i] != null)
                 this.through(componentMap.get(node).children[i], texture, material);

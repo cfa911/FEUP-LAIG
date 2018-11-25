@@ -2,9 +2,9 @@ class MyVehicle extends CGFobject {
     constructor(scene) {
         super(scene);
         this.patch = new MyPatch(scene, 1, 2, 5, 5, [[[-2, -2, 0, 1], [-2, 0, 0, 1], [-2, 2, 0, 0.7]], [[2, -2, 0, 0.7], [2, 0, 0, 0.7], [2, 2, 0, 0.7]]]);
-        this.tronco = new My2ndCylinder(scene, 2, 2, 3, 30, 30);
+        this.tronco = new My2ndCylinder(scene, 4, 4, 3, 30, 30);
         this.cauda = new MyCylinder(scene, 0, 1, 1, 30, 30);
-        this.antena = new My2ndCylinder(scene, 1, 1, 1, 30, 30);
+        this.antena = new My2ndCylinder(scene, 2, 2, 1, 30, 30);
         this.cabeca = new MySphere(scene, 1, 30, 30);
 
         //colors 
@@ -28,6 +28,8 @@ class MyVehicle extends CGFobject {
         this.grey.setShininess(700);
 
         this.bee = new CGFtexture(this.scene, "./scenes/images/bee.jpg");
+        //this.wing = new CGFtexture(this.scene, "./scenes/images/wing.png");
+
 
     };
 
@@ -127,6 +129,80 @@ class MyVehicle extends CGFobject {
         this.scene.translate(-4, 10, 15);
         this.cabeca.display();
         this.scene.popMatrix();
+
+        //leg 1
+        this.scene.pushMatrix();
+        this.scene.translate(1, -1, 2);
+        this.scene.rotate(Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.4, 0.4, 2);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(-0.8, -4, 1.3);
+        this.scene.rotate(-Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.2, 0.2, 3);
+        this.antena.display();
+        this.scene.popMatrix();
+        //leg 2
+        this.scene.pushMatrix();
+        this.scene.translate(-1, -1, 2);
+        this.scene.rotate(Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.4, 0.4, 2);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.8, -4, 1.3);
+        this.scene.rotate(-Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.2, 0.2, 3);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.rotate(Math.PI / 4, 1, 0, 0);
+        this.scene.translate(0, 0, -4);
+        this.scene.scale(1, 1, 2);
+
+        //leg 1
+        this.scene.pushMatrix();
+        this.scene.translate(1, -1, 2);
+        this.scene.rotate(Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.4, 0.4, 2);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(-0.8, -4, 1.3);
+        this.scene.rotate(-Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.2, 0.2, 3);
+        this.antena.display();
+        this.scene.popMatrix();
+        //leg 2
+        this.scene.pushMatrix();
+        this.scene.translate(-1, -1, 2);
+        this.scene.rotate(Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(-Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.4, 0.4, 2);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.8, -4, 1.3);
+        this.scene.rotate(-Math.PI / 4, 1, 0, 0);
+        this.scene.rotate(Math.PI / 10, 0, 1, 0);
+        this.scene.scale(0.2, 0.2, 3);
+        this.antena.display();
+        this.scene.popMatrix();
+
+        this.scene.popMatrix();
+
         this.bee.unbind();
     }
 };

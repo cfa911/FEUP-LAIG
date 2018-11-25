@@ -14,24 +14,24 @@ class My2ndCylinder extends CGFobject
         this.height = height;
         this.slices = slices;
         this.stacks = stacks;
-        this.controlvertexes = [[[0,-this.base,0,1],
-                              [-this.base,-this.base,0,0.707],
-                              [-this.base,0,0,1],
-                              [-this.base,this.base,0,0.707],
-                              [0,this.base,0,1],
-                              [this.base,this.base,0,0.707],
-                              [this.base,0,0,1],
-                              [this.base,-this.base,0,0.707],
-                              [0,-this.base,0,1]],
-                              [[0,-this.top,this.height,1],
-                              [-this.top,-this.top,this.height,0.707],
-                              [-this.top,0,this.height,1],
-                              [-this.top,this.top,this.height,0.707],
-                              [0,this.top,this.height,1],
-                              [this.top,this.top,this.height,0.707],
-                              [this.top,0,this.height,1],
-                              [this.top,-this.top,this.height,0.707],
-                              [0,-this.top,this.height,1]]];
+        this.controlvertexes = [[[0,-this.base/2,0,1],
+                              [-this.base/2,-this.base/2,0,0.707],
+                              [-this.base/2,0,0,1],
+                              [-this.base/2,this.base/2,0,0.707],
+                              [0,this.base/2,0,1],
+                              [this.base/2,this.base/2,0,0.707],
+                              [this.base/2,0,0,1],
+                              [this.base/2,-this.base/2,0,0.707],
+                              [0,-this.base/2,0,1]],
+                              [[0,-this.top/2,this.height,1],
+                              [-this.top/2,-this.top/2,this.height,0.707],
+                              [-this.top/2,0,this.height,1],
+                              [-this.top/2,this.top/2,this.height,0.707],
+                              [0,this.top/2,this.height,1],
+                              [this.top/2,this.top/2,this.height,0.707],
+                              [this.top/2,0,this.height,1],
+                              [this.top/2,-this.top/2,this.height,0.707],
+                              [0,-this.top/2,this.height,1]]];
                              
 		this.initBuffers();
 	};

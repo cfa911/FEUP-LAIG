@@ -691,7 +691,7 @@ class MySceneGraph {
                     var zz = this.reader.getFloat(arrayAnimations[i].children[j], 'zz');
                     controlPoints.push([xx, yy, zz]);
                 }
-                this.animation = new LinearAnimation(this.scene, span, controlPoints);
+                this.animation = [span, controlPoints];
                 this.animation.type = "Linear";
             }
             else if (arrayAnimations[i].nodeName == "circular") {
@@ -732,7 +732,7 @@ class MySceneGraph {
                 var startang = this.reader.getFloat(arrayAnimations[i], 'startang');
                 var rotang = this.reader.getFloat(arrayAnimations[i], 'rotang');
                 var c = [cx, cy, cz];
-                this.animation = new CircularAnimation(this.scene, span, c, radius, startang, rotang);
+                this.animation = [span, c, radius, startang, rotang];
                 this.animation.type = "Circular";
             }
             animationsMap.set(id, this.animation);
@@ -946,7 +946,13 @@ class MySceneGraph {
                 var animationsChilds = animations[k].children;
                 for (var i = 0; i < animationsChilds.length; i++) {
                     var idAnim = this.reader.getString(animationsChilds[i], 'id');
-                    compo.animations.push(animationsMap.get(idAnim));
+                    var animation;
+                    var info = animationsMap.get(idAnim);
+                    if(info.type == "Circular")
+                    animation = new CircularAnimation(this.scene,info[0],info[1],info[2],info[3],info[4]);
+                    else
+                    animation = new LinearAnimation(this.scene,info[0],info[1]);
+                    compo.animations.push(animation);
                 }
             }
             for (var k = 0; k < materials.length; k++) {
@@ -1103,7 +1109,6 @@ class MySceneGraph {
                 object.changeLength(length_s, length_t);
 
                 if (component.i < component.animations.length && component.animations != []) {
-                    console.log("adsad");
                     if (component.animations[component.i].final == true) {
                         if (component.i >= component.animations.length - 1) {
                             component.i = component.animations.length - 1;

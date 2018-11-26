@@ -1101,8 +1101,9 @@ class MySceneGraph {
                     this.tex.bind();
                 this.scene.pushMatrix();
                 object.changeLength(length_s, length_t);
-                if (component.i < component.animations.length && component.animations != []) {
 
+                if (component.i < component.animations.length && component.animations != []) {
+                    console.log("adsad");
                     if (component.animations[component.i].final == true) {
                         if (component.i >= component.animations.length - 1) {
                             component.i = component.animations.length - 1;
@@ -1110,6 +1111,7 @@ class MySceneGraph {
                         }
                         else {
                             component.i++;
+                            component.animations[component.i].final = false;
                             component.animations[component.i].apply();
                         }
 
@@ -1118,7 +1120,7 @@ class MySceneGraph {
                         component.animations[component.i].apply();
                     }
                 }
-
+                
                 object.display();
                 this.scene.popMatrix();
             }

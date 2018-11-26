@@ -46,6 +46,7 @@ class LinearAnimation extends Animation{
 
     update(deltaTime) {
 
+        
         if(this.totalTime >= this.span) {
             this.final = true;
             this.finalMatrix = this.matrixAni;
@@ -61,19 +62,19 @@ class LinearAnimation extends Animation{
 
         if(this.totalTime > (this.timeTroco * (this.index + 1))) {
             this.index++;
-            this.indexAux = this.index - 1;
             
-            var total = Math.abs(this.vecAngles[this.indexAux][0]) + Math.abs(this.vecAngles[this.indexAux][1]) + Math.abs(this.vecAngles[this.indexAux][2]);
+            //var total = Math.abs(this.vecAngles[this.indexAux][0]) + Math.abs(this.vecAngles[this.indexAux][1]) + Math.abs(this.vecAngles[this.indexAux][2]);
            /* var angleX = (this.vecAngles[this.indexAux][0]/total)*2*Math.PI;
             var angleY = (this.vecAngles[this.indexAux][1]/total)*2*Math.PI;
             var angleZ = (this.vecAngles[this.indexAux][2]/total)*2*Math.PI;
             mat4.translate(this.matrixAni,this.matrixAni,[-this.controlPts[this.index][0],-this.controlPts[this.index][2],-this.controlPts[this.index][2]]);
             mat4.rotateX(this.matrixAni, this.matrixAni,angleX);
-            mat4.rotateY(this.matrixAni, this.matrixAni,angleY);
-            mat4.rotateZ(this.matrixAni, this.matrixAni,angleZ);*/
-
+            */
+           /*
+            var angleY = this.angles(this.controlPts[this.index],this.controlPts[this.index+ 1]);
+            mat4.rotateY(this.matrixAni, this.matrixAni,angleY);*/
+            //mat4.identity(this.matrixAni);
         }
-
         this.totalTime += deltaTime;
 
         var x = this.vecCPoints[this.index][0] * this.speed * deltaTime;
@@ -98,5 +99,22 @@ class LinearAnimation extends Animation{
     }
     apply(){
         super.apply();
+    }
+    angles(p1, p2) {
+
+        var vector = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
+        var vectorRot = [0, 0, 1];
+ 
+        var dist1 = Math.sqrt(vectorRot[0] * vectorRot[0] + vectorRot[1] * vectorRot[1] + vectorRot[2] * vectorRot[2]);
+        var dist2 = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
+ 
+        var v1 = [vectorRot[0] / dist1, vectorRot[1] / dist1, vectorRot[2] / dist1];
+        var v2 = [vector[0] / dist2, vector[1] / dist2, vector[2] / dist2];
+ 
+        var dotProduct = (v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]);
+ 
+        var angle = Math.acos(dotProduct);
+ 
+        return angle;
     }
 }

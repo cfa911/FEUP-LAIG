@@ -1,120 +1,70 @@
+/**
+ * MyLinearAnimation
+ * @constructor
+ */
 class LinearAnimation extends Animation{
 
-    constructor(scene, span, controlPts) {
-
+    /**
+     * @constructor
+     */
+    constructor(scene, span, points) {
         super(scene, span);
 
-        // {(0,0,0), (1,0,0), (1,1,0)}
-        this.controlPts = controlPts;
-        // distancia calculada em cada reta (p2-p1) (p3-p2) em x, y e z
-        this.vecCPoints = [];
-        // Aplicando tempo nos pontos do vecPoints
-        this.vecInterp = [];
-        // distancia total de todas as retas
-        this.distance = 0;
-
-        this.totalTime = 0;
-
-        this.index = 0;
-
-        this.vecAngles = [];
-
-        //P = (P2 - P1)*(deltaTime/span)
-
-        //calcular distancias
-        for(var i=0; i < this.controlPts.length - 1; i++) {
-            this.distance += Math.sqrt(Math.pow(this.controlPts[i+1][0] - this.controlPts[i][0], 2) + Math.pow(this.controlPts[i+1][1] - this.controlPts[i][1], 2) + Math.pow(this.controlPts[i+1][2] - this.controlPts[i][2], 2));
-            var temp = [this.controlPts[i+1][0] - this.controlPts[i][0], this.controlPts[i+1][1] - this.controlPts[i][1], this.controlPts[i+1][2] - this.controlPts[i][2] ];
-            console.log(temp);
-            this.vecCPoints.push(temp);
+        this.points = points;
+        this.totalDistance = 0;
+        this.routes = [];
+        for(let i = 0; i < points.length - 1; i++){
+            this.totalDistance += vec3.dist(vec3.fromValues(points[i][0], points[i][1], points[i][2]), vec3.fromValues(points[i + 1][0], points[i + 1][1], points[i + 1][2]));
+            this.routes.push(this.totalDistance);
         }
-
-        for(var j=0; j < this.vecCPoints.length; j++) {
-
-            var x = Math.atan(this.vecCPoints[j][0] - 0);
-            var y = Math.atan(this.vecCPoints[j][1] - 0);
-            var z = Math.atan(this.vecCPoints[j][2] - 1);
-
-            this.vecAngles.push([x,y,z]);
-        }
-        //this.span = this.span * 1000;
-
-        this.speed = this.distance / this.span;
-
-        this.timeTroco = this.span / (this.vecCPoints.length);
+        this.speed = this.totalDistance / this.span;
+        this.previousAngle = 0;
+        
+        this.difference = 0;
+        this.firstPoint = 0;
+        this.secondPoint = 0;
+        this.timeCounter = 0;
     }
 
-    update(deltaTime) {
+    update(deltaTime){
+        this.timeCounter += deltaTime;
 
-        
-        if(this.totalTime >= this.span) {
-            this.final = true;
-            this.finalMatrix = this.matrixAni;
-            return;
-        }
+        if(this.timeCounter > this.span)
+            this.timeCounter = this.span;
+
+        this.currentPosition = this.speed * this.timeCounter;
+
+        let i = 0;
+        while (this.currentPosition > this.routes[i] && i < this.routes.length)
+		    i++;
+
+        this.firstPoint = this.points[i];
+        this.secondPoint = this.points[i+1];
+
+        if(i == 0)
+            this.difference = this.currentPosition/this.routes[i];
         else{
-            /*console.log("totalTime: ");
-            console.log(this.totalTime);
-            console.log("Span: ");
-            console.log(this.span);
-            console.log(deltaTime);*/
+            this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
         }
 
-        if(this.totalTime > (this.timeTroco * (this.index + 1))) {
-            this.index++;
-            
-            //var total = Math.abs(this.vecAngles[this.indexAux][0]) + Math.abs(this.vecAngles[this.indexAux][1]) + Math.abs(this.vecAngles[this.indexAux][2]);
-           /* var angleX = (this.vecAngles[this.indexAux][0]/total)*2*Math.PI;
-            var angleY = (this.vecAngles[this.indexAux][1]/total)*2*Math.PI;
-            var angleZ = (this.vecAngles[this.indexAux][2]/total)*2*Math.PI;
-            mat4.translate(this.matrixAni,this.matrixAni,[-this.controlPts[this.index][0],-this.controlPts[this.index][2],-this.controlPts[this.index][2]]);
-            mat4.rotateX(this.matrixAni, this.matrixAni,angleX);
-            */
-           /*
-            var angleY = this.angles(this.controlPts[this.index],this.controlPts[this.index+ 1]);
-            mat4.rotateY(this.matrixAni, this.matrixAni,angleY);*/
-            //mat4.identity(this.matrixAni);
-        }
-        this.totalTime += deltaTime;
-
-        var x = this.vecCPoints[this.index][0] * this.speed * deltaTime;
-        var y = this.vecCPoints[this.index][1] * this.speed * deltaTime;
-        var z = this.vecCPoints[this.index][2] * this.speed * deltaTime;
-
+        let angle = Math.atan((this.secondPoint[0] - this.firstPoint[0]) / (this.secondPoint[2] - this.firstPoint[2]));
         
-        mat4.translate(this.matrixAni, this.matrixAni, [x, y, z]);
-        /*
-        console.log(angleX);
-        console.log(angleY);
-        console.log(angleZ);
-        */
+        if(isNaN(angle))
+            angle = 0;
 
-        //mat4.rotate(this.matrixAni, this.matrixAni, [0, angleY, 0], [0,1,0]);
-        //mat4.rotate(this.matrixAni, this.matrixAni, [0, 0, angleZ], [0,0,1]);
-        //mat4.rotate(this.matrixAni, this.matrixAni, [angleX, angleY, angleZ], [0,1,0]);
+        if (this.secondPoint[2] - this.firstPoint[2] < 0)
+            angle += Math.PI;
+    
+        this.previousAngle = angle;
+    }
 
-    }
-    apply(matrix) {
-        this.matrixAni = matrix;
-    }
     apply(){
-        super.apply();
-    }
-    angles(p1, p2) {
+        var x = (this.secondPoint[0] - this.firstPoint[0]) * this.difference + this.firstPoint[0];
+        var y = (this.secondPoint[1] - this.firstPoint[1]) * this.difference + this.firstPoint[1];
+        var z = (this.secondPoint[2] - this.firstPoint[2]) * this.difference + this.firstPoint[2];
 
-        var vector = [p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]];
-        var vectorRot = [0, 0, 1];
- 
-        var dist1 = Math.sqrt(vectorRot[0] * vectorRot[0] + vectorRot[1] * vectorRot[1] + vectorRot[2] * vectorRot[2]);
-        var dist2 = Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
- 
-        var v1 = [vectorRot[0] / dist1, vectorRot[1] / dist1, vectorRot[2] / dist1];
-        var v2 = [vector[0] / dist2, vector[1] / dist2, vector[2] / dist2];
- 
-        var dotProduct = (v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]);
- 
-        var angle = Math.acos(dotProduct);
- 
-        return angle;
+        this.scene.translate(x, y, z);
+        this.scene.rotate(this.previousAngle, 0, 1, 0);
     }
+
 }

@@ -845,7 +845,7 @@ class MySceneGraph {
                     }
                     controlPoints.push(Uarray);
                 }
-                this.primitiva = new MyPatch(this.scene, npointsU, npointsV,npartsU, npartsV, controlPoints);
+                this.primitiva = new MyPatch(this.scene, npointsU - 1, npointsV - 1,npartsU, npartsV, controlPoints);
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {
@@ -1097,7 +1097,7 @@ class MySceneGraph {
 
         this.scene.multMatrix(component.transformations);
 
-        for (var i = 0; i < componentMap.get(node).children.length + 1; i++) {
+        for (var i = 0; i <= componentMap.get(node).children.length; i++) {
             this.scene.pushMatrix();
 
             for (var j = 0; j < componentMap.get(node).primitive.length; j++) {

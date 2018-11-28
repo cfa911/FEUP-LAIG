@@ -154,7 +154,7 @@
             <!-- a ser usada para o cálculo da superficie -->
             <!-- - o número de pontos de controlo dentro da -->
             <!-- primitiva patch é npointsU * npointsV -->
-            <patch npointsU="3" npointsV="4" npartsU="10" npartsV="15">
+            <patch npointsU="2" npointsV="3" npartsU="10" npartsV="15">
                 <controlpoint xx="0" yy="0" zz="4" />
                 <controlpoint xx="2" yy="0" zz="2" />
                 <controlpoint xx="4" yy="0" zz="4" />
@@ -180,7 +180,7 @@
             <!-- a ser usada para o cálculo da superficie -->
             <!-- - o número de pontos de controlo dentro da -->
             <!-- primitiva patch é npointsU * npointsV -->
-            <patch npointsU="2" npointsV="2" npartsU="5" npartsV="5">
+            <patch npointsU="1" npointsV="1" npartsU="5" npartsV="5">
                 <controlpoint xx="-2" yy="-2" zz="0" />
                 <controlpoint xx="-2" yy="2" zz="0" />
                 <controlpoint xx="2" yy="-2" zz="0" />

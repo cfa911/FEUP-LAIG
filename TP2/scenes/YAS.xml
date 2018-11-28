@@ -145,6 +145,33 @@
         <primitive id="plane">
             <plane npartsU="48" npartsV="48" />
         </primitive>
+
+        <primitive id="leaf2">
+            <!-- Nova primitiva: patch, gerada por NURBS -->
+            <!-- — parâmetros: -->
+            <!-- — npartsU: divisão em partes no domínio U a -->
+            <!-- ser usada para o cálculo da superfície -->
+            <!-- — npartsV: divisão em partes no domínio V -->
+            <!-- a ser usada para o cálculo da superficie -->
+            <!-- - o número de pontos de controlo dentro da -->
+            <!-- primitiva patch é npointsU * npointsV -->
+            <patch npointsU="3" npointsV="4" npartsU="10" npartsV="15">
+                <controlpoint xx="0" yy="0" zz="4" />
+                <controlpoint xx="2" yy="0" zz="2" />
+                <controlpoint xx="4" yy="0" zz="4" />
+                <controlpoint xx="6" yy="0" zz="2" />
+
+                <controlpoint xx="0" yy="2" zz="6" />
+                <controlpoint xx="2" yy="2" zz="4" />
+                <controlpoint xx="4" yy="2" zz="6" />
+                <controlpoint xx="6" yy="2" zz="4" />
+
+                <controlpoint xx="0" yy="4" zz="4" />
+                <controlpoint xx="2" yy="4" zz="2" />
+                <controlpoint xx="4" yy="4" zz="4" />
+                <controlpoint xx="6" yy="4" zz="2" />
+            </patch>
+        </primitive>
         <primitive id="patch">
             <!-- Nova primitiva: patch, gerada por NURBS -->
             <!-- — parâmetros: -->
@@ -154,7 +181,7 @@
             <!-- a ser usada para o cálculo da superficie -->
             <!-- - o número de pontos de controlo dentro da -->
             <!-- primitiva patch é npointsU * npointsV -->
-            <patch npointsU="1" npointsV="1" npartsU="5" npartsV="5">
+            <patch npointsU="2" npointsV="2" npartsU="5" npartsV="5">
                 <controlpoint xx="-2" yy="-2" zz="0" />
                 <controlpoint xx="-2" yy="2" zz="0" />
                 <controlpoint xx="2" yy="-2" zz="0" />
@@ -208,12 +235,13 @@
                 <componentref id="flor2" />
                 <componentref id="flor3" />
                 <componentref id="cone" /> -->
-                <componentref id="terrain" />
+                <!--<componentref id="terrain" />
                 <componentref id="azores" />
                 <componentref id="water" />
                 <componentref id="vehicle" />
-                <componentref id="vehicle2" />
-                
+                <componentref id="vehicle2" />-->
+                <componentref id="leaf2" />
+
 
             </children>
         </component>
@@ -267,6 +295,23 @@
                 <primitiveref id="rect" />
             </children>
         </component>
+
+        <component id="leaf2">
+            <transformation>
+                <!-- <translate x="0" y="-5" z="0" />
+                <scale x="150" y="10" z="150" /> -->
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="patch" />
+            </children>
+        </component>
+
         <component id="face2">
             <transformation>
                 <transformationref id="trans2" />
@@ -926,7 +971,7 @@
                 <primitiveref id="vehicle" />
             </children>
         </component>
-                <component id="vehicle2">
+        <component id="vehicle2">
             <transformation>
                 <translate x="0" y="25" z="0" />
             </transformation>
@@ -934,7 +979,7 @@
                 <!-- pode conter zero ou mais referencias a "animations" -->
                 <!-- declaradas anteriormente e que serão executadas em -->
                 <!-- sequencia. Este elemento e' opcional -->
-                                <animationref id="lin" />
+                <animationref id="lin" />
                 <animationref id="circ" />
 
 

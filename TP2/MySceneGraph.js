@@ -835,7 +835,7 @@ class MySceneGraph {
                 while (i < primitiveChildren[patchIndex].children.length) {
                     var Uarray = [];
                     var V = 0
-                    while (V <= npointsV) {
+                    while (V <= npointsV - 1) {
                         var xx = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'xx');
                         var yy = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'yy');
                         var zz = this.reader.getFloat(primitiveChildren[patchIndex].children[i], 'zz');
@@ -845,7 +845,7 @@ class MySceneGraph {
                     }
                     controlPoints.push(Uarray);
                 }
-                this.primitiva = new MyPatch(this.scene, npointsU, npointsV,npartsU, npartsV, controlPoints);
+                this.primitiva = new MyPatch(this.scene, npointsU - 1, npointsV - 1,npartsU, npartsV, controlPoints);
                 this.primitiva.type = "Patch";
             }
             else if (vehicleIndex != -1) {

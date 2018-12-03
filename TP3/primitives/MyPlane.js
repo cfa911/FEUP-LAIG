@@ -30,4 +30,7 @@ class MyPlane extends CGFobject
 			this.scene.popMatrix();
 		
     }
+    changeLength(bla,blas){
+
+    }
 };

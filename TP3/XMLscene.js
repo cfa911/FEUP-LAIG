@@ -36,7 +36,8 @@ class XMLscene extends CGFscene {
         //this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
-        this.cof = new MyCoffee(this,2);
+        //this.cof = new MyCoffee(this,2,180);
+        this.cof = new MyBox(this,1);
 
         this.lastTime = -1;
     }

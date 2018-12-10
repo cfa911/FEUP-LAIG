@@ -5,8 +5,15 @@
  */
 
 class MyCoffee extends CGFobject {
-	constructor(scene, player) {
+	constructor(scene, player,rotation = 0) {
 		super(scene);
+
+		this.rotation = rotation * DEGREE_TO_RAD;
+		this.player = player;
+
+
+		this.o = new CGFappearance(scene);
+
 
 		this.brown = new CGFappearance(scene);
 		this.brown.setEmission(0.14, 0.07, 0, 0.2);
@@ -15,14 +22,13 @@ class MyCoffee extends CGFobject {
 		this.brown.setSpecular(0.55, 0.27, 0, 0.8);
 		this.brown.setShininess(10);
 
-		this.player = player;
 		this.orange = new CGFappearance(scene);
-
 		this.orange.setEmission(0.25, 0.13, 0, 0.5);
 		this.orange.setAmbient(0.5, 0.27, 0, 0.6);
 		this.orange.setDiffuse(0.75, 0.41, 0, 0.8);
 		this.orange.setSpecular(1, 0.55, 0, 1);
 		this.orange.setShininess(10);
+
 		this.sphere = new MySphere(scene, 1, 30, 20);
 		this.pointer = new MyCylinder(scene, 1, 1, 1, 30, 20);
 		this.display();
@@ -30,8 +36,10 @@ class MyCoffee extends CGFobject {
 
 	display() {
 		this.scene.pushMatrix();
+		this.scene.rotate(this.rotation,0,1,0);
 		this.scene.scale(1, 0.5, 0.05);
 		this.scene.translate(0, 0, -0.25);
+		this.o.apply();
 		this.pointer.display();
 		this.scene.popMatrix();
 

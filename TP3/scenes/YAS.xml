@@ -154,8 +154,8 @@
                 <material id="none" />
             </materials>
             <children>
-                <componentref id="x1y1" />
-                <componentref id="x2y1" />
+                <!--<componentref id="x1y1" />
+                <componentref id="x2y1" />-->
                 <!--<componentref id="x3y1" />
                 <componentref id="x4y1" />
                 <componentref id="x5y1" />-->

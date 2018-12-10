@@ -31,11 +31,12 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
+
         //this.ani = new LinearAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
         //this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
-        //this.vei = new MyVehicle(this);
+        this.cof = new MyCoffee(this,2);
 
         this.lastTime = -1;
     }
@@ -192,7 +193,7 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
 
             this.graph.displayScene();
-
+            this.cof.display();
             /*this.pushMatrix();
             //console.log(this.ani.apply());
             //this.multMatrix(this.ani.apply());

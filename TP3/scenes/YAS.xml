@@ -1,13 +1,21 @@
 <yas>
     <scene root="initial" axis_length= "10" />
-    <views default="perspective1">
-        <perspective id="perspective1" near="1" far="250" angle="90">
-            <from x="1" y="10" z="1" />
-            <to x="0" y="0" z="0" />
+    <views default="top down">
+        <perspective id="top down" near="1" far="50" angle="90">
+            <from x="10" y="15" z="10" />
+            <to x="10" y="0" z="9.9" />
         </perspective>
-        <ortho id="ortho1" near="1" far="50" left="-3" right="3" top="3" bottom="-3">
-            <position x="5" y="5" z="5"/>
-            <target x="0" y="0" z="0"/>
+        <perspective id="player 1" near="1" far="50" angle="90">
+            <from x="0" y="15" z="10" />
+            <to x="10" y="0" z="10.1" />
+        </perspective>
+        <perspective id="player 2" near="1" far="50" angle="90">
+            <from x="20" y="15" z="10" />
+            <to x="10" y="0" z="9.9" />
+        </perspective>
+        <ortho id="ortho1" near="1" far="50" left="-5" right="5" top="10" bottom="-10">
+            <position x="22" y="5" z="10"/>
+            <target x="10" y="0" z="10"/>
             <up x="0" y="1" z="0"/>
         </ortho>
     </views>
@@ -46,13 +54,13 @@
             <diffuse r="0.5" g="0.5" b="0.5" a="1" />
             <specular r="0.7" g="0.7" b="0.7" a="1" />
         </material>
-            <material id="orange" shininess = "10">
+        <material id="orange" shininess = "10">
             <emission r="0.25" g="0.14" b="0" a="1" />
             <ambient r="0.5" g="0.27" b="0" a="1" />
             <diffuse r="0.75" g="0.41" b="0" a="1" />
             <specular r="1" g="0.55" b="0" a="1" />
         </material>
-            <material id="brown" shininess = "10">
+        <material id="brown" shininess = "10">
             <emission r="0.14" g="0.07" b="0" a="1" />
             <ambient r="0.28" g="0.14" b="0" a="1" />
             <diffuse r="0.42" g="0.20" b="0" a="1" />
@@ -164,7 +172,7 @@
             <transformation>
                 <translate x="10" y="0" z="10" />
                 <scale x="16" y="1" z="16" />
-                <rotate axis="x" angle="270" />                
+                <rotate axis="x" angle="270" />
             </transformation>
             <animations>
                 <!-- pode conter zero ou mais referencias a "animations" -->

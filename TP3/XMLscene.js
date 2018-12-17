@@ -203,7 +203,7 @@ class XMLscene extends CGFscene {
             this.popMatrix();
 
             this.pushMatrix();
-            this.translate(30,0,10);
+            this.translate(20,0,10);
             this.box2.display();
             this.popMatrix();
             /*this.pushMatrix();

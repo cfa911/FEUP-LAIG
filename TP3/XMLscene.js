@@ -37,7 +37,8 @@ class XMLscene extends CGFscene {
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
         //this.cof = new MyCoffee(this,2,180);
-        this.cof = new MyBox(this,1);
+        this.box1 = new MyBox(this,1);
+        this.box2 = new MyBox(this,2);
 
         this.lastTime = -1;
     }
@@ -194,7 +195,17 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
 
             this.graph.displayScene();
-            this.cof.display();
+
+
+            this.pushMatrix();
+            this.translate(0,0,10);
+            this.box1.display();
+            this.popMatrix();
+
+            this.pushMatrix();
+            this.translate(30,0,10);
+            this.box2.display();
+            this.popMatrix();
             /*this.pushMatrix();
             //console.log(this.ani.apply());
             //this.multMatrix(this.ani.apply());

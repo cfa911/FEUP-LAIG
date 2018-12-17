@@ -154,8 +154,8 @@
                 <material id="none" />
             </materials>
             <children>
-                <!--<componentref id="x1y1" />
-                <componentref id="x2y1" />-->
+                <componentref id="x1y1" />
+                <componentref id="x2y1" />
                 <!--<componentref id="x3y1" />
                 <componentref id="x4y1" />
                 <componentref id="x5y1" />-->
@@ -196,11 +196,11 @@
                 <animationref id="circ" />-->
             </animations>
             <materials>
-                <material id="brown" />
+                <material id="metal" />
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="board" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="sph" />
+                <primitiveref id="rect" />
             </children>
         </component>
     </components>

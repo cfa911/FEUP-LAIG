@@ -46,6 +46,7 @@
     </lights>
     <textures>
         <texture id="board" file="./scenes/images/board.png" />
+        <texture id="wall_text" file="./scenes/images/wall.jpg" />
     </textures>
     <materials>
         <material id="metal" shininess = "100">
@@ -160,6 +161,7 @@
             </materials>
             <children>
                 <componentref id="board" />
+                <componentref id="wall" />
                 <!--<componentref id="x3y1" />
                 <componentref id="x4y1" />
                 <componentref id="x5y1" />-->
@@ -182,6 +184,26 @@
                 <material id="metal" />
             </materials>
             <texture id="board" length_s="5" length_t="5" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="wall">
+            <transformation>
+                <scale x="46" y="26" z="16" />
+                <translate x="0.2" y="0.5" z="-0.5" />
+            </transformation>
+            <animations>
+                <!-- pode conter zero ou mais referencias a "animations" -->
+                <!-- declaradas anteriormente e que serão executadas em -->
+                <!-- sequencia. Este elemento e' opcional -->
+                <!--<animationref id="lin" />
+                <animationref id="circ" />-->
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="wall_text" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rect" />
             </children>

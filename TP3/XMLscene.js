@@ -32,13 +32,23 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        //this.ani = new LinearAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
+        //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
         //this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
         //this.cof = new MyCoffee(this,2,180);
         this.box1 = new MyBox(this,1);
         this.box2 = new MyBox(this,2);
+        this.player = 2;
+        this.rotation = 90;
+        this.coffe = new MyCoffee(this,this.player,0);
+
+        this.controlPoints = [[0,0,0],[0,3,0]];
+        this.initial = new LinearAnimation(this,3,this.controlPoints);
+        this.x = 0;
+        this.z = 0;
+
+        this.circ = new CircularAnimation(this,3,[this.x,3,this.z],0,0,this.rotation);
 
         this.lastTime = -1;
     }
@@ -142,7 +152,11 @@ class XMLscene extends CGFscene {
             deltaTime = 0;
         else
             deltaTime = (currTime - this.lastTime) / 1000;
-            //time is different for some reason linear porly done
+            //time is different for some reason initial porly done
+            this.initial.update(deltaTime);
+            if(this.initial.final)
+            this.circ.update(deltaTime);
+
             for (const k of componentMap.keys()) {
                 var component = componentMap.get(k);
                 if(component.animations.length > component.i)
@@ -206,6 +220,16 @@ class XMLscene extends CGFscene {
             this.translate(20,0,10);
             this.box2.display();
             this.popMatrix();
+
+            this.pushMatrix();
+            this.translate(20,2.5,10);
+            if(!this.initial.final)
+            this.initial.apply();
+            else
+            this.circ.apply();
+            this.coffe.display();
+            this.popMatrix();
+
             /*this.pushMatrix();
             //console.log(this.ani.apply());
             //this.multMatrix(this.ani.apply());

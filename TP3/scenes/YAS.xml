@@ -78,13 +78,10 @@
         <!-- O bloco animations pode ser vazio, isto é, pode -->
         <!-- não ser declarada qualquer animação, linear ou circular -->
         <!-- Span é o tempo, em segundos, que a animação deve demorar -->
-        <linear id="lin" span="20">
+        <linear id="lin" span="3">
             <!-- devem existir pelo menos dois pontos de controlo -->
-            <controlpoint xx="0" yy="0" zz="0" />
-            <controlpoint xx="0" yy="0" zz="10" />
-            <controlpoint xx="10" yy="0" zz="10" />
-            <controlpoint xx="10" yy="0" zz="0" />
-            <controlpoint xx="1" yy="0" zz="0" />
+            <controlpoint xx="0" yy="3" zz="10" />
+            <controlpoint xx="0" yy="10" zz="10" />
         </linear>
         <!-- center corresponde ao ponto que serve -->
         <!-- de centro da animação circular -->
@@ -162,13 +159,13 @@
                 <material id="none" />
             </materials>
             <children>
-                <componentref id="x1y1" />
+                <componentref id="board" />
                 <!--<componentref id="x3y1" />
                 <componentref id="x4y1" />
                 <componentref id="x5y1" />-->
             </children>
         </component>
-        <component id="x1y1">
+        <component id="board">
             <transformation>
                 <translate x="10" y="0" z="10" />
                 <scale x="16" y="1" z="16" />

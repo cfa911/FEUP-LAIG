@@ -30,7 +30,11 @@ class LinearAnimation extends Animation{
         this.timeCounter += deltaTime;
 
         if(this.timeCounter > this.span)
+        {
             this.timeCounter = this.span;
+            this.final = true;
+        }
+
 
         this.currentPosition = this.speed * this.timeCounter;
 

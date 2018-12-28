@@ -40,6 +40,14 @@ class MyInterface extends CGFinterface {
 
         group.add(this, 'currentCameraId', cameraIdArray).name('Camera').onChange(val => this.scene.selectView(val));
     }
+
+    changeScene() {
+        var group = this.gui.addFolder("Scenes");
+        group.open();
+        group.add(this.scene.graph, 'scene', [ 'dark', 'normal' ] );
+        // this.gui.add(this.scene.graph, "scene", [ "Japan", "New York"] ).name("Scene");
+    }
+
     initKeys(){
         this.scene.gui = this;
         this.processKeyboard = function () { };

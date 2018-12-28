@@ -141,6 +141,7 @@ class XMLscene extends CGFscene {
         this.interface.addLightsGroup(this.graph.lights); //add all lights ✓
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
+        this.interface.changeScene();
         this.setUpdatePeriod(20);
 
     }

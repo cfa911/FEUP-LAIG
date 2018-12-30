@@ -140,6 +140,9 @@
         <primitive id="sph">
             <sphere radius="2" slices="30" stacks="30" />
         </primitive>
+        <primitive id="board">
+            <board />
+        </primitive>
 
 
         <primitive id="vehicle">
@@ -168,13 +171,13 @@
                 <material id="none" />
             </materials>
             <children>
-                <componentref id="normal" />
+                <componentref id="dark" />
             </children>
         </component>
         <component id="board">
             <transformation>
-                <translate x="10" y="0" z="10" />
-                <scale x="16" y="1" z="16" />
+                <translate x="0.1" y="0" z="16" />
+                <scale x="4" y="1" z="4" />
                 <rotate axis="x" angle="270" />
             </transformation>
             <animations>
@@ -187,9 +190,9 @@
             <materials>
                 <material id="metal" />
             </materials>
-            <texture id="board" length_s="5" length_t="5" />
+            <texture id="board" length_s="1" length_t="1" />
             <children>
-                <primitiveref id="rect" />
+                <primitiveref id="board" />
             </children>
         </component>
         <component id="wall1">

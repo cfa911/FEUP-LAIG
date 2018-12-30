@@ -768,6 +768,7 @@ class MySceneGraph {
             var secoCylIndex = nodeNames.indexOf("cylinder2");
             var terrainIndex = nodeNames.indexOf("terrain");
             var waterIndex = nodeNames.indexOf("water");
+            var boardIndex = nodeNames.indexOf("board");
 
             if (rectangleIndex != -1) {
                 var x1 = this.reader.getFloat(primitiveChildren[rectangleIndex], 'x1');
@@ -879,7 +880,11 @@ class MySceneGraph {
                 this.primitiva = new MyWater(this.scene, textureMap.get(idtexture), textureMap.get(idwavemap), parts, heightscale, texscale);
                 this.primitiva.type = "Water";
             }
-            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex != -1 || terrainIndex != -1 || waterIndex != -1)
+            else if (boardIndex != -1) {
+                this.primitiva = new MyBoard(this.scene);
+                this.primitiva.type = "Board";
+            }
+            if (torusIndex != -1 || sphereIndex != -1 || cylinderIndex != -1 || triangleIndex != -1 || rectangleIndex != -1 || planeIndex != -1 || patchIndex != -1 || vehicleIndex != -1 || cylinderIndex != -1 || terrainIndex != -1 || waterIndex != -1 || boardIndex != -1)
                 primitivesMap.set(idPrimitive, this.primitiva);
         }
         this.log("Parsed primitives");

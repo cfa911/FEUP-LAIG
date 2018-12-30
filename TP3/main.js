@@ -11,7 +11,7 @@ function getUrlVars() {
     return vars;
 }	 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js','MyComponent.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyCylinder.js', 'primitives/MyDisk.js', 'primitives/MyCylinderWTops.js', 'primitives/MySphere.js', 'primitives/MyTorus.js', 'animations/Animation.js', 'animations/LinearAnimation.js', 'animations/CircularAnimation.js','primitives/MyPlane.js','primitives/MyPatch.js','primitives/MyVehicle.js','primitives/My2ndCylinder.js','primitives/MyTerrain.js','primitives/MyWater.js','primitives/MyCoffee.js','primitives/MyBox.js','primitives/MyContainer.js',
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js','MyComponent.js', 'primitives/MyRectangle.js', 'primitives/MyTriangle.js', 'primitives/MyCylinder.js', 'primitives/MyDisk.js', 'primitives/MyCylinderWTops.js', 'primitives/MySphere.js', 'primitives/MyTorus.js', 'animations/Animation.js', 'animations/LinearAnimation.js', 'animations/CircularAnimation.js','primitives/MyPlane.js','primitives/MyPatch.js','primitives/MyVehicle.js','primitives/My2ndCylinder.js','primitives/MyTerrain.js','primitives/MyWater.js','primitives/MyCoffee.js','primitives/MyBox.js','primitives/MyContainer.js', 'primitives/MyBoard.js', 'primitives/MyBoardCell.js',
 
 main=function()
 {

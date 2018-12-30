@@ -1,0 +1,330 @@
+<yas>
+    <scene root="initial" axis_length= "10" />
+    <views default="top down">
+        <perspective id="top down" near="1" far="50" angle="90">
+            <from x="10" y="15" z="10" />
+            <to x="10" y="0" z="9.9" />
+        </perspective>
+        <perspective id="player 1" near="1" far="50" angle="90">
+            <from x="0" y="15" z="10" />
+            <to x="10" y="0" z="10.1" />
+        </perspective>
+        <perspective id="player 2" near="1" far="50" angle="90">
+            <from x="20" y="15" z="10" />
+            <to x="10" y="0" z="9.9" />
+        </perspective>
+        <ortho id="ortho1" near="1" far="50" left="-5" right="5" top="10" bottom="-10">
+            <position x="22" y="5" z="10"/>
+            <target x="10" y="0" z="10"/>
+            <up x="0" y="1" z="0"/>
+        </ortho>
+    </views>
+    <ambient>
+        <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
+        <background r="0" g="0.1" b="0.5" a="0.3" />
+    </ambient>
+    <lights>
+        <omni id="first" enabled="0">
+            <location x="15" y="2" z="5" w="0.1" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.7" g="0.7" b="0.7" a="1" />
+        </omni>
+        <omni id="second" enabled="1">
+            <location x="10" y="5" z="12" w="0.3" />
+            <ambient r="0.3" g="0.3" b="0.3" a="0.2" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.4" />
+            <specular r="0.7" g="0.7" b="0.7" a="0.6" />
+        </omni>
+        <spot id="spot" enabled="0" angle="30" exponent="3">
+            <location x="5" y="2" z="1" />
+            <target x="4" y="4" z="6" />
+            <ambient r="0.3" g="0.3" b="0.3" a="0.3" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="0.3" />
+            <specular r="0.7" g="0.7" b="0.7" a="0.3" />
+        </spot>
+    </lights>
+    <textures>
+        <texture id="board" file="./scenes/images/board.png" />
+        <texture id="wall_text" file="./scenes/images/wall.jpg" />
+        <texture id="chair_text1" file="./scenes/images/chair.jpg" />
+        <texture id="simple_wall" file="./scenes/images/wall2.jpg" />
+        <texture id="chao_text" file="./scenes/images/try.jpg" />
+        <texture id="rosas_wall" file="./scenes/images/wall3.jpg" />
+        <texture id="white_wall" file="./scenes/images/wall4.jpg" />
+        <texture id="window" file="./scenes/images/window.jpg" />
+        <texture id="chao" file="./scenes/images/chao2.jpg" />
+        <texture id="poltrona" file="./scenes/images/poltrona.jpg" />
+    </textures>
+    <materials>
+        <material id="metal" shininess = "100">
+            <emission r="0.3" g="0.3" b="0.3" a="1" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.7" g="0.7" b="0.7" a="1" />
+        </material>
+        <material id="orange" shininess = "10">
+            <emission r="0.25" g="0.14" b="0" a="1" />
+            <ambient r="0.5" g="0.27" b="0" a="1" />
+            <diffuse r="0.75" g="0.41" b="0" a="1" />
+            <specular r="1" g="0.55" b="0" a="1" />
+        </material>
+        <material id="brown" shininess = "10">
+            <emission r="0.14" g="0.07" b="0" a="1" />
+            <ambient r="0.28" g="0.14" b="0" a="1" />
+            <diffuse r="0.42" g="0.20" b="0" a="1" />
+            <specular r="0.55" g="0.27" b="0.07" a="1" />
+        </material>
+    </materials>
+    <transformations>
+        <transformation id="trans1">
+            <translate x="0" y="0" z="0.5" />
+        </transformation>
+    </transformations>
+
+
+    <animations>
+        <!-- O bloco animations pode ser vazio, isto é, pode -->
+        <!-- não ser declarada qualquer animação, linear ou circular -->
+        <!-- Span é o tempo, em segundos, que a animação deve demorar -->
+        <linear id="lin" span="3">
+            <!-- devem existir pelo menos dois pontos de controlo -->
+            <controlpoint xx="0" yy="3" zz="10" />
+            <controlpoint xx="0" yy="10" zz="10" />
+        </linear>
+        <!-- center corresponde ao ponto que serve -->
+        <!-- de centro da animação circular -->
+        <!-- radius corresponde ao raio da rotacao -->
+        <!-- para a animação circular -->
+        <!-- startang e rotang correspondem, nomeadamente, -->
+        <!-- ao angulo inicial (em graus) e -->
+        <!-- total de rotação (em graus) -->
+        <circular id="circ" span="5" center="0 0 0" radius="20" startang="0" rotang="90" />
+    </animations>
+
+    <primitives>
+        <primitive id="patch">
+            <!-- Nova primitiva: patch, gerada por NURBS -->
+            <!-- — parâmetros: -->
+            <!-- — npartsU: divisão em partes no domínio U a -->
+            <!-- ser usada para o cálculo da superfície -->
+            <!-- — npartsV: divisão em partes no domínio V -->
+            <!-- a ser usada para o cálculo da superficie -->
+            <!-- - o número de pontos de controlo dentro da -->
+            <!-- primitiva patch é npointsU * npointsV -->
+            <patch npointsU="2" npointsV="2" npartsU="5" npartsV="5">
+                <controlpoint xx="-2" yy="-2" zz="0" />
+                <controlpoint xx="-2" yy="2" zz="0" />
+                <controlpoint xx="2" yy="-2" zz="0" />
+                <controlpoint xx="2" yy="2" zz="0" />
+            </patch>
+        </primitive>
+        <primitive id="plane">
+            <plane npartsU="48" npartsV="48" />
+        </primitive>
+        <primitive id="rect">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive >
+        <primitive id="tri">
+            <triangle x1="-0.5" y1="-0.5" z1="0" x2="0.5" y2="-0.5" z2="0" x3="-0.5" y3="0.5" z3="0" />
+        </primitive>
+        <primitive id="tor">
+            <torus inner="1" outer="3" slices="30" loops="30" />
+        </primitive>
+        <primitive id="cyl">
+            <cylinder base="1" top="1" height="0.1" slices="30" stacks="30" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder base="0.5" top="0" height="1" slices="30" stacks="30" />
+        </primitive>
+        <primitive id="sph">
+            <sphere radius="2" slices="30" stacks="30" />
+        </primitive>
+        <primitive id="board">
+            <board />
+        </primitive>
+
+
+        <primitive id="vehicle">
+            <vehicle />
+        </primitive>
+        <primitive id="cyl2">
+            <cylinder2 base="1" top="1" height="0.1" slices="30" stacks="30" />
+        </primitive>
+        <primitive id="terrain">
+            <terrain idtexture="terrain_tex" idheightmap="BW" parts="50" heightscale="0.2"/>
+
+        </primitive>
+        <primitive id="azores">
+            <terrain idtexture="terrain_azores" idheightmap="azores_BW" parts="50" heightscale="0.4"/>
+        </primitive>
+        <primitive id="water">
+            <water idtexture="water_tex" idwavemap="water_BW" parts="20" heightscale="2" texscale="1"/>
+        </primitive> -->
+    </primitives >
+    <components>
+        <component id="initial">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="none" />
+            </materials>
+            <children>
+                <componentref id="normal" />
+            </children>
+        </component>
+        <component id="board">
+            <transformation>
+                <translate x="0.1" y="0" z="16" />
+                <scale x="4" y="1" z="4" />
+                <rotate axis="x" angle="270" />
+            </transformation>
+            <animations>
+                <!-- pode conter zero ou mais referencias a "animations" -->
+                <!-- declaradas anteriormente e que serão executadas em -->
+                <!-- sequencia. Este elemento e' opcional -->
+                <!--<animationref id="lin" />
+                <animationref id="circ" />-->
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="board" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="board" />
+            </children>
+        </component>
+        <component id="wall1">
+            <transformation>
+                <scale x="46" y="26" z="16" />
+                <translate x="0.2" y="0.49" z="-0.5" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="wall_text" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="wall2">
+            <transformation>
+                <scale x="46" y="26" z="40" />
+                <translate x="-0.3" y="0.49" z="0.3" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="simple_wall" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="wall3">
+            <transformation>
+                <scale x="46" y="26" z="40" />
+                <translate x="0.2" y="0.49" z="0.8" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="simple_wall" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="wall4">
+            <transformation>
+                <scale x="46" y="26" z="40" />
+                <translate x="0.7" y="0.49" z="0.3" />
+                <rotate axis="y" angle="270" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="simple_wall" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="chao">
+            <transformation>
+                <scale x="46" y="26" z="40" />
+                <translate x="0.2" y="-0.01" z="0.3" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="chao_text" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rect" />
+            </children>
+        </component>
+        <component id="chair1">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="3" y="3" z="20" />
+                <translate x="3.5" y="-1" z="-0.1" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="poltrona" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="chair2">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="3" y="3" z="20" />
+                <translate x="3.5" y="8" z="-0.1" />
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="metal" />
+            </materials>
+            <texture id="poltrona" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl" />
+            </children>
+        </component>
+        <component id="normal">
+            <transformation>
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="none" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="board" />
+                <componentref id="wall1" />
+                <componentref id="wall2" />
+                <componentref id="wall3" />
+                <componentref id="wall4" />
+                <componentref id="chair1" />
+                <componentref id="chair2" />
+                <componentref id="chao" />
+            </children>
+        </component>
+    </components>
+</yas>

@@ -44,7 +44,7 @@ class MyInterface extends CGFinterface {
     changeScene() {
         var group = this.gui.addFolder("Scenes");
         group.open();
-        group.add(this.scene.graph, 'scene', [ 'dark', 'normal' ] );
+        group.add(this.scene, 'currentScene', {'Normal': 1, 'Dark': 2}).name('Mode');
         // this.gui.add(this.scene.graph, "scene", [ "Japan", "New York"] ).name("Scene");
     }
 

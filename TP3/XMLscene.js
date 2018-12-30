@@ -22,6 +22,7 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
+        this.currentScene = 1;
 
         this.initCameras();
 
@@ -166,6 +167,19 @@ class XMLscene extends CGFscene {
         this.lastTime = currTime;
 
     }
+
+    loadMode(mode) {
+        if (mode == MODE.NORMAL) {
+            var filename = getUrlVars()['file'] || "YAS.xml";
+            // this.cameras = [];
+            this.graph = new MySceneGraph(filename, this);
+        }
+        else {
+            var filename = getUrlVars()['file'] || "YAS2.xml";
+            // this.cameras = [];
+            this.graph = new MySceneGraph(filename, this);
+        }
+    };
 
     /**
      * Displays the scene.

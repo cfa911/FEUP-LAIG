@@ -1,7 +1,7 @@
 <yas>
     <scene root="initial" axis_length= "10" />
     <views default="top down">
-        <perspective id="top down" near="1" far="50" angle="90">
+        <perspective id="top down" near="1" far="500" angle="90">
             <from x="10" y="15" z="10" />
             <to x="10" y="0" z="9.9" />
         </perspective>

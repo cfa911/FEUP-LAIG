@@ -33,25 +33,33 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
+
+        this.objects = [[]];
+        for (let j = 0; j < 4; j++) {
+            for (let i = 0; i < 4; i++) {
+                this.objects[j].push(new CGFplane(this));
+            }
+        }
         //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
         //this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
         //this.cof = new MyCoffee(this,2,180);
-        this.box1 = new MyBox(this,1);
-        this.box2 = new MyBox(this,2);
+        this.box1 = new MyBox(this, 1);
+        this.box2 = new MyBox(this, 2);
         this.player = 2;
         this.rotation = 90;
-        this.coffe = new MyCoffee(this,this.player,0);
+        this.coffe = new MyCoffee(this, this.player, 0);
 
-        this.controlPoints = [[0,0,0],[0,3,0]];
-        this.initial = new LinearAnimation(this,3,this.controlPoints);
+        this.controlPoints = [[0, 0, 0], [0, 3, 0]];
+        this.initial = new LinearAnimation(this, 3, this.controlPoints);
         this.x = 0;
         this.z = 0;
 
-        this.circ = new CircularAnimation(this,3,[this.x,3,this.z],0,0,this.rotation);
+        this.circ = new CircularAnimation(this, 3, [this.x, 3, this.z], 0, 0, this.rotation);
 
         this.lastTime = -1;
+        this.setPickEnabled(true);
     }
 
     /**
@@ -60,16 +68,16 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
-    
+
     initViews() {
         for (var key in this.graph.views) {
             var view = this.graph.views[key];
 
             if (this.graph.views.hasOwnProperty(key)) {
-                if(view.type == "perspective"){
-                    this.viewValues[key] = new CGFcamera(view[0], view[1],view[2], view[3], view[4]);
+                if (view.type == "perspective") {
+                    this.viewValues[key] = new CGFcamera(view[0], view[1], view[2], view[3], view[4]);
                 }
-                if(view.type == "ortho"){
+                if (view.type == "ortho") {
                     this.viewValues[key] = new CGFcameraOrtho(view[0], view[1], view[2], view[3], view[4], view[5], view[6], view[7], view[8]);
                 }
             }
@@ -100,12 +108,12 @@ class XMLscene extends CGFscene {
                 var light = this.graph.lights[key];
 
                 //lights are predefined in cgfscene
-                this.lights[i].setPosition(light[2][0], light[2][1], light[2][2],light[2][3]);
+                this.lights[i].setPosition(light[2][0], light[2][1], light[2][2], light[2][3]);
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
 
-                if(this.lights[0] == "spot"){
+                if (this.lights[0] == "spot") {
                     this.lights[i].setSpotCutOff(light[7][0]);
                     this.lights[i].setSpotDirection(light[6][0] - light[2][0], light[6][1] - light[2][1], light[6][2] - light[2][2]);
                     this.lights[i].setSpotExponent(light[7][1]);
@@ -128,14 +136,14 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        
+
         //TODO: Change reference length according to parsed graph ✓
-        this.axis = new CGFaxis(this,this.graph.axis_length);
+        this.axis = new CGFaxis(this, this.graph.axis_length);
         // TODO: Change ambient and background details according to parsed graph ✓
         var ambient = this.graph.ambient;
         var background = this.graph.background;
-        this.gl.clearColor(background[0],background[1],background[2],background[3]); //global from parser ✓
-        this.setGlobalAmbientLight(ambient[0],ambient[1],ambient[2],ambient[3]);//global from parser ✓
+        this.gl.clearColor(background[0], background[1], background[2], background[3]); //global from parser ✓
+        this.setGlobalAmbientLight(ambient[0], ambient[1], ambient[2], ambient[3]);//global from parser ✓
         this.initLights();
         this.initViews();
         // Adds lights group ✓
@@ -150,32 +158,32 @@ class XMLscene extends CGFscene {
     update(currTime) {
         var deltaTime;
 
-        if(this.lastTime == -1)
+        if (this.lastTime == -1)
             deltaTime = 0;
         else
             deltaTime = (currTime - this.lastTime) / 1000;
-            //time is different for some reason initial porly done
-            this.initial.update(deltaTime);
-            if(this.initial.final)
+        //time is different for some reason initial porly done
+        this.initial.update(deltaTime);
+        if (this.initial.final)
             this.circ.update(deltaTime);
 
-            for (const k of componentMap.keys()) {
-                var component = componentMap.get(k);
-                if(component.animations.length > component.i)
+        for (const k of componentMap.keys()) {
+            var component = componentMap.get(k);
+            if (component.animations.length > component.i)
                 component.animations[component.i].update(deltaTime);
-            }
+        }
         this.lastTime = currTime;
 
     }
 
     loadMode(val) {
         var filename;
-        if(val == 2){
+        if (val == 2) {
             filename = getUrlVars()['file'] || "YAS2.xml";
             // this.cameras = [];
             this.graph = new MySceneGraph(filename, this);
         }
-        else if(val == 1){
+        else if (val == 1) {
             filename = getUrlVars()['file'] || "YAS.xml";
             // this.cameras = [];
             this.graph = new MySceneGraph(filename, this);
@@ -183,16 +191,36 @@ class XMLscene extends CGFscene {
         }
     };
 
+    logPicking() {
+        if (this.pickMode == false) {
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (var i = 0; i < this.pickResults.length; i++) {
+                    var obj = this.pickResults[i][0];
+                    if (obj) {
+                        var customId = this.pickResults[i][1];
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                    }
+                }
+                this.pickResults.splice(0, this.pickResults.length);
+            }
+        }
+    }
+
+
     /**
      * Displays the scene.
      */
     display() {
+        var i = 0;
+        var j = 0;
+
         // ---- BEGIN Background, camera and axis setup
-        
+        this.logPicking();
+        this.clearPickRegistration();
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        
+
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
@@ -207,7 +235,7 @@ class XMLscene extends CGFscene {
             this.axis.display();
 
             var i = 0;
-            
+
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
                     if (this.lightValues[key]) {
@@ -229,23 +257,38 @@ class XMLscene extends CGFscene {
 
 
             this.pushMatrix();
-            this.translate(0,0,10);
+            this.translate(0, 0, 10);
             this.box1.display();
             this.popMatrix();
 
             this.pushMatrix();
-            this.translate(20,0,10);
+            this.translate(20, 0, 10);
             this.box2.display();
             this.popMatrix();
 
             this.pushMatrix();
-            this.translate(20,2.5,10);
-            if(!this.initial.final)
-            this.initial.apply();
+            this.translate(20, 2.5, 10);
+            if (!this.initial.final)
+                this.initial.apply();
             else
-            this.circ.apply();
+                this.circ.apply();
             this.coffe.display();
             this.popMatrix();
+
+
+            this.pushMatrix();
+            this.translate(4, 0, 4);
+            for (i = 0; i < 16; i++) {
+                this.pushMatrix();
+                this.scale(3.7, 1, 3.7);
+                this.translate(i * 1.1, j * 4, 0);
+                this.registerForPick(((j + 1) * 10) + i + 1, this.objects[i]);
+
+                this.objects[i].display();
+                this.popMatrix();
+            }
+            this.popMatrix();
+
 
             /*this.pushMatrix();
             //console.log(this.ani.apply());
@@ -259,9 +302,7 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
         }
-
         this.popMatrix();
-        
         // ---- END Background, camera and axis setup
     }
 }

@@ -168,16 +168,18 @@ class XMLscene extends CGFscene {
 
     }
 
-    loadMode() {
-        if (this.currentScene == 1) {
-            var filename = getUrlVars()['file'] || "YAS.xml";
+    loadMode(val) {
+        var filename;
+        if(val == 2){
+            filename = getUrlVars()['file'] || "YAS2.xml";
             // this.cameras = [];
             this.graph = new MySceneGraph(filename, this);
         }
-        else {
-            var filename = getUrlVars()['file'] || "YAS2.xml";
+        else if(val == 1){
+            filename = getUrlVars()['file'] || "YAS.xml";
             // this.cameras = [];
             this.graph = new MySceneGraph(filename, this);
+
         }
     };
 

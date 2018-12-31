@@ -27,7 +27,7 @@ class MyVehicle extends CGFobject {
         this.grey.setSpecular(0.6, 0.6, 0.6, 0.8);
         this.grey.setShininess(700);
 
-        this.bee = new CGFtexture(this.scene, "./scenes/images/bee.jpg");
+        //this.bee = new CGFtexture(this.scene, "./scenes/images/bee.jpg");
         //this.wing = new CGFtexture(this.scene, "./scenes/images/wing.png");
 
 
@@ -72,7 +72,7 @@ class MyVehicle extends CGFobject {
 
         this.scene.pushMatrix();
         this.yellow.apply();
-        this.bee.bind();
+        //this.bee.bind();
         this.tronco.display();
         this.scene.popMatrix();
         // cauda
@@ -203,6 +203,6 @@ class MyVehicle extends CGFobject {
 
         this.scene.popMatrix();
 
-        this.bee.unbind();
+        //this.bee.unbind();
     }
 };

@@ -70,8 +70,6 @@ class MyInterface extends CGFinterface {
 
     addLightsGroup(lights) {
 
-        console.log("AQUI");
-
         var group = this.gui.addFolder("Lights");
         group.open();
 

@@ -1,4 +1,6 @@
 var DEGREE_TO_RAD = Math.PI / 180;
+var TIMELAPSE = 1;
+
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -57,7 +59,7 @@ class XMLscene extends CGFscene {
         this.initial = new LinearAnimation(this, 3, this.controlPoints);
         this.x = 0;
         this.z = 0;
-
+        this.passed = false;
         this.circ = new CircularAnimation(this, 3, [this.x, 3, this.z], 0, 0, this.rotation);
         this.globalTime = 0;
         this.lastTime = -1;
@@ -88,11 +90,24 @@ class XMLscene extends CGFscene {
         //sets default camera ✓
 
         this.camera = this.viewValues[this.graph.default];
+        this.cameraId = this.graph.default;
         this.interface.setActiveCamera(this.camera);
     }
+
+    rotateCamera(){
+        this.rotateCam = true;
+        this.cameraTime = 0;
+    }
+
     selectView(id) {
-        this.camera = this.viewValues[id];
-        this.interface.setActiveCamera(this.camera);
+        if(id == this.graph.default || id == "ortho1" || this.cameraId == "ortho1" || this.graph.default == this.cameraId)
+        {
+            this.camera = this.viewValues[id];
+            this.cameraId = id;
+        }
+        else
+        this.rotateCamera();
+        //this.interface.setActiveCamera(this.camera);
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -176,9 +191,29 @@ class XMLscene extends CGFscene {
                 component.animations[component.i].update(deltaTime);
         }
         this.lastTime = currTime;
-        this.globalTime += deltaTime;
 
+
+        this.globalTime += deltaTime; // Calculates total time since start of program(in seconds)
         console.log(this.globalTime);
+        if(!this.rotateCam){ // Waiting to load everything
+
+        }
+        else{
+            if(Math.floor(this.cameraTime) < TIMELAPSE){
+                /*
+                for (var key in this.viewValues)
+                {
+                    if(key == "player 1" || key == "player 2")
+                    this.viewValues[key].orbit('X',deltaTime*180*DEGREE_TO_RAD/TIMELAPSE);
+                }*/
+                this.camera.orbit('X',deltaTime*180*DEGREE_TO_RAD/TIMELAPSE);
+
+                this.cameraTime += deltaTime;
+            }
+            else
+            this.rotateCam = false;
+        }
+
     }
 
     loadMode(val) {
@@ -258,8 +293,7 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
 
             this.graph.displayScene();
-
-            this.camera.orbit('X',DEGREE_TO_RAD);
+            
             this.pushMatrix();
             this.translate(0, 0, 10);
             this.box1.display();
@@ -285,8 +319,8 @@ class XMLscene extends CGFscene {
             for (let j = 0; j < 4; j++) {
                 for (let i = 0; i < 4; i++) {
                     this.pushMatrix();
-                    this.scale(3.7, 1, 3.7);
-                    this.translate(i * 1.1, 0.1, j*1.1);
+                    this.scale(4, 1, 4);
+                    this.translate(i, 0.1, j);
                     this.registerForPick(((j + 1) * 10) + i + 1, this.arrayO[j][i]);
                     this.boardTex.bind();
                     this.arrayO[j][i].display();

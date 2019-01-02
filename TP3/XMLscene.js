@@ -58,7 +58,7 @@ class XMLscene extends CGFscene {
         this.z = 0;
 
         this.circ = new CircularAnimation(this, 3, [this.x, 3, this.z], 0, 0, this.rotation);
-
+        this.globalTime = 0;
         this.lastTime = -1;
         this.setPickEnabled(true);
     }
@@ -174,7 +174,9 @@ class XMLscene extends CGFscene {
                 component.animations[component.i].update(deltaTime);
         }
         this.lastTime = currTime;
+        this.globalTime += deltaTime;
 
+        console.log(this.globalTime);
     }
 
     loadMode(val) {
@@ -228,7 +230,6 @@ class XMLscene extends CGFscene {
 
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
-
         this.pushMatrix();
 
         if (this.sceneInited) {
@@ -256,7 +257,7 @@ class XMLscene extends CGFscene {
 
             this.graph.displayScene();
 
-
+            this.camera.orbit('X',DEGREE_TO_RAD);
             this.pushMatrix();
             this.translate(0, 0, 10);
             this.box1.display();

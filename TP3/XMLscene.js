@@ -34,10 +34,11 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
 
-        this.objects = [[]];
+        this.arrayO = new Array(4);
         for (let j = 0; j < 4; j++) {
+            this.arrayO[j] = new Array(4);
             for (let i = 0; i < 4; i++) {
-                this.objects[j].push(new CGFplane(this));
+                this.arrayO[j][i] = new CGFplane(this);
             }
         }
         //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
@@ -278,31 +279,32 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
             this.translate(4, 0, 4);
-            for (i = 0; i < 16; i++) {
-                this.pushMatrix();
-                this.scale(3.7, 1, 3.7);
-                this.translate(i * 1.1, j * 4, 0);
-                this.registerForPick(((j + 1) * 10) + i + 1, this.objects[i]);
+            for (let j = 0; j < 4; j++) {
+                for (let i = 0; i < 4; i++) {
+                    this.pushMatrix();
+                    this.scale(3.7, 1, 3.7);
+                    this.translate(i * 1.1, 0.1, j*1.1);
+                    this.registerForPick(((j + 1) * 10) + i + 1, this.arrayO[j][i]);
+                    this.arrayO[j][i].display();
+                    this.popMatrix();
+                }
 
-                this.objects[i].display();
-                this.popMatrix();
             }
             this.popMatrix();
 
-
-            /*this.pushMatrix();
-            //console.log(this.ani.apply());
-            //this.multMatrix(this.ani.apply());
-            this.ani.apply();
-            this.tri.display();
-            this.popMatrix();*/
-            //this.vei.display();
-        }
+                /*this.pushMatrix();
+                //console.log(this.ani.apply());
+                //this.multMatrix(this.ani.apply());
+                this.ani.apply();
+                this.tri.display();
+                this.popMatrix();*/
+                //this.vei.display();
+            }
         else {
-            // Draw axis
-            this.axis.display();
+                // Draw axis
+                this.axis.display();
+            }
+            this.popMatrix();
+            // ---- END Background, camera and axis setup
         }
-        this.popMatrix();
-        // ---- END Background, camera and axis setup
     }
-}

@@ -38,7 +38,8 @@ class XMLscene extends CGFscene {
         for (let j = 0; j < 4; j++) {
             this.arrayO[j] = new Array(4);
             for (let i = 0; i < 4; i++) {
-                this.arrayO[j][i] = new CGFplane(this);
+
+                this.arrayO[j][i] = new MyPlane(this,2,2);
             }
         }
         //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
@@ -153,6 +154,7 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
         this.interface.changeScene();
         this.setUpdatePeriod(20);
+        this.boardTex = textureMap.get("board");
 
     }
 
@@ -286,6 +288,7 @@ class XMLscene extends CGFscene {
                     this.scale(3.7, 1, 3.7);
                     this.translate(i * 1.1, 0.1, j*1.1);
                     this.registerForPick(((j + 1) * 10) + i + 1, this.arrayO[j][i]);
+                    this.boardTex.bind();
                     this.arrayO[j][i].display();
                     this.popMatrix();
                 }

@@ -252,8 +252,8 @@ class XMLscene extends CGFscene {
                     if (obj) {
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        var X = (4 * ((customId - (customId % 10))/10 - 3)) - 8;
-                        var Z =  (-4 * (customId % 10)) + 10;
+                        var X = ((4 * ((customId - (customId % 10))/10 - 3)) - 8) + 0.01;
+                        var Z =  ((-4 * (customId % 10)) + 10) + 0.01;
                         this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
                         this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
                     }

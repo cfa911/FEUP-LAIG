@@ -1,6 +1,5 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
-
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -41,7 +40,7 @@ class XMLscene extends CGFscene {
             this.arrayO[j] = new Array(4);
             for (let i = 0; i < 4; i++) {
 
-                this.arrayO[j][i] = new MyPlane(this,2,2);
+                this.arrayO[j][i] = new MyPlane(this, 2, 2);
             }
         }
         //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
@@ -94,19 +93,22 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
-    rotateCamera(){
+    rotateCamera() {
         this.rotateCam = true;
         this.cameraTime = 0;
     }
 
     selectView(id) {
-        if(id == this.graph.default || id == "ortho1" || this.cameraId == "ortho1" || this.graph.default == this.cameraId)
-        {
+        if (id == this.graph.default || id == "ortho1" || this.cameraId == "ortho1" || this.graph.default == this.cameraId) {
             this.camera = this.viewValues[id];
             this.cameraId = id;
         }
         else
-        this.rotateCamera();
+        {
+            this.cameraId = id;
+            this.rotateCamera();
+        }
+
         //this.interface.setActiveCamera(this.camera);
     }
     /**
@@ -170,7 +172,6 @@ class XMLscene extends CGFscene {
         this.interface.changeScene();
         this.setUpdatePeriod(20);
         this.boardTex = textureMap.get("board");
-
     }
 
     update(currTime) {
@@ -194,24 +195,28 @@ class XMLscene extends CGFscene {
 
 
         this.globalTime += deltaTime; // Calculates total time since start of program(in seconds)
-        console.log(this.globalTime);
-        if(!this.rotateCam){ // Waiting to load everything
+
+        if (!this.rotateCam) { // Waiting to load everything
 
         }
-        else{
-            if(Math.floor(this.cameraTime) < TIMELAPSE){
+        else {
+            
+            if (Math.floor(this.cameraTime) < TIMELAPSE) {
                 /*
                 for (var key in this.viewValues)
                 {
                     if(key == "player 1" || key == "player 2")
                     this.viewValues[key].orbit('X',deltaTime*180*DEGREE_TO_RAD/TIMELAPSE);
                 }*/
-                this.camera.orbit('X',deltaTime*180*DEGREE_TO_RAD/TIMELAPSE);
-
+                this.camera.orbit('X', deltaTime * 180 * DEGREE_TO_RAD / TIMELAPSE);
+                this.previous = this.cameraTime;
                 this.cameraTime += deltaTime;
             }
-            else
-            this.rotateCam = false;
+            else {
+                this.camera.orbit('X', deltaTime * - 100 * (this.previous - Math.floor(this.previous)) * DEGREE_TO_RAD / TIMELAPSE);
+                
+                this.rotateCam = false;
+            }
         }
 
     }
@@ -293,7 +298,7 @@ class XMLscene extends CGFscene {
             // Displays the scene (MySceneGraph function).
 
             this.graph.displayScene();
-            
+
             this.pushMatrix();
             this.translate(0, 0, 10);
             this.box1.display();
@@ -321,7 +326,7 @@ class XMLscene extends CGFscene {
                     this.pushMatrix();
                     this.scale(4, 1, 4);
                     this.translate(i, 0.1, j);
-                    this.registerForPick(((j + 1) * 10) + i + 1, this.arrayO[j][i]);
+                    this.registerForPick((4 - j) + (i + 1)*10, this.arrayO[j][i]);
                     this.boardTex.bind();
                     this.arrayO[j][i].display();
                     this.popMatrix();
@@ -330,19 +335,19 @@ class XMLscene extends CGFscene {
             }
             this.popMatrix();
 
-                /*this.pushMatrix();
-                //console.log(this.ani.apply());
-                //this.multMatrix(this.ani.apply());
-                this.ani.apply();
-                this.tri.display();
-                this.popMatrix();*/
-                //this.vei.display();
-            }
-        else {
-                // Draw axis
-                this.axis.display();
-            }
-            this.popMatrix();
-            // ---- END Background, camera and axis setup
+            /*this.pushMatrix();
+            //console.log(this.ani.apply());
+            //this.multMatrix(this.ani.apply());
+            this.ani.apply();
+            this.tri.display();
+            this.popMatrix();*/
+            //this.vei.display();
         }
+        else {
+            // Draw axis
+            this.axis.display();
+        }
+        this.popMatrix();
+        // ---- END Background, camera and axis setup
     }
+}

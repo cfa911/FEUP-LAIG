@@ -5,11 +5,11 @@
             <from x="10" y="15" z="10" />
             <to x="10" y="0" z="9.9" />
         </perspective>
-        <perspective id="player 1" near="1" far="50" angle="90">
+        <perspective id="player 2" near="1" far="50" angle="90">
             <from x="0" y="15" z="10" />
             <to x="10" y="0" z="10.1" />
         </perspective>
-        <perspective id="player 2" near="1" far="50" angle="90">
+        <perspective id="player 1" near="1" far="50" angle="90">
             <from x="20" y="15" z="10" />
             <to x="10" y="0" z="9.9" />
         </perspective>

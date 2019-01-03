@@ -33,7 +33,7 @@ class XMLscene extends CGFscene {
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
-
+        this.picked = false;
 
         this.arrayO = new Array(4);
         for (let j = 0; j < 4; j++) {
@@ -58,10 +58,7 @@ class XMLscene extends CGFscene {
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
-        var X = -16;
-        var Z = -2;
-        this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
-        this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
+
 
         this.x = 0;
         this.z = 0;
@@ -189,7 +186,7 @@ class XMLscene extends CGFscene {
             deltaTime = (currTime - this.lastTime) / 1000;
         //time is different for some reason initial porly done
         this.upAnimation.update(deltaTime);
-        if (this.upAnimation.final)
+        if(this.picked == true)
             this.moveAnimation.update(deltaTime);
         if (this.upAnimation.final)
             this.circ.update(deltaTime);
@@ -250,12 +247,17 @@ class XMLscene extends CGFscene {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];
                     if (obj) {
+                        this.picked = true;
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         var X = ((4 * ((customId - (customId % 10))/10 - 3)) - 8) + 0.01;
                         var Z =  ((-4 * (customId % 10)) + 10) + 0.01;
                         this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
                         this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
+                    }
+                    else{
+                        this.picked = false;
+
                     }
                 }
                 this.pickResults.splice(0, this.pickResults.length);
@@ -325,7 +327,7 @@ class XMLscene extends CGFscene {
             this.translate(20, 2.5, 10);
             if (!this.upAnimation.final)
                 this.upAnimation.apply();
-            else
+            else if(this.picked == true)
                 this.moveAnimation.apply();
             this.coffe.display();
             this.popMatrix();

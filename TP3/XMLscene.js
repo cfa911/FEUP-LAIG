@@ -54,8 +54,15 @@ class XMLscene extends CGFscene {
         this.rotation = 90;
         this.coffe = new MyCoffee(this, this.player, 0);
 
-        this.controlPoints = [[0, 0, 0], [0, 3, 0]];
-        this.initial = new LinearAnimation(this, 3, this.controlPoints);
+
+        this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
+        this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
+
+        var X = -16;
+        var Z = -2;
+        this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
+        this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
+
         this.x = 0;
         this.z = 0;
         this.passed = false;
@@ -103,8 +110,7 @@ class XMLscene extends CGFscene {
             this.camera = this.viewValues[id];
             this.cameraId = id;
         }
-        else
-        {
+        else {
             this.cameraId = id;
             this.rotateCamera();
         }
@@ -182,8 +188,10 @@ class XMLscene extends CGFscene {
         else
             deltaTime = (currTime - this.lastTime) / 1000;
         //time is different for some reason initial porly done
-        this.initial.update(deltaTime);
-        if (this.initial.final)
+        this.upAnimation.update(deltaTime);
+        if (this.upAnimation.final)
+            this.moveAnimation.update(deltaTime);
+        if (this.upAnimation.final)
             this.circ.update(deltaTime);
 
         for (const k of componentMap.keys()) {
@@ -200,7 +208,7 @@ class XMLscene extends CGFscene {
 
         }
         else {
-            
+
             if (Math.floor(this.cameraTime) < TIMELAPSE) {
                 /*
                 for (var key in this.viewValues)
@@ -214,7 +222,7 @@ class XMLscene extends CGFscene {
             }
             else {
                 this.camera.orbit('X', deltaTime * - 100 * (this.previous - Math.floor(this.previous)) * DEGREE_TO_RAD / TIMELAPSE);
-                
+
                 this.rotateCam = false;
             }
         }
@@ -244,6 +252,10 @@ class XMLscene extends CGFscene {
                     if (obj) {
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
+                        var X = (4 * ((customId - (customId % 10))/10 - 3)) - 8;
+                        var Z =  (-4 * (customId % 10)) + 10;
+                        this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
+                        this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
                     }
                 }
                 this.pickResults.splice(0, this.pickResults.length);
@@ -311,10 +323,10 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
             this.translate(20, 2.5, 10);
-            if (!this.initial.final)
-                this.initial.apply();
+            if (!this.upAnimation.final)
+                this.upAnimation.apply();
             else
-                this.circ.apply();
+                this.moveAnimation.apply();
             this.coffe.display();
             this.popMatrix();
 
@@ -326,7 +338,7 @@ class XMLscene extends CGFscene {
                     this.pushMatrix();
                     this.scale(4, 1, 4);
                     this.translate(i, 0.1, j);
-                    this.registerForPick((4 - j) + (i + 1)*10, this.arrayO[j][i]);
+                    this.registerForPick((4 - j) + (i + 1) * 10, this.arrayO[j][i]);
                     this.boardTex.bind();
                     this.arrayO[j][i].display();
                     this.popMatrix();

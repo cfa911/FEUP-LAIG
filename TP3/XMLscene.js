@@ -54,8 +54,6 @@ class XMLscene extends CGFscene {
         this.player = 2;
         this.rotation = 90;
         this.coffe = new MyCoffee(this, this.player, 0);
-
-
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
@@ -188,7 +186,7 @@ class XMLscene extends CGFscene {
         //time is different for some reason initial porly done
         this.upAnimation.update(deltaTime);
         if(this.picked == true)
-            this.moveAnimation.update(deltaTime);
+            this.moveAnimation.animation.update(deltaTime);
         if (this.upAnimation.final)
             this.circ.update(deltaTime);
 
@@ -251,10 +249,8 @@ class XMLscene extends CGFscene {
                         this.picked = true;
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        var X = ((4 * ((customId - (customId % 10))/10 - 3)) - 8) + 0.01;
-                        var Z =  ((-4 * (customId % 10)) + 10) + 0.01;
-                        this.moveToPosition = [[0, 3, 0], [X, 3, Z], [X, -2, Z]];
-                        this.moveAnimation = new LinearAnimation(this, 3, this.moveToPosition);
+                        this.moveAnimation = new MovePlayer(this,2,customId,3);
+
                     }
                     else{
                         this.picked = false;
@@ -325,11 +321,11 @@ class XMLscene extends CGFscene {
             this.popMatrix();
 
             this.pushMatrix();
-            this.translate(20, 2.5, 10);
+            this.translate(0, 2.5, 10);
             if (!this.upAnimation.final)
                 this.upAnimation.apply();
             else if(this.picked == true)
-                this.moveAnimation.apply();
+                this.moveAnimation.animation.apply();
             this.coffe.display();
             this.popMatrix();
 
@@ -346,7 +342,6 @@ class XMLscene extends CGFscene {
                     this.arrayO[j][i].display();
                     this.popMatrix();
                 }
-
             }
             this.popMatrix();
 

@@ -103,7 +103,9 @@ print_header_line(_).
 
 % Require your Prolog Files here
 :-include('boardLogic.pl').
+:-include('gameLogic.pl').
 :-include('utilities.pl').
+:- use_module(library(random)).
 
 %valid_moves(Board,MoveNumber,MoveLetterConverted,MoveDirection,R).
 
@@ -121,6 +123,9 @@ print_header_line(_).
 %   [empty,empty,empty,empty],
 %   [orange_v,empty,empty,empty] ]
 
+% Valid moves recebe o board, já
+% incluindo a ultima jogada, e também
+% a ultima jogada feita (linha, coluna, direcao)
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
@@ -130,7 +135,7 @@ parse_input(quit, goodbye).
 % MoveLetterConverted = 1,..4
 % MoveDirection = horizontal -> 1 vertical -> 2
 % Res = lista de posições de valid moves [[1,1], [2,1], ...]
-parse_input(valid_moves(Board,MoveNumber,MoveLetterConverted,MoveDirection), Res) :-
+parse_input(player_move(Board,MoveNumber,MoveLetterConverted,MoveDirection), Res) :-
 	valid_moves(Board, MoveNumber, MoveLetterConverted, MoveDirection, Res).
 
 % Num = numero de jogadas em linha ou coluna para se ganhar
@@ -139,9 +144,11 @@ parse_input(game_over(Board,Num), Res) :-
 	game_over(Board, Res, Num).
 
 % TO CPU
-parse_input(choose_move(ValidMoves), Res) :-
-	choose_move(ValidMoves, MoveNumber, MoveLetter, MoveDirection).
+parse_input(cpu_move(Board,MoveNumber,MoveLetterConverted,MoveDirection), Res) :-
+	valid_moves(Board, MoveNumber, MoveLetterConverted, MoveDirection, ValidMoves),
+	choose_move(ValidMoves, MoveNumberCPU, MoveLetterCPU, MoveDirectionCPU),
 	% return res com 3 ultimos argumentos
+	Res = [MoveNumberCPU, MoveLetterCPU, MoveDirectionCPU].
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

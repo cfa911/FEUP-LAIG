@@ -8,6 +8,13 @@ var WorkingBoard = [
     ['empty', 'empty', 'empty', 'empty'],
     ['empty', 'empty', 'empty', 'empty']
 ];
+
+var DirectionsBoard = [
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty']
+];
 var u, d;
 var allBoards = [];
 // var ArrBoards = firstBoard;
@@ -97,7 +104,12 @@ class XMLscene extends CGFscene {
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
         this.brown = new MyCoffee(this, 1, 0);
+        this.brownHorizontal = new MyCoffee(this, 1, 90);
+        this.brownVertical = new MyCoffee(this, 1, 0);
+
         this.orange = new MyCoffee(this, 2, 0);
+        this.orangeHorizontal = new MyCoffee(this, 2, 90);
+        this.orangeVertical = new MyCoffee(this, 2, 0);
 
         this.globalTime = 0;
         this.lastTime = -1;
@@ -285,22 +297,63 @@ class XMLscene extends CGFscene {
                         this.picked = true;
                         customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
-                        checkValidMove(customId,1,1);
-                        allBoards.push(WorkingBoard);
-                        var u = customId % 10;
-                        var d = (customId - customId % 10) / 10;
-                        if (u != undefined && d != undefined) {
+                        if(customId == 10 || customId == 19 )
+                        {
+                            if(this.player == 1)
+                            {
+                                if(this.moveAnimation != undefined)
+                                {
+                                    if(this.moveAnimation.animation.final)
+                                    this.brown.rotation += 90*DEGREE_TO_RAD;
+                                }
+                            }
+                            this.picked = false;
 
                         }
-                        if (this.player == 1) {
-                            WorkingBoard[d - 1][u - 1] = "brown";
-                            this.player = 2;
+                        else if(customId == 20 || customId == 29){
+                            if(this.player == 2)
+                            {
+                                if(this.moveAnimation != undefined)
+                                {
+                                    if(this.moveAnimation.animation.final)
+                                    this.orange.rotation += 90*DEGREE_TO_RAD;                                
+                                }
+                            }
+                            this.picked = false;
+                            
+                        }
+                        else{
+                            this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                            checkValidMove(customId,1,1);
+                            allBoards.push(WorkingBoard);
+                            var u = customId % 10;
+                            console.log(customId);
+                            var d = (customId - customId % 10) / 10;
+                        }
+
+                        if (u == undefined && d == undefined) {
+
                         }
                         else {
-                            WorkingBoard[d - 1][u - 1] = "orange";
-                            this.player = 1;
+                            if (this.player == 1) {
+                                WorkingBoard[d - 1][u - 1] = "brown";
+                                if(!(this.coffe.rotation % (180*DEGREE_TO_RAD)))
+                                DirectionsBoard[d - 1][u - 1] = "brownVertical";
+                                else
+                                DirectionsBoard[d - 1][u - 1] = "brownHorizontal";
+                                this.player = 2;
+                            }
+                            else {
+                                WorkingBoard[d - 1][u - 1] = "orange";
+                                if(!(this.coffe.rotation % (180*DEGREE_TO_RAD)))
+                                DirectionsBoard[d - 1][u - 1] = "orangeVertical";
+                                else
+                                DirectionsBoard[d - 1][u - 1] = "orangeHorizontal";
+
+                                this.player = 1;
+                            }
                         }
+                        
 
                     }
                     else {
@@ -408,21 +461,30 @@ class XMLscene extends CGFscene {
             let a = (customId % 10) - 1;
             let b = ((customId - customId % 10) / 10) - 1;
 
-            for (let i = 0; i < WorkingBoard.length; i++) {
-                for (let j = 0; j < WorkingBoard[i].length; j++) {
+            for (let i = 0; i < DirectionsBoard.length; i++) {
+                for (let j = 0; j < DirectionsBoard[i].length; j++) {
                     if (j == a && i == b) {
                     }
                     else {
                         this.pushMatrix();
 
-                        if (WorkingBoard[i][j] == 'brown') {
+                        if (DirectionsBoard[i][j] == 'brownVertical') {
                             this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
-                            this.brown.display();
+                            this.brownVertical.display();
 
                         }
-                        else if (WorkingBoard[i][j] == 'orange') {
+                        else if(DirectionsBoard[i][j] == 'brownHorizontal'){
                             this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
-                            this.orange.display();
+                            this.brownHorizontal.display();
+                        }
+                        else if (DirectionsBoard[i][j] == 'orangeVertical') {
+                            this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
+                            this.orangeVertical.display();
+                        }
+                        else if(DirectionsBoard[i][j] == 'orangeHorizontal')
+                        {
+                            this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
+                            this.orangeHorizontal.display();
                         }
                         this.popMatrix();
                     }
@@ -439,6 +501,7 @@ class XMLscene extends CGFscene {
             this.green.apply();
             this.translate(0, 2.5, 8);
             this.rotate(180 * DEGREE_TO_RAD, 0, 1, 0);
+            this.registerForPick(20, this.arrow);
             this.scale(0.1, 0.1, 0.1);
             this.arrow.display();
             this.popMatrix();
@@ -448,14 +511,16 @@ class XMLscene extends CGFscene {
             this.red.apply();
             this.translate(0, 2.5, 12);
             this.scale(0.1, 0.1, 0.1);
+            this.registerForPick(29, this.arrow);
             this.arrow.display();
             this.popMatrix();
 
-            //player 2 controls
+            //player 1 controls
             this.pushMatrix();
             this.red.apply();
             this.translate(20, 2.5, 8);
             this.rotate(180 * DEGREE_TO_RAD, 0, 1, 0);
+            this.registerForPick(19, this.arrow);
             this.scale(0.1, 0.1, 0.1);
             this.arrow.display();
             this.popMatrix();
@@ -465,6 +530,7 @@ class XMLscene extends CGFscene {
             this.green.apply();
             this.translate(20, 2.5, 12);
             this.scale(0.1, 0.1, 0.1);
+            this.registerForPick(10, this.arrow);
             this.arrow.display();
             this.popMatrix();
 

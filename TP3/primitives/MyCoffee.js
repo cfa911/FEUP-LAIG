@@ -5,10 +5,10 @@
  */
 
 class MyCoffee extends CGFobject {
-	constructor(scene, player,rotation = 0) {
+	constructor(scene, player,rot = 0) {
 		super(scene);
 
-		this.rotation = rotation * DEGREE_TO_RAD;
+		this.rotation = rot * DEGREE_TO_RAD;
 		this.player = player;
 
 

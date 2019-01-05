@@ -1,5 +1,13 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
+var coffe = [];
+var WorkingBoard = [
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty']
+];
+var allBoards = [];
 // var ArrBoards = firstBoard;
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -49,11 +57,12 @@ class XMLscene extends CGFscene {
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
         //this.cof = new MyCoffee(this,2,180);
-        this.box1 = new MyBox(this, 1);
         this.box2 = new MyBox(this, 2);
+        this.box1 = new MyBox(this, 1);
         this.player = 2;
         this.rotation = 90;
         this.coffe = new MyCoffee(this, this.player, 0);
+        this.coffe.type = 'orange';
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
@@ -185,7 +194,7 @@ class XMLscene extends CGFscene {
             deltaTime = (currTime - this.lastTime) / 1000;
         //time is different for some reason initial porly done
         this.upAnimation.update(deltaTime);
-        if(this.picked == true)
+        if (this.picked == true)
             this.moveAnimation.animation.update(deltaTime);
         if (this.upAnimation.final)
             this.circ.update(deltaTime);
@@ -240,6 +249,7 @@ class XMLscene extends CGFscene {
         }
     };
 
+
     logPicking() {
         if (this.pickMode == false) {
             if (this.pickResults != null && this.pickResults.length > 0) {
@@ -249,10 +259,13 @@ class XMLscene extends CGFscene {
                         this.picked = true;
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        this.moveAnimation = new MovePlayer(this,2,customId,3);
-
+                        this.moveAnimation = new MovePlayer(this, 2, customId, 3);
+                        allBoards.push(WorkingBoard);
+                        let u = customId % 10;
+                        let d = (customId - customId % 10) / 10;
+                        WorkingBoard[d - 1][u - 1] = this.coffe.type;
                     }
-                    else{
+                    else {
                         this.picked = false;
 
                     }
@@ -312,23 +325,36 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
             this.translate(0, 0, 10);
-            this.box1.display();
-            this.popMatrix();
-
-            this.pushMatrix();
-            this.translate(20, 0, 10);
             this.box2.display();
             this.popMatrix();
 
             this.pushMatrix();
+            this.translate(20, 0, 10);
+            this.box1.display();
+            this.popMatrix();
+
+
+            //We should create the object when the input starts
+            this.pushMatrix();
             this.translate(0, 2.5, 10);
             if (!this.upAnimation.final)
                 this.upAnimation.apply();
-            else if(this.picked == true)
+            else if (this.picked == true) {
                 this.moveAnimation.animation.apply();
+
+            }
+            else {
+                this.translate(0, 3, 0);
+
+            }
             this.coffe.display();
             this.popMatrix();
 
+            for (let i = 0; i < WorkingBoard; i++) {
+                for (let i = 0; i < WorkingBoard; i++) {
+
+                }
+            }
 
             this.pushMatrix();
             this.translate(4, 0, 4);

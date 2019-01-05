@@ -337,7 +337,7 @@ class XMLscene extends CGFscene {
                         else {
                             if (this.player == 1) {
                                 WorkingBoard[d - 1][u - 1] = "brown";
-                                if(!(this.coffe.rotation % (180*DEGREE_TO_RAD)))
+                                if(!(this.brown.rotation % (180*DEGREE_TO_RAD)))
                                 DirectionsBoard[d - 1][u - 1] = "brownVertical";
                                 else
                                 DirectionsBoard[d - 1][u - 1] = "brownHorizontal";
@@ -345,7 +345,7 @@ class XMLscene extends CGFscene {
                             }
                             else {
                                 WorkingBoard[d - 1][u - 1] = "orange";
-                                if(!(this.coffe.rotation % (180*DEGREE_TO_RAD)))
+                                if(!(this.orange.rotation % (180*DEGREE_TO_RAD)))
                                 DirectionsBoard[d - 1][u - 1] = "orangeVertical";
                                 else
                                 DirectionsBoard[d - 1][u - 1] = "orangeHorizontal";

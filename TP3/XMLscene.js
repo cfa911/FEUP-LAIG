@@ -1,5 +1,14 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
+var coffe = [];
+var WorkingBoard = [
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty'],
+    ['empty', 'empty', 'empty', 'empty']
+];
+
+var allBoards = [];
 // var ArrBoards = firstBoard;
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -49,15 +58,17 @@ class XMLscene extends CGFscene {
         //this.tri = new MyRectangle(this,0,0,1,1);
         //this.tri = new My2ndCylinder(this,1,1,5,20,20);
         //this.cof = new MyCoffee(this,2,180);
-        this.box1 = new MyBox(this, 1);
         this.box2 = new MyBox(this, 2);
+        this.box1 = new MyBox(this, 1);
         this.player = 2;
         this.rotation = 90;
         this.coffe = new MyCoffee(this, this.player, 0);
+        this.coffe.type = 'orange';
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
-
+        this.brown = new MyCoffee(this, 1, 0);
+        this.orange = new MyCoffee(this, 2, 0);
 
         this.x = 0;
         this.z = 0;
@@ -185,7 +196,7 @@ class XMLscene extends CGFscene {
             deltaTime = (currTime - this.lastTime) / 1000;
         //time is different for some reason initial porly done
         this.upAnimation.update(deltaTime);
-        if(this.picked == true)
+        if (this.picked == true)
             this.moveAnimation.animation.update(deltaTime);
         if (this.upAnimation.final)
             this.circ.update(deltaTime);
@@ -240,19 +251,32 @@ class XMLscene extends CGFscene {
         }
     };
 
+
     logPicking() {
         if (this.pickMode == false) {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];
+                    
                     if (obj) {
                         this.picked = true;
                         var customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        this.moveAnimation = new MovePlayer(this,2,customId,3);
+                        this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                        allBoards.push(WorkingBoard);
+                        let u = customId % 10;
+                        let d = (customId - customId % 10) / 10;
+                        if (this.player == 1) {
+                            WorkingBoard[d - 1][u - 1] = "brown";
+                            this.player = 2;
+                        }
+                        else {
+                            WorkingBoard[d - 1][u - 1] = "orange";
+                            this.player = 1;
+                        }
 
                     }
-                    else{
+                    else {
                         this.picked = false;
 
                     }
@@ -312,21 +336,62 @@ class XMLscene extends CGFscene {
 
             this.pushMatrix();
             this.translate(0, 0, 10);
-            this.box1.display();
-            this.popMatrix();
-
-            this.pushMatrix();
-            this.translate(20, 0, 10);
             this.box2.display();
             this.popMatrix();
 
             this.pushMatrix();
-            this.translate(0, 2.5, 10);
+            this.translate(20, 0, 10);
+            this.box1.display();
+            this.popMatrix();
+
+
+            //We should create the object when the input starts
+            this.pushMatrix();
+            if(this.player == 1){
+                this.translate(0, 2.5, 10);
+                this.coffe = this.orange;
+            }
+            else
+            {
+                this.translate(20, 2.5, 10);
+                this.coffe = this.brown;
+            }
+
+
             if (!this.upAnimation.final)
                 this.upAnimation.apply();
-            else if(this.picked == true)
+            else if (this.picked == true) {
                 this.moveAnimation.animation.apply();
+
+            }
+            else {
+                this.translate(0, 3, 0);
+
+            }
+            
             this.coffe.display();
+            this.popMatrix();
+
+
+            this.pushMatrix();
+
+                for (let i = 0; i < WorkingBoard.length; i++) {
+                    for (let j = 0; j < WorkingBoard[i].length; j++) {
+                        this.pushMatrix();
+                        if (WorkingBoard[i][j] == 'brown') {
+                            this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
+                            this.brown.display();
+    
+                        }
+                        else if (WorkingBoard[i][j] == 'orange') {
+                            this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
+                            this.orange.display();
+                        }
+                        this.popMatrix();
+    
+                    }
+                }
+            
             this.popMatrix();
 
 

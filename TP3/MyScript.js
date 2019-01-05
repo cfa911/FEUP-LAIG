@@ -15,6 +15,8 @@ function getPrologRequest(requestString, port, onSuccess, onError) {
 var empty = "empty";
 var orange = "orange";
 var brown = "brown";
+// temos de perguntar aos players as peças em linha ou coluna pra ganhar
+var NumWin = 2;
 
 var firstBoard = [
     [empty, empty, empty, empty],
@@ -49,6 +51,8 @@ function generateAndSaveBoard(customId, playerNum) {
     return board;
 }
 
+// nesta funçao tens sempre que mandar a jogada anterior e o board anterior e ele da te os valid moves
+// existe um array de boards e de ultimas jogadas, formato [linha,coluna,direcao]
 function requestValidMoves(linha, coluna, moveDir, board) {
 
     var validMoves = getPrologRequest("player_move(" + parseToPlog(board) + "," + linha.toString() + "," + coluna.toString() + "," + moveDir.toString() + ")",
@@ -60,6 +64,9 @@ function requestValidMoves(linha, coluna, moveDir, board) {
     return validMovesConverted;
 }
 
+// recebe a jogada q o jogador quer fazer e retorna true or false se for possivel ou nao
+// este é o teu customId formato 12, numero do jogador e a direcao
+// % MoveDirection = horizontal -> 1 vertical -> 2
 function checkValidMove(customId, playerNum, moveDir) {
 
     var lastBoard = ArrBoards[ArrBoards.length - 1];
@@ -85,6 +92,20 @@ function checkValidMove(customId, playerNum, moveDir) {
     return false;
 }
 
+function gameOver(board) {
+
+    var winner = getPrologRequest("game_over(" + parseToPlog(board) + "," + NumWin.toString() + ")",
+        8081, null, null);
+    console.log(winner);
+    var winnerConverted = JSON.parse(winner);
+    // http://localhost:8081/cpu_move([[empty,empty,empty,orange],[empty,empty,empty,empty],[empty,empty,empty,empty],[empty,empty,empty,orange]],1,4,2)
+
+    // retorna none -> 0, brown -> 1, orange -> 2
+    return winnerConverted;
+
+}
+
+// simples parse para o request
 function parseToPlog(board) {
 
     var boardPlog = "[";

@@ -17,7 +17,7 @@ var orange = "orange";
 var brown = "brown";
 
 var firstBoard = [
-    [empty, orange, empty, empty],
+    [empty, empty, empty, empty],
     [empty, empty, empty, empty],
     [empty, empty, empty, empty],
     [empty, empty, empty, empty]

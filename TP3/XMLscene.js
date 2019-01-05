@@ -1,13 +1,14 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
 var coffe = [];
+var customId;
 var WorkingBoard = [
     ['empty', 'empty', 'empty', 'empty'],
     ['empty', 'empty', 'empty', 'empty'],
     ['empty', 'empty', 'empty', 'empty'],
     ['empty', 'empty', 'empty', 'empty']
 ];
-
+var u, d;
 var allBoards = [];
 // var ArrBoards = firstBoard;
 /**
@@ -45,6 +46,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.picked = false;
 
+        //The input pads
         this.arrayO = new Array(4);
         for (let j = 0; j < 4; j++) {
             this.arrayO[j] = new Array(4);
@@ -53,27 +55,50 @@ class XMLscene extends CGFscene {
                 this.arrayO[j][i] = new MyPlane(this, 2, 2);
             }
         }
-        //this.ani = new initialAnimation(this, 10, [[0,0,0],[1,0,0],[0,0,1]]);
-        //this.cir = new CircularAnimation(this, 10, [0,0,0], 5, 90, 0);
-        //this.tri = new MyRectangle(this,0,0,1,1);
-        //this.tri = new My2ndCylinder(this,1,1,5,20,20);
-        //this.cof = new MyCoffee(this,2,180);
+
+
+        this.arrow = new CGFOBJModel(this, 'models/arrow.obj');
+
+
+
+
+
+        this.brw = new CGFappearance(this);
+        this.brw.setEmission(0.14, 0.07, 0, 0.2);
+        this.brw.setAmbient(0.28, 0.14, 0, 0.5);
+        this.brw.setDiffuse(0.42, 0.20, 0, 0.6);
+        this.brw.setSpecular(0.55, 0.27, 0, 0.8);
+        this.brw.setShininess(10);
+
+
+        this.red = new CGFappearance(this);
+        this.red.setEmission(0.2, 0, 0, 0.2);
+        this.red.setAmbient(0.4, 0, 0, 0.5);
+        this.red.setDiffuse(0.6, 0, 0, 0.6);
+        this.red.setSpecular(0.8, 0, 0, 0.8);
+        this.red.setShininess(10);
+
+
+        this.green = new CGFappearance(this);
+        this.green.setEmission(0, 0.2, 0, 0.2);
+        this.green.setAmbient(0, 0.4, 0, 0.5);
+        this.green.setDiffuse(0, 0.6, 0, 0.6);
+        this.green.setSpecular(0, 0.8, 0, 0.8);
+        this.green.setShininess(10);
+
+        //
         this.box2 = new MyBox(this, 2);
         this.box1 = new MyBox(this, 1);
-        this.player = 2;
+
+        this.player = 1;
         this.rotation = 90;
         this.coffe = new MyCoffee(this, this.player, 0);
-        this.coffe.type = 'orange';
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
         this.brown = new MyCoffee(this, 1, 0);
         this.orange = new MyCoffee(this, 2, 0);
 
-        this.x = 0;
-        this.z = 0;
-        this.passed = false;
-        this.circ = new CircularAnimation(this, 3, [this.x, 3, this.z], 0, 0, this.rotation);
         this.globalTime = 0;
         this.lastTime = -1;
         this.setPickEnabled(true);
@@ -198,8 +223,6 @@ class XMLscene extends CGFscene {
         this.upAnimation.update(deltaTime);
         if (this.picked == true)
             this.moveAnimation.animation.update(deltaTime);
-        if (this.upAnimation.final)
-            this.circ.update(deltaTime);
 
         for (const k of componentMap.keys()) {
             var component = componentMap.get(k);
@@ -257,15 +280,19 @@ class XMLscene extends CGFscene {
             if (this.pickResults != null && this.pickResults.length > 0) {
                 for (var i = 0; i < this.pickResults.length; i++) {
                     var obj = this.pickResults[i][0];
-                    
+
                     if (obj) {
                         this.picked = true;
-                        var customId = this.pickResults[i][1];
+                        customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                        checkValidMove(customId,1,1);
                         allBoards.push(WorkingBoard);
-                        let u = customId % 10;
-                        let d = (customId - customId % 10) / 10;
+                        var u = customId % 10;
+                        var d = (customId - customId % 10) / 10;
+                        if (u != undefined && d != undefined) {
+
+                        }
                         if (this.player == 1) {
                             WorkingBoard[d - 1][u - 1] = "brown";
                             this.player = 2;
@@ -347,52 +374,100 @@ class XMLscene extends CGFscene {
 
             //We should create the object when the input starts
             this.pushMatrix();
-            if(this.player == 1){
+
+            //- Uses the player to discover the color of the bead
+            if (this.player == 1) {
                 this.translate(0, 2.5, 10);
                 this.coffe = this.orange;
             }
-            else
-            {
+            else if (this.player == 2) {
                 this.translate(20, 2.5, 10);
                 this.coffe = this.brown;
             }
+            //
 
 
-            if (!this.upAnimation.final)
-                this.upAnimation.apply();
-            else if (this.picked == true) {
+            if (this.picked == true) {
+
                 this.moveAnimation.animation.apply();
+                this.coffe.display();
+
 
             }
             else {
+
                 this.translate(0, 3, 0);
 
             }
-            
-            this.coffe.display();
             this.popMatrix();
 
 
-            this.pushMatrix();
 
-                for (let i = 0; i < WorkingBoard.length; i++) {
-                    for (let j = 0; j < WorkingBoard[i].length; j++) {
+
+            this.pushMatrix();
+            let a = (customId % 10) - 1;
+            let b = ((customId - customId % 10) / 10) - 1;
+
+            for (let i = 0; i < WorkingBoard.length; i++) {
+                for (let j = 0; j < WorkingBoard[i].length; j++) {
+                    if (j == a && i == b) {
+                    }
+                    else {
                         this.pushMatrix();
+
                         if (WorkingBoard[i][j] == 'brown') {
                             this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
                             this.brown.display();
-    
+
                         }
                         else if (WorkingBoard[i][j] == 'orange') {
                             this.translate(4 * (i + 1), 0.6, 4 * (4 - j));
                             this.orange.display();
                         }
                         this.popMatrix();
-    
                     }
+
+
                 }
-            
+            }
+
             this.popMatrix();
+            console.log(this.player);
+
+            //player 2 controls
+            this.pushMatrix();
+            this.green.apply();
+            this.translate(0, 2.5, 8);
+            this.rotate(180 * DEGREE_TO_RAD, 0, 1, 0);
+            this.scale(0.1, 0.1, 0.1);
+            this.arrow.display();
+            this.popMatrix();
+
+
+            this.pushMatrix();
+            this.red.apply();
+            this.translate(0, 2.5, 12);
+            this.scale(0.1, 0.1, 0.1);
+            this.arrow.display();
+            this.popMatrix();
+
+            //player 2 controls
+            this.pushMatrix();
+            this.red.apply();
+            this.translate(20, 2.5, 8);
+            this.rotate(180 * DEGREE_TO_RAD, 0, 1, 0);
+            this.scale(0.1, 0.1, 0.1);
+            this.arrow.display();
+            this.popMatrix();
+
+
+            this.pushMatrix();
+            this.green.apply();
+            this.translate(20, 2.5, 12);
+            this.scale(0.1, 0.1, 0.1);
+            this.arrow.display();
+            this.popMatrix();
+
 
 
             this.pushMatrix();
@@ -403,9 +478,12 @@ class XMLscene extends CGFscene {
                     this.scale(4, 1, 4);
                     this.translate(i, 0.1, j);
                     this.registerForPick((4 - j) + (i + 1) * 10, this.arrayO[j][i]);
+                    this.brw.apply();
                     this.boardTex.bind();
                     this.arrayO[j][i].display();
                     this.popMatrix();
+                    this.boardTex.unbind();
+
                 }
             }
             this.popMatrix();

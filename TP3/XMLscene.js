@@ -1,5 +1,6 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
+// var ArrBoards = firstBoard;
 /**
  * XMLscene class, representing the scene that is to be rendered.
  */
@@ -13,7 +14,6 @@ class XMLscene extends CGFscene {
         this.interface = myinterface;
         this.lightValues = {};
         this.viewValues = {};
-        this.ArrBoards = new Array();
     }
 
     /**

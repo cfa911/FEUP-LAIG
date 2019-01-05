@@ -17,13 +17,13 @@ class MovePlayer {
             this.x = ((4 * ((this.position - (this.position % 10)) / 10 - 3)) - 8) + 0.01;
             this.z = ((-4 * (this.position % 10)) + 10) + 0.01;
 
-            this.controlPoints = [[0, 3, 0], [this.x, 3, this.z], [this.x, -2, this.z]];
+            this.controlPoints = [[0, 0, 0],[0, 3, 0], [this.x, 3, this.z], [this.x, -2, this.z]];
         }
         else if(this.player == 2){
             this.x = ((4 * ((this.position - (this.position % 10)) / 10 + 3)) - 12) + 0.01;
             this.z = ((-4 * (this.position % 10)) + 10) + 0.1;
 
-            this.controlPoints = [[0, 3, 0], [this.x, 3, this.z], [this.x, -2, this.z]];
+            this.controlPoints = [[0, 0, 0],[0, 3, 0], [this.x, 3, this.z], [this.x, -2, this.z]];
         }
         this.animation = new LinearAnimation(this.scene, this.time, this.controlPoints);
     }

@@ -34,32 +34,34 @@ class LinearAnimation extends Animation{
             this.timeCounter = this.span;
             this.final = true;
         }
-
-
-        this.currentPosition = this.speed * this.timeCounter;
-
-        let i = 0;
-        while (this.currentPosition > this.routes[i] && i < this.routes.length)
-		    i++;
-
-        this.firstPoint = this.points[i];
-        this.secondPoint = this.points[i+1];
-
-        if(i == 0)
-            this.difference = this.currentPosition/this.routes[i];
         else{
-            this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
+            this.currentPosition = this.speed * this.timeCounter;
+
+            let i = 0;
+            while (this.currentPosition > this.routes[i] && i < this.routes.length)
+                i++;
+    
+            this.firstPoint = this.points[i];
+            this.secondPoint = this.points[i+1];
+    
+            if(i == 0)
+                this.difference = this.currentPosition/this.routes[i];
+            else{
+                this.difference = (this.currentPosition - this.routes[i-1]) / (this.routes[i] - this.routes[i-1]);
+            }
+    
+            let angle = Math.atan((this.secondPoint[0] - this.firstPoint[0]) / (this.secondPoint[2] - this.firstPoint[2]));
+            
+            if(isNaN(angle))
+                angle = 0;
+    
+            if (this.secondPoint[2] - this.firstPoint[2] < 0)
+                angle += Math.PI;
+        
+            this.previousAngle = angle;
         }
 
-        let angle = Math.atan((this.secondPoint[0] - this.firstPoint[0]) / (this.secondPoint[2] - this.firstPoint[2]));
         
-        if(isNaN(angle))
-            angle = 0;
-
-        if (this.secondPoint[2] - this.firstPoint[2] < 0)
-            angle += Math.PI;
-    
-        this.previousAngle = angle;
     }
 
     apply(){

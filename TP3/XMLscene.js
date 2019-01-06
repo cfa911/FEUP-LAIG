@@ -1,5 +1,15 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
+
+// Small class representing the status of a game
+var gameStatus = function() {
+    this.valueN = 2;
+}
+
+// Object that represents the status of OUR game
+var currentGameStatus = new gameStatus();
+
+
 var coffe = [];
 var customId;
 var WorkingBoard = [
@@ -220,6 +230,7 @@ class XMLscene extends CGFscene {
         this.interface.addViewsGroup(this.viewValues);
         this.sceneInited = true;
         this.interface.changeScene();
+        this.interface.addStatusGroup(currentGameStatus);
         this.setUpdatePeriod(20);
         this.boardTex = textureMap.get("board");
     }
@@ -324,10 +335,13 @@ class XMLscene extends CGFscene {
                         }
                         else{
                             this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                            // customId = linhacoluna
                             checkValidMove(customId,1,1);
                             allBoards.push(WorkingBoard);
                             var u = customId % 10;
+                            console.log("comeca");
                             console.log(customId);
+                            console.log("acaba")
                             var d = (customId - customId % 10) / 10;
                         }
 
@@ -533,7 +547,6 @@ class XMLscene extends CGFscene {
             this.registerForPick(10, this.arrow);
             this.arrow.display();
             this.popMatrix();
-
 
 
             this.pushMatrix();

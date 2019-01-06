@@ -48,6 +48,12 @@ class MyInterface extends CGFinterface {
         // this.gui.add(this.scene.graph, "scene", [ "Japan", "New York"] ).name("Scene");
     }
 
+    addStatusGroup(status) {
+        var group = this.gui.addFolder("Status");
+        group.open();
+        group.add(status, 'valueN');
+    }
+
     initKeys(){
         this.scene.gui = this;
         this.processKeyboard = function () { };

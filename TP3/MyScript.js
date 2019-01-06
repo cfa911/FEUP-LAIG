@@ -38,7 +38,7 @@ function generateAndSaveBoard(customId, playerNum) {
 
     var linha = Math.trunc(customId/10);
     var coluna = customId % 10;
-    board = ArrBoards[ArrBoards.length - 1];
+    var board = ArrBoards[ArrBoards.length - 1];
 
     if(playerNum == 1) {
         board[linha-1][coluna-1] = brown;
@@ -67,8 +67,9 @@ function requestValidMoves(linha, coluna, moveDir, board) {
 // recebe a jogada q o jogador quer fazer e retorna true or false se for possivel ou nao
 // este é o teu customId formato 12, numero do jogador e a direcao
 // % MoveDirection = horizontal -> 1 vertical -> 2
+// :customId: 12 (1 é linha, 2 é a coluna)
 function checkValidMove(customId, playerNum, moveDir) {
-
+    
     var lastBoard = ArrBoards[ArrBoards.length - 1];
     var lastMove = ArrLastMoves[ArrLastMoves.length -1];
 
@@ -80,6 +81,8 @@ function checkValidMove(customId, playerNum, moveDir) {
     var lc = [linha, coluna];
     console.log(lc);
 
+    console.log(ArrBoards);
+    
     lc = JSON.stringify(lc);
     validMoves = JSON.stringify(validMoves);
     var isIncluded = validMoves.indexOf(lc);
@@ -88,7 +91,7 @@ function checkValidMove(customId, playerNum, moveDir) {
         generateAndSaveBoard(customId, playerNum);
         return true;
     }
-
+    
     return false;
 }
 

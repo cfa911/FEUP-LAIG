@@ -428,7 +428,7 @@ class XMLscene extends CGFscene {
                             if (vaildMove) {
                                 if (gameOver(WorkingBoard) == 1)
                                     alert("Player 1 Wins!!")
-                                else if (gameOver(WorkingBoard) == 1)
+                                else if (gameOver(WorkingBoard) == 2)
                                     alert("Player 2 Wins!!");
                             }
                         }

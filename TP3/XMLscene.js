@@ -6,6 +6,12 @@ var gameStatus = function () {
     this.valueN = 2;
 }
 
+var gameMode = function () {
+    this.players = function () {}
+    this.cpu = function () {}
+
+}
+
 var gameUndo = function () {
 
     this.undoBtn = function () {
@@ -30,6 +36,7 @@ var gameUndo = function () {
 // Object that represents the status of OUR game
 var currentGameStatus = new gameStatus();
 var currentGameUndo = new gameUndo();
+var currentMode = new gameMode();
 
 
 
@@ -255,6 +262,7 @@ class XMLscene extends CGFscene {
         this.interface.changeScene();
         this.interface.addStatusGroup(currentGameStatus);
         this.interface.addUndo(currentGameUndo);
+        this.interface.addCpu(currentMode);
         this.setUpdatePeriod(20);
         this.boardTex = textureMap.get("board");
     }
@@ -425,14 +433,17 @@ class XMLscene extends CGFscene {
 
                                 player = 1;
                             }
+                            
                             if (vaildMove) {
                                 if (gameOver(WorkingBoard) == 1)
                                     alert("Player 1 Wins!!")
                                 else if (gameOver(WorkingBoard) == 2)
                                     alert("Player 2 Wins!!");
+                                
                             }
                         }
-
+                        if (ArrLastMoves.length != 1 && validMovesConverted.length == 0)
+                        alert("Its a draw!!");
 
                     }
                     else {

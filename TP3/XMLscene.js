@@ -349,7 +349,12 @@ class XMLscene extends CGFscene {
                             direction = 2;
 
                             var vaildMove;
-                            if(checkValidMove(customId,this.player,direction)){
+                            this.linha = customId % 10;
+                            this.coluna = (customId - customId % 10) / 10;
+                            if(ArrLastMoves.length == 0)
+                            ArrLastMoves.push([this.linha,this.coluna,this.player]);
+
+                            if(checkValidMove(customId,this.player,direction) || ArrLastMoves.length == 1){
                                 allBoards.push(WorkingBoard);
                                 var u = customId % 10;
                                 console.log("comeca");
@@ -535,7 +540,6 @@ class XMLscene extends CGFscene {
             }
 
             this.popMatrix();
-            console.log(this.player);
 
             //player 2 controls
             this.pushMatrix();

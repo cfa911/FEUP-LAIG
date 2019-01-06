@@ -28,7 +28,6 @@ var firstBoard = [
 var ArrBoards = new Array();
 var ArrLastMoves = new Array();
 ArrBoards.push(firstBoard);
-ArrLastMoves.push([1,2,1]);
 
 // player 1 -> brown
 // player 2 -> orange

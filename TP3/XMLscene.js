@@ -1,16 +1,40 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
-
+var player = 1;
 // Small class representing the status of a game
 var gameStatus = function () {
     this.valueN = 2;
 }
 
+var gameUndo = function () {
+
+    this.undoBtn = function () {
+        let a = (customId % 10) - 1;
+        let b = ((customId - customId % 10) / 10) - 1;
+        if (ArrBoards.length != 1 && DirectionsBoard[b][a] != "empty") {
+            ArrBoards.splice(ArrBoards.length - 1, 1);
+            ArrLastMoves.splice(ArrLastMoves.length - 1, 1);
+            WorkingBoard = ArrBoards[ArrBoards.length - 1];
+
+            DirectionsBoard[b][a] = "empty";
+            if (player == 1)
+                player = 2;
+            else
+                player = 1;
+        }
+    }
+
+
+}
+
 // Object that represents the status of OUR game
 var currentGameStatus = new gameStatus();
+var currentGameUndo = new gameUndo();
 
 
-var coffe = [];
+
+
+
 var customId;
 var WorkingBoard = [
     ['empty', 'empty', 'empty', 'empty'],
@@ -107,9 +131,8 @@ class XMLscene extends CGFscene {
         this.box2 = new MyBox(this, 2);
         this.box1 = new MyBox(this, 1);
 
-        this.player = 1;
         this.rotation = 90;
-        this.coffe = new MyCoffee(this, this.player, 0);
+        this.coffe = new MyCoffee(this, player, 0);
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
@@ -231,6 +254,7 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
         this.interface.changeScene();
         this.interface.addStatusGroup(currentGameStatus);
+        this.interface.addUndo(currentGameUndo);
         this.setUpdatePeriod(20);
         this.boardTex = textureMap.get("board");
     }
@@ -309,7 +333,7 @@ class XMLscene extends CGFscene {
                         customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         if (customId == 10 || customId == 19) {
-                            if (this.player == 1) {
+                            if (player == 1) {
                                 if (this.moveAnimation != undefined) {
                                     if (this.moveAnimation.animation.final)
                                         this.brown.rotation += 90 * DEGREE_TO_RAD;
@@ -319,7 +343,7 @@ class XMLscene extends CGFscene {
 
                         }
                         else if (customId == 20 || customId == 29) {
-                            if (this.player == 2) {
+                            if (player == 2) {
                                 if (this.moveAnimation != undefined) {
                                     if (this.moveAnimation.animation.final)
                                         this.orange.rotation += 90 * DEGREE_TO_RAD;
@@ -331,7 +355,7 @@ class XMLscene extends CGFscene {
                         else {
                             // customId = linhacoluna
                             var angle;
-                            if (this.player == 1)
+                            if (player == 1)
                                 angle = this.brown.rotation % (180 * DEGREE_TO_RAD);
                             else
                                 angle = this.orange.rotation % (180 * DEGREE_TO_RAD);
@@ -344,34 +368,35 @@ class XMLscene extends CGFscene {
                                 direction = 2;
 
                             var vaildMove;
-                            this.linha = customId % 10;
-                            this.coluna = (customId - customId % 10) / 10;
-                            
+                            this.coluna = customId % 10;
+                            this.linha = (customId - customId % 10) / 10;
 
-                            if (ArrLastMoves.length != 0 && checkValidMove(customId, this.player, direction)) {
-                                allBoards.push(WorkingBoard);
+
+                            if (ArrLastMoves.length != 0 && checkValidMove(customId, player, direction)) {
+                                allBoards.push(JSON.parse(JSON.stringify(WorkingBoard)));
                                 var u = customId % 10;
                                 console.log("comeca");
                                 console.log(customId);
                                 console.log("acaba")
                                 var d = (customId - customId % 10) / 10;
                                 vaildMove = 1;
-                                this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                                this.moveAnimation = new MovePlayer(this, player, customId, 3);
 
                             }
-                            else if (ArrLastMoves.length == 0)
-                            {
-                                ArrLastMoves.push([this.linha, this.coluna, this.player]);
-                                firstBoard[this.linha-1][this.coluna-1]="brown";
-                                ArrBoards.push(firstBoard);
-                                allBoards.push(WorkingBoard);
+                            else if (ArrLastMoves.length == 0) {
+                                ArrLastMoves.push([this.linha, this.coluna, direction]);
+                                var copy = JSON.parse(JSON.stringify(firstBoard));
+                                copy[this.linha - 1][this.coluna - 1] = "brown";
+                                ArrBoards.push(copy);
+                                var work = JSON.parse(JSON.stringify(WorkingBoard));
+                                allBoards.push(work);
                                 var u = customId % 10;
                                 console.log("comeca");
                                 console.log(customId);
                                 console.log("acaba")
                                 var d = (customId - customId % 10) / 10;
                                 vaildMove = 1;
-                                this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                                this.moveAnimation = new MovePlayer(this, player, customId, 3);
 
                             }
                             else
@@ -383,22 +408,22 @@ class XMLscene extends CGFscene {
 
                         }
                         else {
-                            if (this.player == 1 && vaildMove) {
+                            if (player == 1 && vaildMove) {
                                 WorkingBoard[d - 1][u - 1] = "brown";
                                 if (!(this.brown.rotation % (180 * DEGREE_TO_RAD)))
                                     DirectionsBoard[d - 1][u - 1] = "brownVertical";
                                 else
                                     DirectionsBoard[d - 1][u - 1] = "brownHorizontal";
-                                this.player = 2;
+                                player = 2;
                             }
-                            else if (this.player == 2 && vaildMove) {
+                            else if (player == 2 && vaildMove) {
                                 WorkingBoard[d - 1][u - 1] = "orange";
                                 if (!(this.orange.rotation % (180 * DEGREE_TO_RAD)))
                                     DirectionsBoard[d - 1][u - 1] = "orangeVertical";
                                 else
                                     DirectionsBoard[d - 1][u - 1] = "orangeHorizontal";
 
-                                this.player = 1;
+                                player = 1;
                             }
                             if (vaildMove) {
                                 if (gameOver(WorkingBoard) == 1)
@@ -421,18 +446,7 @@ class XMLscene extends CGFscene {
     }
 
 
-    undo() {
-        if (ArrBoards.length != 0) {
-            ArrBoards.splice(-1, 1);
-            ArrLastMoves.splice(-1, 1);
-            WorkingBoard.splice(-1, 1);
-            if (this.player == 1)
-                this.player = 2;
-            else
-                this.player = 1;
-        }
 
-    }
 
     /**
      * Displays the scene.
@@ -497,11 +511,11 @@ class XMLscene extends CGFscene {
             this.pushMatrix();
 
             //- Uses the player to discover the color of the bead
-            if (this.player == 1) {
+            if (player == 1) {
                 this.translate(0, 2.5, 10);
                 this.coffe = this.orange;
             }
-            else if (this.player == 2) {
+            else if (player == 2) {
                 this.translate(20, 2.5, 10);
                 this.coffe = this.brown;
             }

@@ -18,16 +18,16 @@ var brown = "brown";
 // temos de perguntar aos players as peças em linha ou coluna pra ganhar
 
 var firstBoard = [
-    [empty, empty, empty, empty],
-    [empty, empty, empty, empty],
-    [empty, empty, empty, empty],
-    [empty, empty, empty, empty]
+    ["empty", "empty", "empty", "empty"],
+    ["empty", "empty", "empty", "empty"],
+    ["empty", "empty", "empty", "empty"],
+    ["empty", "empty", "empty", "empty"]
 ];
 
 
 var ArrBoards = new Array();
 var ArrLastMoves = new Array();
-ArrBoards.push(firstBoard);
+ArrBoards.push(firstBoard.slice(0));
 
 // player 1 -> brown
 // player 2 -> orange
@@ -36,13 +36,14 @@ function generateAndSaveBoard(customId, playerNum) {
 
     var linha = Math.trunc(customId/10);
     var coluna = customId % 10;
-    var board = ArrBoards[ArrBoards.length - 1];
+
+    var board = JSON.parse(JSON.stringify(ArrBoards[ArrBoards.length - 1]));
 
     if(playerNum == 1) {
-        board[linha-1][coluna-1] = brown;
+        board[linha-1][coluna-1] = "brown";
     }
     else
-        board[linha-1][coluna-1] = orange;
+        board[linha-1][coluna-1] = "orange";
 
     ArrBoards.push(board);
 

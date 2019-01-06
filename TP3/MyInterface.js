@@ -19,6 +19,7 @@ class MyInterface extends CGFinterface {
         //  http://workshop.chromeexperiments.com/examples/gui
 
         this.gui = new dat.GUI();
+        this.groupStatus = this.gui.addFolder("Status");
 
         // add a group of controls (and open/expand by defult)
         this.initKeys();
@@ -49,11 +50,12 @@ class MyInterface extends CGFinterface {
     }
 
     addStatusGroup(status) {
-        var group = this.gui.addFolder("Status");
-        group.open();
-        group.add(status, 'valueN');
+        this.groupStatus.open();
+        this.groupStatus.add(status, 'valueN');
     }
-
+    addUndo(status){
+        this.groupStatus.add(status,'undoBtn');
+    }
     initKeys(){
         this.scene.gui = this;
         this.processKeyboard = function () { };

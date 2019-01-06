@@ -334,22 +334,42 @@ class XMLscene extends CGFscene {
                             
                         }
                         else{
-                            this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
                             // customId = linhacoluna
-                            checkValidMove(customId,1,1);
-                            allBoards.push(WorkingBoard);
-                            var u = customId % 10;
-                            console.log("comeca");
-                            console.log(customId);
-                            console.log("acaba")
-                            var d = (customId - customId % 10) / 10;
+                            var angle
+                            if(this.player == 1)
+                            angle = this.brown.rotation % (180 * DEGREE_TO_RAD);
+                            else
+                            angle = this.orange.rotation % (180 * DEGREE_TO_RAD);
+
+                            var direction;
+                            //changes direction based on 
+                            if(angle != 0)
+                            direction = 1;
+                            else
+                            direction = 2;
+
+                            var vaildMove;
+                            if(checkValidMove(customId,this.player,direction)){
+                                allBoards.push(WorkingBoard);
+                                var u = customId % 10;
+                                console.log("comeca");
+                                console.log(customId);
+                                console.log("acaba")
+                                var d = (customId - customId % 10) / 10;
+                                vaildMove = 1;
+                            this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+
+                            }
+                            else
+                            vaildMove = 0;
+                            
                         }
 
                         if (u == undefined && d == undefined) {
 
                         }
                         else {
-                            if (this.player == 1) {
+                            if (this.player == 1 && vaildMove) {
                                 WorkingBoard[d - 1][u - 1] = "brown";
                                 if(!(this.brown.rotation % (180*DEGREE_TO_RAD)))
                                 DirectionsBoard[d - 1][u - 1] = "brownVertical";
@@ -357,7 +377,7 @@ class XMLscene extends CGFscene {
                                 DirectionsBoard[d - 1][u - 1] = "brownHorizontal";
                                 this.player = 2;
                             }
-                            else {
+                            else if(this.player == 2 && vaildMove){
                                 WorkingBoard[d - 1][u - 1] = "orange";
                                 if(!(this.orange.rotation % (180*DEGREE_TO_RAD)))
                                 DirectionsBoard[d - 1][u - 1] = "orangeVertical";

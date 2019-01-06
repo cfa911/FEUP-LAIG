@@ -335,7 +335,7 @@ class XMLscene extends CGFscene {
                         }
                         else{
                             // customId = linhacoluna
-                            var angle
+                            var angle;
                             if(this.player == 1)
                             angle = this.brown.rotation % (180 * DEGREE_TO_RAD);
                             else
@@ -357,8 +357,8 @@ class XMLscene extends CGFscene {
                                 console.log("acaba")
                                 var d = (customId - customId % 10) / 10;
                                 vaildMove = 1;
-                            this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
-
+                                this.moveAnimation = new MovePlayer(this, this.player, customId, 3);
+                                
                             }
                             else
                             vaildMove = 0;
@@ -386,6 +386,12 @@ class XMLscene extends CGFscene {
 
                                 this.player = 1;
                             }
+                            if(vaildMove){
+                                if(gameOver(WorkingBoard) == 1)
+                                alert("Player 1 Wins!!")
+                                else if(gameOver(WorkingBoard) == 1)
+                                alert("Player 2 Wins!!");
+                            }
                         }
                         
 
@@ -405,9 +411,9 @@ class XMLscene extends CGFscene {
      * Displays the scene.
      */
     display() {
-        var i = 0;
-        var j = 0;
 
+        var i = 0;
+        
         // ---- BEGIN Background, camera and axis setup
         this.logPicking();
         this.clearPickRegistration();
@@ -425,6 +431,7 @@ class XMLscene extends CGFscene {
 
         if (this.sceneInited) {
             // Draw axis
+            
             this.axis.display();
 
             var i = 0;

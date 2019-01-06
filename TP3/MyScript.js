@@ -16,7 +16,6 @@ var empty = "empty";
 var orange = "orange";
 var brown = "brown";
 // temos de perguntar aos players as peças em linha ou coluna pra ganhar
-var NumWin = 2;
 
 var firstBoard = [
     [empty, empty, empty, empty],
@@ -97,7 +96,7 @@ function checkValidMove(customId, playerNum, moveDir) {
 
 function gameOver(board) {
 
-    var winner = getPrologRequest("game_over(" + parseToPlog(board) + "," + NumWin.toString() + ")",
+    var winner = getPrologRequest("game_over(" + parseToPlog(board) + "," + currentGameStatus.valueN.toString() + ")",
         8081, null, null);
     console.log(winner);
     var winnerConverted = JSON.parse(winner);

@@ -63,6 +63,25 @@ function requestValidMoves(linha, coluna, moveDir, board) {
     return validMovesConverted;
 }
 
+function requestCPUMove(linha, coluna, moveDir, board, playerNum) {
+
+    var CPUMove = getPrologRequest("cpu_move(" + parseToPlog(board) + "," + linha.toString() + "," + coluna.toString() + "," + moveDir.toString() + ")",
+        8081, null, null);
+    console.log(CPUMove);
+    var CPUMoveConverted = JSON.parse(CPUMove);
+
+    returnAndSaveCPUMove(CPUMoveConverted, playerNum);
+}
+
+function returnAndSaveCPUMove(CPUMove, playerNum) {
+    
+    ArrLastMoves.push([CPUMove[0], CPUMove[1], CPUMove[2]]);
+    customId = CPUMove[0] * 10 + CPUMove[1];
+    generateAndSaveBoard(customId, playerNum);
+
+    return CPUMove;
+}
+
 // recebe a jogada q o jogador quer fazer e retorna true or false se for possivel ou nao
 // este é o teu customId formato 12, numero do jogador e a direcao
 // % MoveDirection = horizontal -> 1 vertical -> 2

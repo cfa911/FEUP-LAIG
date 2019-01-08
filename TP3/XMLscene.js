@@ -1,6 +1,8 @@
 var DEGREE_TO_RAD = Math.PI / 180;
 var TIMELAPSE = 1;
-var player = 1;
+var PLAYER = 1;
+var GAMEMODE = 1;
+var OVER = 0;
 // Small class representing the status of a game
 var gameStatus = function () {
     this.valueN = 2;
@@ -23,10 +25,10 @@ var gameUndo = function () {
             WorkingBoard = ArrBoards[ArrBoards.length - 1];
 
             DirectionsBoard[b][a] = "empty";
-            if (player == 1)
-                player = 2;
+            if (PLAYER == 1)
+                PLAYER = 2;
             else
-                player = 1;
+                PLAYER = 1;
         }
     }
 
@@ -139,7 +141,7 @@ class XMLscene extends CGFscene {
         this.box1 = new MyBox(this, 1);
 
         this.rotation = 90;
-        this.coffe = new MyCoffee(this, player, 0);
+        this.coffe = new MyCoffee(this, PLAYER, 0);
         this.upControlPoints = [[0, 0, 0], [0, 3, 0]];
         this.upAnimation = new LinearAnimation(this, 3, this.upControlPoints);
 
@@ -298,7 +300,7 @@ class XMLscene extends CGFscene {
                 /*
                 for (var key in this.viewValues)
                 {
-                    if(key == "player 1" || key == "player 2")
+                    if(key == "PLAYER 1" || key == "PLAYER 2")
                     this.viewValues[key].orbit('X',deltaTime*180*DEGREE_TO_RAD/TIMELAPSE);
                 }*/
                 this.camera.orbit('X', deltaTime * 180 * DEGREE_TO_RAD / TIMELAPSE);
@@ -341,7 +343,7 @@ class XMLscene extends CGFscene {
                         customId = this.pickResults[i][1];
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         if (customId == 10 || customId == 19) {
-                            if (player == 1) {
+                            if (PLAYER == 1) {
                                 if (this.moveAnimation != undefined) {
                                     if (this.moveAnimation.animation.final)
                                         this.brown.rotation += 90 * DEGREE_TO_RAD;
@@ -351,7 +353,7 @@ class XMLscene extends CGFscene {
 
                         }
                         else if (customId == 20 || customId == 29) {
-                            if (player == 2) {
+                            if (PLAYER == 2) {
                                 if (this.moveAnimation != undefined) {
                                     if (this.moveAnimation.animation.final)
                                         this.orange.rotation += 90 * DEGREE_TO_RAD;
@@ -363,7 +365,7 @@ class XMLscene extends CGFscene {
                         else {
                             // customId = linhacoluna
                             var angle;
-                            if (player == 1)
+                            if (PLAYER == 1)
                                 angle = this.brown.rotation % (180 * DEGREE_TO_RAD);
                             else
                                 angle = this.orange.rotation % (180 * DEGREE_TO_RAD);
@@ -380,7 +382,7 @@ class XMLscene extends CGFscene {
                             this.linha = (customId - customId % 10) / 10;
 
 
-                            if (ArrLastMoves.length != 0 && checkValidMove(customId, player, direction)) {
+                            if (ArrLastMoves.length != 0 && checkValidMove(customId, PLAYER, direction)) {
                                 allBoards.push(JSON.parse(JSON.stringify(WorkingBoard)));
                                 var u = customId % 10;
                                 console.log("comeca");
@@ -388,7 +390,7 @@ class XMLscene extends CGFscene {
                                 console.log("acaba")
                                 var d = (customId - customId % 10) / 10;
                                 vaildMove = 1;
-                                this.moveAnimation = new MovePlayer(this, player, customId, 3);
+                                this.moveAnimation = new MovePlayer(this, PLAYER, customId, 3);
 
                             }
                             else if (ArrLastMoves.length == 0) {
@@ -404,7 +406,7 @@ class XMLscene extends CGFscene {
                                 console.log("acaba")
                                 var d = (customId - customId % 10) / 10;
                                 vaildMove = 1;
-                                this.moveAnimation = new MovePlayer(this, player, customId, 3);
+                                this.moveAnimation = new MovePlayer(this, PLAYER, customId, 3);
 
                             }
                             else
@@ -416,33 +418,38 @@ class XMLscene extends CGFscene {
 
                         }
                         else {
-                            if (player == 1 && vaildMove) {
+                            if (PLAYER == 1 && vaildMove) {
                                 WorkingBoard[d - 1][u - 1] = "brown";
                                 if (!(this.brown.rotation % (180 * DEGREE_TO_RAD)))
                                     DirectionsBoard[d - 1][u - 1] = "brownVertical";
                                 else
                                     DirectionsBoard[d - 1][u - 1] = "brownHorizontal";
-                                player = 2;
+                                PLAYER = 2;
                             }
-                            else if (player == 2 && vaildMove) {
+                            else if (PLAYER == 2 && vaildMove) {
                                 WorkingBoard[d - 1][u - 1] = "orange";
                                 if (!(this.orange.rotation % (180 * DEGREE_TO_RAD)))
                                     DirectionsBoard[d - 1][u - 1] = "orangeVertical";
                                 else
                                     DirectionsBoard[d - 1][u - 1] = "orangeHorizontal";
 
-                                player = 1;
+                                PLAYER = 1;
                             }
                             
                             if (vaildMove) {
-                                if (gameOver(WorkingBoard) == 1)
-                                    alert("Player 1 Wins!!")
-                                else if (gameOver(WorkingBoard) == 2)
-                                    alert("Player 2 Wins!!");
-                                
+                                if (gameOver(WorkingBoard) == 1 && OVER == 0)
+                                {
+                                    alert("PLAYER 1 Wins!!");
+                                    OVER = 1;
+                                }
+                                else if (gameOver(WorkingBoard) == 2 && OVER == 0)
+                                {
+                                    alert("PLAYER 2 Wins!!");
+                                    OVER = 1;
+                                }
                             }
                         }
-                        if (ArrLastMoves.length != 1 && validMovesConverted.length == 0)
+                        if (ArrLastMoves.length != 1 && validMovesConverted.length == 0 && OVER == 0)
                         alert("Its a draw!!");
 
                     }
@@ -521,12 +528,12 @@ class XMLscene extends CGFscene {
             //We should create the object when the input starts
             this.pushMatrix();
 
-            //- Uses the player to discover the color of the bead
-            if (player == 1) {
+            //- Uses the PLAYER to discover the color of the bead
+            if (PLAYER == 1) {
                 this.translate(0, 2.5, 10);
                 this.coffe = this.orange;
             }
-            else if (player == 2) {
+            else if (PLAYER == 2) {
                 this.translate(20, 2.5, 10);
                 this.coffe = this.brown;
             }
@@ -587,7 +594,7 @@ class XMLscene extends CGFscene {
 
             this.popMatrix();
 
-            //player 2 controls
+            //PLAYER 2 controls
             this.pushMatrix();
             this.green.apply();
             this.translate(0, 2.5, 8);
@@ -606,7 +613,7 @@ class XMLscene extends CGFscene {
             this.arrow.display();
             this.popMatrix();
 
-            //player 1 controls
+            //PLAYER 1 controls
             this.pushMatrix();
             this.red.apply();
             this.translate(20, 2.5, 8);

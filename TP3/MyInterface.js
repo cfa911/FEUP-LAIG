@@ -20,6 +20,7 @@ class MyInterface extends CGFinterface {
 
         this.gui = new dat.GUI();
         this.groupStatus = this.gui.addFolder("Status");
+        this.groupMode = this.gui.addFolder("Mode");
 
         // add a group of controls (and open/expand by defult)
         this.initKeys();
@@ -52,6 +53,12 @@ class MyInterface extends CGFinterface {
     addStatusGroup(status) {
         this.groupStatus.open();
         this.groupStatus.add(status, 'valueN');
+    }
+    addCpu(status) {
+        this.groupMode.open();
+        this.groupMode.add(status, 'players');
+        this.groupMode.add(status, 'cpu');
+
     }
     addUndo(status){
         this.groupStatus.add(status,'undoBtn');

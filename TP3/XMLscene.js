@@ -9,8 +9,8 @@ var gameStatus = function () {
 }
 
 var gameMode = function () {
-    this.players = function () {}
-    this.cpu = function () {}
+    this.players = function () { GAMEMODE = 1}
+    this.cpu = function () { GAMEMODE = 2}
 
 }
 
@@ -382,7 +382,7 @@ class XMLscene extends CGFscene {
                             this.linha = (customId - customId % 10) / 10;
 
 
-                            if (ArrLastMoves.length != 0 && checkValidMove(customId, PLAYER, direction)) {
+                            if (ArrLastMoves.length != 0 && checkValidMove(customId, PLAYER, direction) && (GAMEMODE == 1 || PLAYER == 1)) {
                                 allBoards.push(JSON.parse(JSON.stringify(WorkingBoard)));
                                 var u = customId % 10;
                                 console.log("comeca");
@@ -408,6 +408,19 @@ class XMLscene extends CGFscene {
                                 vaildMove = 1;
                                 this.moveAnimation = new MovePlayer(this, PLAYER, customId, 3);
 
+                            }
+                            else if (GAMEMODE == 2 && PLAYER == 2) {
+                                var CPU = requestCPUMove(PLAYER);
+                                allBoards.push(JSON.parse(JSON.stringify(WorkingBoard)));
+                                var u = CPU[1];
+                                console.log(CPU[0]*10 + CPU[1]);
+                                var d = CPU[0];
+                                vaildMove = 1;
+                                if(CPU[2] == 2)
+                                this.orange.rotation = 0;
+                                else
+                                this.orange.rotation = 90 * DEGREE_TO_RAD;
+                                this.moveAnimation = new MovePlayer(this, PLAYER, CPU[0]*10 + CPU[1], 3);
                             }
                             else
                                 vaildMove = 0;
@@ -435,22 +448,20 @@ class XMLscene extends CGFscene {
 
                                 PLAYER = 1;
                             }
-                            
+
                             if (vaildMove) {
-                                if (gameOver(WorkingBoard) == 1 && OVER == 0)
-                                {
+                                if (gameOver(WorkingBoard) == 1 && OVER == 0) {
                                     alert("PLAYER 1 Wins!!");
                                     OVER = 1;
                                 }
-                                else if (gameOver(WorkingBoard) == 2 && OVER == 0)
-                                {
+                                else if (gameOver(WorkingBoard) == 2 && OVER == 0) {
                                     alert("PLAYER 2 Wins!!");
                                     OVER = 1;
                                 }
                             }
                         }
                         if (ArrLastMoves.length != 1 && validMovesConverted.length == 0 && OVER == 0)
-                        alert("Its a draw!!");
+                            alert("Its a draw!!");
 
                     }
                     else {

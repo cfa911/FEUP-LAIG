@@ -1,3 +1,5 @@
+var validMovesConverted;
+
 function getPrologRequest(requestString, port, onSuccess, onError) {
 
     var requestPort = port || 8081;
@@ -57,7 +59,7 @@ function requestValidMoves(linha, coluna, moveDir, board) {
     var validMoves = getPrologRequest("player_move(" + parseToPlog(board) + "," + linha.toString() + "," + coluna.toString() + "," + moveDir.toString() + ")",
         8081, null, null);
     console.log(validMoves);
-    var validMovesConverted = JSON.parse(validMoves);
+    validMovesConverted = JSON.parse(validMoves);
     // http://localhost:8081/cpu_move([[empty,empty,empty,orange],[empty,empty,empty,empty],[empty,empty,empty,empty],[empty,empty,empty,orange]],1,4,2)
 
     return validMovesConverted;
@@ -74,7 +76,7 @@ function requestCPUMove(playerNum) {
     console.log(CPUMove);
     var CPUMoveConverted = JSON.parse(CPUMove);
 
-    returnAndSaveCPUMove(CPUMoveConverted, playerNum);
+    return returnAndSaveCPUMove(CPUMoveConverted, playerNum);
 }
 
 function returnAndSaveCPUMove(CPUMove, playerNum) {

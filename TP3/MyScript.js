@@ -11,7 +11,7 @@ function getPrologRequest(requestString, port, onSuccess, onError) {
     request.send();
     return request.responseText;
 }
-var validMovesConverted;
+
 var empty = "empty";
 var orange = "orange";
 var brown = "brown";
@@ -57,15 +57,19 @@ function requestValidMoves(linha, coluna, moveDir, board) {
     var validMoves = getPrologRequest("player_move(" + parseToPlog(board) + "," + linha.toString() + "," + coluna.toString() + "," + moveDir.toString() + ")",
         8081, null, null);
     console.log(validMoves);
-    validMovesConverted = JSON.parse(validMoves);
+    var validMovesConverted = JSON.parse(validMoves);
     // http://localhost:8081/cpu_move([[empty,empty,empty,orange],[empty,empty,empty,empty],[empty,empty,empty,empty],[empty,empty,empty,orange]],1,4,2)
 
     return validMovesConverted;
 }
 
-function requestCPUMove(linha, coluna, moveDir, board, playerNum) {
+// esta é a função que tens de chamar com o número do player que vai ser o cpu
+function requestCPUMove(playerNum) {
 
-    var CPUMove = getPrologRequest("cpu_move(" + parseToPlog(board) + "," + linha.toString() + "," + coluna.toString() + "," + moveDir.toString() + ")",
+    var lastBoard = ArrBoards[ArrBoards.length - 1];
+    var lastMove = ArrLastMoves[ArrLastMoves.length -1];
+
+    var CPUMove = getPrologRequest("cpu_move(" + parseToPlog(lastBoard) + "," + lastMove[0].toString() + "," + lastMove[1].toString() + "," + lastMove[2].toString() + ")",
         8081, null, null);
     console.log(CPUMove);
     var CPUMoveConverted = JSON.parse(CPUMove);
@@ -74,7 +78,7 @@ function requestCPUMove(linha, coluna, moveDir, board, playerNum) {
 }
 
 function returnAndSaveCPUMove(CPUMove, playerNum) {
-    
+
     ArrLastMoves.push([CPUMove[0], CPUMove[1], CPUMove[2]]);
     customId = CPUMove[0] * 10 + CPUMove[1];
     generateAndSaveBoard(customId, playerNum);
